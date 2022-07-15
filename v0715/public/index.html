@@ -1,13 +1,29 @@
-
-
 <!DOCTYPE html>
-<html>
-    <head>
-        <h1>
-            This is the HTML file
-        </h1>
-    </head>
-    <body>
-      <div id="fromjs"></div>
-    </body>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="kanna.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="スケジュール管理ツール"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <title>Jootoパクリ</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+    <script>
+    const styleRemake = () => {
+            const delSpan = document.querySelectorAll('.react-datepicker__navigation-icon')
+            const delBtn = document.querySelector('.react-datepicker__navigation')
+            delSpan.forEach((e) => e.style.position = 'initial')
+        }
+        setInterval(styleRemake, 100)
+    </script>
 </html>

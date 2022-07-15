@@ -1,0 +1,41 @@
+/* 
+:root{
+    --squre: 40px;
+}
+.colorPickLeftDiv{
+    width: 100%;
+    min-width: 500px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+.colorBar{
+    width: 30%;
+    border: 1px solid var(--gray);
+    display: flex;
+    height: var(--squre);
+    overflow: hidden;
+}
+.colorBar .colorBarLeft{
+    flex: 1;
+    padding: 10px;
+    cursor: pointer;
+}
+.colorBar .colorBarRight{
+    height: 100%;
+    border-left: 1px solid var(--gray);
+    width: var(--squre);
+}
+.pickerDiv{
+    position: absolute;
+    top: 50%;
+    left: 25%;
+}
+.pickerDiv .pickerBack{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+ */

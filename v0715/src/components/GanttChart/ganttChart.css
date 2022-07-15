@@ -1,0 +1,27 @@
+
+:root{
+    --ganttTopH: 65px;
+}
+
+.ganttChartDiv{
+    height: calc(100% - (var(--topH) + var(--topMaginH)));
+    width: var(--topW);
+    border: 1px solid #ddd;
+    margin: auto;
+    overflow: hidden;
+    user-select: none;
+}
+.ganttChartDiv .topDiv{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: var(--ganttTopH);
+    /* border: 1px solid #ddd; */
+}
+.ganttChartDiv .bottomDiv{
+    height: calc(100% - var(--ganttTopH));
+    /* border: 1px solid #ddd; */
+    text-align: center;
+    overflow: scroll;
+    padding: 5px 30px;
+}

@@ -1,0 +1,90 @@
+:root{
+    --nav_posi: 3%;
+    --nav_side: 50px;
+}
+
+.open-nav{
+    height: var(--topH);
+    width: var(--topH);
+    background-color: var(--glass);
+    border-left: 1px solid var(--gray);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transform: translateX(50px); /*右からやってくるぜ*/
+    opacity: 0;
+    animation: show 0.5s ease 0.5s 1 forwards;/*later*/
+}
+@keyframes show{
+    to{
+        transform: translate(0);
+        opacity: 1;
+    }
+}
+.open-nav #m{
+    position: absolute;
+    transition: .3s ease;
+}
+.open-nav .open.active{
+    transform: rotate(360deg);
+    opacity: 0;
+}
+.open-nav .open{
+    transform: scale(2);
+}
+.open-nav .close{
+    transform: rotate(180deg);
+    opacity: 0;
+}
+.open-nav .close.active{
+    transform: rotate(0);
+    transform: scale(2);
+    opacity: 1;
+}
+.nav{
+    height: var(--topH);
+    overflow: hidden;
+    /* z-index: var(--nav_z); */
+    background-color: var(--glass);
+    border: 1px solid var(--gray);
+    border-radius: 20px;
+    margin-right: 20px;
+    opacity: 0;
+    pointer-events: none;
+    user-select: none; /*これでテキストを選択できないようにする*/
+    transition: 0.3s ease;
+}
+.nav.active{
+    opacity: 1;
+    pointer-events: all;
+}
+.nav.active ul a{
+    transform: translateX(0);
+    opacity: 1;
+}
+.nav ul{
+    position: relative;
+    display: flex;
+    list-style: none;
+    /* backdrop-filter: ; */
+    height: var(--nav_side);
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+}
+.nav ul a{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    margin: 0 12px;
+    text-transform: capitalize;
+    cursor: pointer;
+    color: var(--black);
+    transform: translateX(100%);
+    opacity: 0;
+    transition: 1s ease, color .2s ease-out;
+}

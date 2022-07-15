@@ -1,0 +1,63 @@
+.projectDiv{
+    height: calc(100% - (var(--topH) + var(--topMaginH)));
+    width: var(--topW);
+    /* border: 1px solid #ddd; */
+    margin: auto;
+    overflow: hidden;
+}
+.projectTop{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /* border: 1px solid #ddd; */
+    height: 20%;
+    min-height: var(--topH);
+}
+.projectBottom{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 280px);
+    grid-auto-rows: minmax(200px, 200px);
+    gap: 10px;
+    padding: 35px 100px;
+    overflow: scroll;
+    height: 80%;
+    user-select: none;
+}
+.project{
+    border: 1px solid var(--gray);
+    background-color: var(--glass);
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    overflow: hidden;
+}
+.project h4{
+    height: 20%;
+    margin: 0px 10px;
+    padding: 5px;
+    border-bottom: 1px solid var(--gray);
+}
+.project .description{
+    margin: 0px 10px;
+    padding: 5px;
+    height: 60%;
+    border-bottom: 1px solid var(--gray);
+}
+.project .other{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 20%;
+}
+.project .other a{
+    display: block;
+}
+.content-base h4{
+    margin-top: 20px;
+}
+.content-base textarea{
+    padding: 15px;
+    margin: 10px 0px;
+    width: 70%;
+    height: 150px;
+}

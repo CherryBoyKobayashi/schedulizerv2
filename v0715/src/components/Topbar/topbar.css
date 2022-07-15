@@ -1,0 +1,22 @@
+:root{
+    --topH: 50px;
+    --topMaginH: 10px;
+    --topW: 98%;
+}
+
+.topbar{
+    width: var(--topW);
+    height: var(--topH);
+    margin-top: var(--topMaginH);
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: var(--glass);
+    border: 1px solid var(--gray);
+    border-radius: 20px;
+    /* z-index: calc(var(--nav_z) - 1); */
+    user-select: none;
+}
