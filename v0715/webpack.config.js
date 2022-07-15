@@ -5,7 +5,13 @@ module.exports = {
     mode: 'development',
     entry: "./src/index.js",
     devServer: {
+      port: 3000,
       historyApiFallback: true,
+    },
+    output: {
+      filename: 'jotopa.bundle.js',
+      path: path.resolve(__dirname, 'build'),
+      clean: true,
     },
     module: {
         rules: [
