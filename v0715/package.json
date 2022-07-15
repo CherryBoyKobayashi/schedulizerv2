@@ -1,0 +1,27 @@
+{
+  "name": "v0715",
+  "version": "1.0.0",
+  "description": "Cleaned up version of Jooto-pakuri",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/CherryBoyKobayashi/dev0527.git"
+  },
+  "keywords": [
+    "Jooto",
+    "pakuri",
+    "schedule"
+  ],
+  "author": "Mykola",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CherryBoyKobayashi/dev0527/issues"
+  },
+  "homepage": "https://github.com/CherryBoyKobayashi/dev0527#readme",
+  "dependencies": {
+    "webpack": "^5.73.0"
+  }
+}
