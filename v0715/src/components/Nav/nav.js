@@ -1,7 +1,8 @@
 import "./nav.css"
+import React from 'react'
+import { useParams } from "react-router-dom"
 import {BiMenu} from "react-icons/bi"
 import {AiOutlineClose} from "react-icons/ai"
-import { useParams } from "react-router-dom"
 
 const navClick = () => {
     const nav = document.querySelector(".nav")

@@ -1,6 +1,12 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+var path = require('path')
+
 module.exports = {
     mode: 'development',
+    entry: "./src/index.js",
+    devServer: {
+      historyApiFallback: true,
+    },
     module: {
         rules: [
           {
@@ -23,9 +29,6 @@ module.exports = {
           },
         ],
       },
-    devServer: {
-        port:8001,
-    },
     plugins: [
         new HtmlWebpackPlugin({
             template:

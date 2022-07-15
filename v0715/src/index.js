@@ -19,7 +19,7 @@ root.render(
         <BrowserRouter>
             <userDataContext.Provider value={userData}>
                 <Routes>
-                  <Route path='/' element={<Project/>}/>
+                  <Route exact path='/' element={<Project/>}/>
                   <Route path='/milestone/:projectId' element={<Milestone/>}/>
                   <Route path='/gantt/:projectId' element={<GanttChart/>}/>
                 </Routes>
