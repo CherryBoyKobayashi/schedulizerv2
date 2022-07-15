@@ -1,3 +1,11 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+
+ReactDOM.render(
+    <h1>Hello from js</h1>,
+  );
+
 // import React from 'react';
 // import ReactDOM from 'react-dom/client';
 // import { BrowserRouter, Route, Routes } from 'react-router-dom';
