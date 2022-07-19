@@ -5,13 +5,8 @@ module.exports = {
     mode: 'development',
     entry: "./src/index.js",
     devServer: {
-      port: 3000,
+      port: 8080,
       historyApiFallback: true,
-    },
-    output: {
-      filename: 'jotopa.bundle.js',
-      path: path.resolve(__dirname, 'build'),
-      clean: true,
     },
     module: {
         rules: [
@@ -40,5 +35,5 @@ module.exports = {
             template:
                 './public/index.html',
         }),
-    ],
+    ]
   };
