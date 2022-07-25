@@ -64,40 +64,42 @@ const GanttChart = () => {
     const initTasks = () => {
         const tasks = []
         for(let milestoneId in project){
-            let milestone = project[milestoneId].tasks
-            let startDate = new Date(3022,3,2)
-            let finishDate = new Date(2020,3,2)
-            let milestoneProgress = 0
-            for(let taskId in milestone){
-                if (startDate > (new Date(milestone[taskId].taskData['start-time']))) {
-                    startDate = (new Date(milestone[taskId].taskData['start-time']))
+            if (project[milestoneId].tasks.length != 0) {
+                let milestone = project[milestoneId].tasks
+                let startDate = new Date(3022,3,2)
+                let finishDate = new Date(2020,3,2)
+                let milestoneProgress = 0
+                for(let taskId in milestone){
+                    if (startDate > (new Date(milestone[taskId].taskData['start-time']))) {
+                        startDate = (new Date(milestone[taskId].taskData['start-time']))
+                    }
+                    if (finishDate < (new Date(milestone[taskId].taskData['finish-time']))) {
+                        finishDate = (new Date(milestone[taskId].taskData['finish-time']))
+                    }
+                    milestoneProgress+=milestone[taskId].taskData['progress']
                 }
-                if (finishDate < (new Date(milestone[taskId].taskData['finish-time']))) {
-                    finishDate = (new Date(milestone[taskId].taskData['finish-time']))
-                }
-                milestoneProgress+=milestone[taskId].taskData['progress']
-            }
-            milestoneProgress = milestoneProgress/milestone.length
-            tasks.push({
-                start: startDate,
-                end: finishDate,
-                name: project[milestoneId].milestoneName,
-                id: milestoneId,
-                progress: milestoneProgress,
-                type: 'project',
-                hideChildren: false,
-            })
-            for(let taskId in milestone){
-                let task = milestone[taskId].taskData
+                milestoneProgress = milestoneProgress/milestone.length
                 tasks.push({
-                    start: new Date(task['start-time']),
-                    end: new Date(task['finish-time']),
-                    name: task["task-name"],
-                    id: milestoneId + "&" + taskId,
-                    progress: task['progress'],
-                    type: 'task',
-                    project: milestoneId,
+                    start: startDate,
+                    end: finishDate,
+                    name: project[milestoneId].milestoneName,
+                    id: milestoneId,
+                    progress: milestoneProgress,
+                    type: 'project',
+                    hideChildren: false,
                 })
+                for(let taskId in milestone){
+                    let task = milestone[taskId].taskData
+                    tasks.push({
+                        start: new Date(task['start-time']),
+                        end: new Date(task['finish-time']),
+                        name: task["task-name"],
+                        id: milestoneId + "&" + taskId,
+                        progress: task['progress'],
+                        type: 'task',
+                        project: milestoneId,
+                    })
+                }
             }
         }
         return tasks

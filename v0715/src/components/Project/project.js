@@ -11,12 +11,16 @@ import { searchProject } from '../../pages/methods/search-methods';
 //子コンポーネント全部中に入れちゃった（てへぺろ）
 function Project() {
     const userData = useContext(userDataContext)
+    let projects = []
+    if (userData.projects != undefined) {
+        projects = userData.projects
+    }
     const [, updateState] = React.useState();
     const forceUpdate = React.useCallback(() => updateState({}), []);
     //下二つはModalで使ってるよね～ん
     const [modalIsOpen, setIsOpen] = useState(false)
     const [flag, setFlag] = useState()
-    const [results, setResults] = useState(Object.values(userData.projects).map((e => e.projectId)));
+    const[results, setResults] = useState(Object.values(projects).map((e => e.projectId)));
 
     let inputHandler = (e) => {
         var lowerCase = e.target.value.toLowerCase();
@@ -25,6 +29,10 @@ function Project() {
         forceUpdate();
     };
 
+    function logOut() {
+        localStorage.removeItem("loggedUserNameForJootoPakuriApp");
+        window.location.replace("/");
+    }
     function addProjectDiv() {
         addProject(userData, document.getElementById("projectName").value, document.getElementById("projectDescription").value);
         setResults(Object.values(userData.projects).map((e => e.projectId)));
@@ -86,32 +94,60 @@ function Project() {
         setIsOpen(true)
         setFlag(num)
     }
-    
-    return (
-        <>
-            <Topbar/>
-            <Modal isOpen={modalIsOpen} overlayClassName={{base: "overlay-base", afterOpen: "overlay-after", beforeClose: "overlay-before"}} className={{base: "content-base", afterOpen: "content-after", beforeClose: "content-before"}} onRequestClose={() => setIsOpen(false)} closeTimeoutMS={500}>
-                <ProjectInner/>
-            </Modal>
-            <div className="projectDiv">
-                <div className='projectTop'>
-                    <div>
-                        <TextField
-                        id="outlined-basic"
-                        onChange={inputHandler}
-                        variant="outlined"
-                        fullWidth
-                        label="Search"
-                        />
+
+    if (userData.projects != undefined) {
+        return (
+            <>
+                <Topbar/>
+                <Modal isOpen={modalIsOpen} overlayClassName={{base: "overlay-base", afterOpen: "overlay-after", beforeClose: "overlay-before"}} className={{base: "content-base", afterOpen: "content-after", beforeClose: "content-before"}} onRequestClose={() => setIsOpen(false)} closeTimeoutMS={500}>
+                    <ProjectInner/>
+                </Modal>
+                <div className="projectDiv">
+                    <div className='projectTop'>
+                        <div>
+                            <TextField
+                            id="outlined-basic"
+                            onChange={inputHandler}
+                            variant="outlined"
+                            fullWidth
+                            label="Search"
+                            />
+                        </div>
+                        <div className='userlabel'><span>ログイン中のユーザー:</span>{userData.userId}<button onClick={()=>logOut()}>ロッグアウト</button></div>
+                        <button onClick={(e) => {OverShow(e, 1)}}>新規プロジェクト</button>
                     </div>
-                    <button onClick={(e) => {OverShow(e, 1)}}>新規プロジェクト</button>
+                    <div className='projectBottom'> 
+                        {Object.values(userData.projects)?.filter(project => results.includes(project.projectId)).map((e => <ProjectChild {...e} key={e.projectId}/>)) }
+                    </div>
                 </div>
-                <div className='projectBottom'> 
-                    {Object.values(userData.projects).filter(project => results.includes(project.projectId)).map((e => <ProjectChild {...e} key={e.projectId}/>)) }
+            </>
+        )
+    }
+    else {
+        return (
+            <>
+                <Topbar/>
+                <Modal isOpen={modalIsOpen} overlayClassName={{base: "overlay-base", afterOpen: "overlay-after", beforeClose: "overlay-before"}} className={{base: "content-base", afterOpen: "content-after", beforeClose: "content-before"}} onRequestClose={() => setIsOpen(false)} closeTimeoutMS={500}>
+                    <ProjectInner/>
+                </Modal>
+                <div className="projectDiv">
+                    <div className='projectTop'>
+                        <div>
+                            <TextField
+                            id="outlined-basic"
+                            onChange={inputHandler}
+                            variant="outlined"
+                            fullWidth
+                            label="Search"
+                            />
+                        </div>
+                        <div className='userlabel'><span>ログイン中のユーザー:</span>{userData.userId}<button onClick={()=>logOut()}>ロッグアウト</button></div>
+                        <button onClick={(e) => {OverShow(e, 1)}}>新規プロジェクト</button>
+                    </div>
                 </div>
-            </div>
-        </>
-    )
+            </>
+        )
+    }
 }
 
 export default Project;

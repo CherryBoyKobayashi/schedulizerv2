@@ -1,8 +1,9 @@
 import "./nav.css"
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { useParams } from "react-router-dom"
 import {BiMenu} from "react-icons/bi"
 import {AiOutlineClose} from "react-icons/ai"
+import { userDataContext } from '../..'
 
 const navClick = () => {
     const nav = document.querySelector(".nav")
@@ -15,21 +16,40 @@ const navClick = () => {
 
 const Nav = () => {
     const {projectId} = useParams();
-    return (
-        <>
-            <div className="nav">
-                <ul>
-                    <a href="/">project</a>
-                    <a href={'/milestone/' + projectId}>milestone</a>
-                    <a href={'/gantt/' + projectId}>gantt chart</a>
-                </ul>
-            </div>
-            <div className="open-nav" onClick={navClick}>
-                <BiMenu id="m" className="open"/>
-                <AiOutlineClose id="m" className="close"/>
-            </div>
-        </>
-    )
+    const userData = useContext(userDataContext)
+    if (Object.keys(userData.projects[projectId].projectData).length == 0) {
+        return (
+            <>
+                <div className="nav">
+                    <ul>
+                        <a href="/">project</a>
+                        <a href={'/milestone/' + projectId}>milestone</a>
+                    </ul>
+                </div>
+                <div className="open-nav" onClick={navClick}>
+                    <BiMenu id="m" className="open"/>
+                    <AiOutlineClose id="m" className="close"/>
+                </div>
+            </>
+        )
+    } else {
+        return (
+            <>
+                <div className="nav">
+                    <ul>
+                        <a href="/">project</a>
+                        <a href={'/milestone/' + projectId}>milestone</a>
+                        <a href={'/gantt/' + projectId}>gantt chart</a>
+                    </ul>
+                </div>
+                <div className="open-nav" onClick={navClick}>
+                    <BiMenu id="m" className="open"/>
+                    <AiOutlineClose id="m" className="close"/>
+                </div>
+            </>
+        )
+    }
+
 }
 
 export default Nav;

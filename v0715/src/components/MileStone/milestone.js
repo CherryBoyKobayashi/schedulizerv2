@@ -22,16 +22,15 @@ Modal.setAppElement("#root");
 
 const Milestone = () => {
     const userData = useContext(userDataContext)
-    const {projectId} = useParams();
+    const {projectId} = useParams()
     const milestoneObj = userData.projects[projectId].projectData
     const [modalIsOpen, setIsOpen] = useState(false)
     const [flag, setFlag] = useState()
-    const [, updateState] = useState();
-    const forceUpdate = React.useCallback(() => updateState({}), []);
+    const [, updateState] = useState()
+    const forceUpdate = React.useCallback(() => updateState({}), [])
     const allMembers = JSON.parse(localStorage.getItem("members"))
-    const [results, setResults] = useState(Object.keys(milestoneObj));
-    console.log(Object.values(milestoneObj))
-    const [dispTasks, setDispTasks] = useState((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId));
+    const [results, setResults] = useState(Object.keys(milestoneObj))
+    const [dispTasks, setDispTasks] = useState((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
 
     let inputHandler = (e) => {
         var lowerCase = e.target.value.toLowerCase();
@@ -41,12 +40,16 @@ const Milestone = () => {
         forceUpdate();
     };
 
+    function logOut() {
+        localStorage.removeItem("loggedUserNameForJootoPakuriApp");
+        window.location.replace("/");
+    }
     //Milestone methods
     function addMilestoneHere() {
-        addMilestone(milestoneObj, document.getElementById("milestoneName").value, sessionStorage.getItem("milestoneColor"));
+        addMilestone(milestoneObj, document.getElementById("milestoneName").value, sessionStorage.getItem("milestoneColor"), userData.userId);
         setResults(Object.keys(milestoneObj))
         setDispTasks((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
-        saveMilestoneHere();
+        saveMilestoneHere()
     }
     function deleteMilestoneHere(milestoneId) {
         deleteMilestone(milestoneObj, milestoneId);
@@ -72,7 +75,11 @@ const Milestone = () => {
     function addTaskHere(milestoneId, checkpoints, label) {
         let startDate = sessionStorage.getItem("startDate");
         let endDate = sessionStorage.getItem("endDate");
-        addTask(userData.projects[projectId].projectData[milestoneId].tasks, document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), JSON.parse(sessionStorage.getItem("newMembers")).map(o => o.value), label, userData.userId, checkpoints, document.getElementById("taskDescription").value, document.getElementById("followState").checked);
+        let xmembers = JSON.parse(sessionStorage.getItem("newMembers"))
+        if(xmembers.length == undefined) {
+            xmembers = [xmembers]
+        }
+        addTask(userData.projects[projectId].projectData[milestoneId].tasks, document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), xmembers.map(o => o.value), label, userData.userId, checkpoints, document.getElementById("taskDescription").value, document.getElementById("followState").checked);
         setDispTasks((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
         saveMilestoneHere();
     }
@@ -287,6 +294,7 @@ const Milestone = () => {
                         label="Search"
                         />
                     </div>
+                    <div className='userlabel'><span>ログイン中のユーザー:</span>{userData.userId}<button onClick={()=>logOut()}>ロッグアウト</button></div>
                     <button onClick={() => {OverShow(1)}}>新規マイルストーン</button>
                 </div>
                 <DragDropContext onDragEnd={onDragEnd}>

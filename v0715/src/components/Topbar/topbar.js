@@ -6,7 +6,6 @@ import Nav from '../Nav/nav'
 
 const Topbar = () => {
     const location = useLocation()
-
     return (
         <div className='topbar'>
             { location.pathname !== '/' && <Nav/>}

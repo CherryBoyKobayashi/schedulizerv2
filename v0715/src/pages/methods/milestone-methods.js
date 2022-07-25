@@ -1,15 +1,18 @@
 import { v4 as uuidv4 } from 'uuid';
 import Task from '../task';
 
-function addMilestone(project, milestoneName, newColor) {
+function addMilestone(project, milestoneName, newColor, userId) {
     let milestoneId = uuidv4();
     let tasks = []
     let taskId = uuidv4();
-    tasks.push(new Task(taskId, {"task-name": "Task 1", "start-time": "2022-03-04", "finish-time": "2022-04-04", "members": ["小林", "ミコラ"], "priority": "high", "creation-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "creator": "ミコラ",  "checkpoints": ["check1", "check2"], "comments": [""], "description": "Super-Project smth smth", "follow-state": "true", "progress": 25}));
-    project[milestoneId]= {"milestoneName": milestoneName, "color":newColor,"tasks":tasks};
+    tasks.push(new Task(taskId, {"task-name": "タスク１", "start-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "finish-time":formatDate(new Date(Date.now() + 50000000), 'yyyy-MM-dd'), "members": [userId], "priority": "high", "creation-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "creator": userId,  "checkpoints":["Checkpoint1", "check2"], "comments": [""], "description": "私の新しいタスク", "follow-state": "true", "progress": 10}));
+    project[milestoneId]= {"milestoneName": milestoneName, "color":newColor, "tasks":tasks}
 }
 
 function deleteMilestone(project, milestoneId) {
+    for (let task in project[milestoneId].tasks) {
+        localStorage.removeItem(project[milestoneId].tasks[task].taskId)
+    }
     delete project[milestoneId];
 }
 

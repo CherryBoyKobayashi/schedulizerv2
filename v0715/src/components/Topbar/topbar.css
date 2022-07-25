@@ -20,3 +20,7 @@
     /* z-index: calc(var(--nav_z) - 1); */
     user-select: none;
 }
+.userlabel {
+    position: relative;
+    right: 200px;
+}

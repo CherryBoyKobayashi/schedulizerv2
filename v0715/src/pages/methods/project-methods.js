@@ -1,16 +1,24 @@
 import Project from '../project';
+import Task from '../task'
 import { v4 as uuidv4 } from 'uuid';
 
 function addProject(userData, projectName, projectDescription) {
+    let userId = userData.userId;
     let projectId = uuidv4();
     let taskId = uuidv4();
-    localStorage.setItem(projectId, JSON.stringify({Milestone1: {"milestoneName": "Milestone1", "color": "red", "tasks": [taskId]}}));
-    localStorage.setItem(taskId, JSON.stringify({"task-name": "task1", "start-time":"2022-03-04", "finish-time":"2022-04-04", "members": ["小林", "ミコラ"], "priority": "high", "creation-time":"2022-03-01", "creator":"ミコラ",  "checkpoints":["check1", "check2"], "comments": ["comment1", "comment2"], "description":"Super-Project smth smth", "follow-state":"true"}))
+    let tasks = [];
+    tasks.push(new Task(taskId, {"task-name": "タスク１", "start-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "finish-time":formatDate(new Date(Date.now() + 50000000), 'yyyy-MM-dd'), "members": [userId], "priority": "high", "creation-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "creator": userId,  "checkpoints":["Checkpoint1"], "comments": [""], "description": "私の新しいタスク", "follow-state": "true", "progress": 10}));
+    localStorage.setItem(projectId, JSON.stringify({Milestone1: {"milestoneName": "マイルストーン1", "color": "red", "tasks": tasks}}));
     userData.projects[projectId] = new Project(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'));
-    saveProject(userData);
+    saveProject(userData)
 }
-
+      
 function deleteProject(userData, projectId) {
+    for (let milestone in userData.projects[projectId].projectData) {
+        for( let task in userData.projects[projectId].projectData[milestone].tasks) {
+            localStorage.removeItem(userData.projects[projectId].projectData[milestone].tasks[task].taskId)
+        }
+    }
     delete userData.projects[projectId];
     saveProject(userData);
     localStorage.removeItem(projectId);
@@ -23,7 +31,6 @@ function updateProject(userData, projectId, newProjectName, newProjectDescriptio
 }
 
 function saveProject(userData) {
-    console.log(Object.keys(userData.projects).length);
     if (Object.keys(userData.projects).length>0) {
         let userId = userData.userId;
         let dataString = '{';
@@ -35,7 +42,9 @@ function saveProject(userData) {
         dataString += '"' + key + '": ["' + userData.projects[key].projectName + '", "' + userData.projects[key].projectDescription + '", "' + userData.projects[key].projectDate + '"]}';
         localStorage.setItem(userId, dataString);
     } else {
-        localStorage.removeItem(userData.userId);
+        let userId = userData.userId;
+        let dataString = '{}';
+        localStorage.setItem(userId, dataString);
     }
 }
 

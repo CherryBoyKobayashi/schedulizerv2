@@ -17,6 +17,7 @@ class Project {
     getProjectData(projectId) {
       let projectData = "";
       try {
+        
         projectData = getMilestones(projectId);
         for(let i=0; i<Object.keys(projectData).length; i++) {
           let key = Object.keys(projectData)[i];
@@ -27,7 +28,7 @@ class Project {
           projectData[key].tasks = tasks;
         }
       } catch {
-        console.log("No milestone data present!")
+        console.log("No milestone data present!");
       }
 
       return projectData;

@@ -3,7 +3,7 @@ import Task from '../task';
 
 function addTask(tasks, taskName, startTime, finishTime, members, priority, userName, checkpoints, description, followState) {
     let taskId = uuidv4();
-    tasks.push(new Task(taskId, {"task-name": taskName, "start-time":startTime, "finish-time":finishTime, "members": members, "priority": priority, "creation-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "creator":userName,  "checkpoints":checkpoints, "comments": [""], "description":description, "follow-state":followState, "progress": 1}));
+    tasks.push(new Task(taskId, {"task-name": taskName, "start-time":startTime, "finish-time":finishTime, "members": members, "priority": priority, "creation-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "creator":userName,  "checkpoints":checkpoints, "comments": [""], "description":description, "follow-state":followState, "progress": 20}));
     saveTask(tasks[tasks.length-1])
 }
 
