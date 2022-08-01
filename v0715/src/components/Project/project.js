@@ -33,17 +33,18 @@ function Project() {
         localStorage.removeItem("loggedUserNameForJootoPakuriApp");
         window.location.replace("/");
     }
-    function addProjectDiv() {
-        addProject(userData, document.getElementById("projectName").value, document.getElementById("projectDescription").value);
+    async function addProjectDiv() {
+        await addProject(userData, document.getElementById("projectName").value, document.getElementById("projectDescription").value);
         setResults(Object.values(userData.projects).map((e => e.projectId)));
         forceUpdate();
     }
-    function deleteProjectHere(projectId) {
-        deleteProject(userData, projectId);
+    async function deleteProjectHere(projectId) {
+        await deleteProject(userData, projectId);
         forceUpdate();
     }
-    function updateProjectHere(projectId) {
-        updateProject(userData, projectId, document.getElementById("projectName").value, document.getElementById("projectDescription").value)
+    async function updateProjectHere(projectId) {
+        await updateProject(userData, projectId, document.getElementById("projectName").value, document.getElementById("projectDescription").value)
+        forceUpdate();
     }
 
     const ProjectChild = (props) => {

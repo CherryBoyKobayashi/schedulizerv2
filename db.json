@@ -11,16 +11,14 @@
       "username": "a",
       "projects": [
         "809d7ce9-1e3c-4ad2-8f4b-72c96bbf0607",
-        "e36387f8-82b0-488b-81e7-8b0ad4603843",
-        "bcc5aaaa-6ffa-423c-b1b7-0e8bc2c8be79",
-        "50e806f7-1de8-47c2-9535-79ae48bd4000"
+        "76f9938e-918a-4ba8-ae6e-85e74ad60e82"
       ]
     }
   ],
   "projects": [
     {
       "projectId": "809d7ce9-1e3c-4ad2-8f4b-72c96bbf0607",
-      "projectName": "asdas",
+      "projectName": "aa",
       "projectDescription": "dasdasd",
       "projectDate": "2022-07-29",
       "projectData": [
@@ -34,40 +32,10 @@
       ]
     },
     {
-      "projectId": "e36387f8-82b0-488b-81e7-8b0ad4603843",
-      "projectName": "asdfsadf",
-      "projectDescription": "asdfsadfasdf",
-      "projectDate": "2022-07-29",
-      "projectData": [
-        {
-          "Milestone1": {
-            "milestoneName": "マイルストーン1",
-            "color": "red",
-            "tasks": []
-          }
-        }
-      ]
-    },
-    {
-      "projectId": "bcc5aaaa-6ffa-423c-b1b7-0e8bc2c8be79",
-      "projectName": "asdf",
-      "projectDescription": "asdf",
-      "projectDate": "2022-07-29",
-      "projectData": [
-        {
-          "Milestone1": {
-            "milestoneName": "マイルストーン1",
-            "color": "red",
-            "tasks": []
-          }
-        }
-      ]
-    },
-    {
-      "projectId": "50e806f7-1de8-47c2-9535-79ae48bd4000",
-      "projectName": "asdf",
-      "projectDescription": "fasdfasdf",
-      "projectDate": "2022-07-29",
+      "projectId": "76f9938e-918a-4ba8-ae6e-85e74ad60e82",
+      "projectName": "asdfsa",
+      "projectDescription": "dfasdfasdf",
+      "projectDate": "2022-08-01",
       "projectData": [
         {
           "Milestone1": {

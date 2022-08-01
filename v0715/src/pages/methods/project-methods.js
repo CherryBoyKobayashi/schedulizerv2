@@ -30,6 +30,7 @@ async function updateProject(userData, projectId, newProjectName, newProjectDesc
         userData.projects[projectId].projectName = newProjectName;
         userData.projects[projectId].projectDescription = newProjectDescription;
     }
+    console.log(userData)
 }
 
 function saveProject(userData) {
