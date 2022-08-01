@@ -35,5 +35,10 @@ module.exports = {
               template:
                   './public/index.html',
           }),
-      ]
+      ],
+      experiments: {
+        topLevelAwait: true
+      }
   };
+
+// "start": "concurrently --kill-others \"node ../server/index.js\" \"webpack serve\"",

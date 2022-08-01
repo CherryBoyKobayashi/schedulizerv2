@@ -1,12 +1,13 @@
 import './loginpage.css'
 import React from "react";
-import {checkUser} from '../../pages/methods/login-methods';
+import {getUserFromDB} from '../../api/userDB';
 
 function LoginPage() { 
-    function checkUserHere () {
+    async function checkUserHere () {
       event.preventDefault();
-      let result_value = checkUser(document.getElementById("username").value, document.getElementById("password").value)
-      if (result_value == 1) {
+      let result_value = await getUserFromDB(document.getElementById("username").value, document.getElementById("password").value)
+      if (result_value != "error" && result_value != "no value") {
+        localStorage.setItem("loggedUserNameForJootoPakuriApp", result_value.username);
         alert("ログインしました！");
         window.location.reload();
       } else {

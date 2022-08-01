@@ -1,33 +1,35 @@
 import Project from '../project';
-import Task from '../task'
+import { deleteTask } from '../../api/taskDB';
 import { v4 as uuidv4 } from 'uuid';
+import {addProjectToDB, deleteProjectFromDB, updateProjectInDB} from '../../api/projectDB'
 
-function addProject(userData, projectName, projectDescription) {
+async function addProject(userData, projectName, projectDescription) {
     let userId = userData.userId;
     let projectId = uuidv4();
-    let taskId = uuidv4();
-    let tasks = [];
-    tasks.push(new Task(taskId, {"task-name": "タスク１", "start-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "finish-time":formatDate(new Date(Date.now() + 50000000), 'yyyy-MM-dd'), "members": [userId], "priority": "high", "creation-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "creator": userId,  "checkpoints":["Checkpoint1"], "comments": [""], "description": "私の新しいタスク", "follow-state": "true", "progress": 10}));
-    localStorage.setItem(projectId, JSON.stringify({Milestone1: {"milestoneName": "マイルストーン1", "color": "red", "tasks": tasks}}));
-    userData.projects[projectId] = new Project(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'));
-    saveProject(userData)
+    let response = await addProjectToDB(userId, projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{Milestone1: {"milestoneName": "マイルストーン1", "color": "red", "tasks": []}}]));
+    if (response == "OK") {
+        userData.projects[projectId] = new Project(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{Milestone1: {"milestoneName": "マイルストーン1", "color": "red", "tasks": []}}]));
+    }
 }
       
-function deleteProject(userData, projectId) {
+async function deleteProject(userData, projectId) {
     for (let milestone in userData.projects[projectId].projectData) {
-        for( let task in userData.projects[projectId].projectData[milestone].tasks) {
-            localStorage.removeItem(userData.projects[projectId].projectData[milestone].tasks[task].taskId)
+        for( let task in userData.projects[projectId].projectData[milestone][Object.keys(userData.projects[projectId].projectData[milestone])].tasks) {
+             deleteTask(userData.projects[projectId].projectData[milestone][Object.keys(userData.projects[projectId].projectData[milestone])].tasks[task].taskId)
         }
     }
-    delete userData.projects[projectId];
-    saveProject(userData);
-    localStorage.removeItem(projectId);
+    let response = await deleteProjectFromDB(userData.userId, projectId);
+    if (response == "OK") {
+        delete userData.projects[projectId];
+    }
 }
 
-function updateProject(userData, projectId, newProjectName, newProjectDescription) {
-    userData.projects[projectId].projectName = newProjectName;
-    userData.projects[projectId].projectDescription = newProjectDescription;
-    saveProject(userData);
+async function updateProject(userData, projectId, newProjectName, newProjectDescription) {
+    let response = await updateProjectInDB(projectId, newProjectName, newProjectDescription);
+    if (response == "OK") {
+        userData.projects[projectId].projectName = newProjectName;
+        userData.projects[projectId].projectDescription = newProjectDescription;
+    }
 }
 
 function saveProject(userData) {
