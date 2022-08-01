@@ -3,13 +3,13 @@ import React from "react";
 import {addUser, deleteUser} from '../../pages/methods/register-methods';
 
 function Register() { 
-    function registerUser() {
+    async function registerUser() {
         event.preventDefault();
         if (document.getElementById("password").value != document.getElementById("confirmPassword").value) {
             alert("同じパスワードを入力してください");
         }
         else {
-            let return_value = addUser(document.getElementById("username").value, document.getElementById("email").value, document.getElementById("password").value);
+            let return_value = await addUser(document.getElementById("username").value, document.getElementById("email").value, document.getElementById("password").value);
             if (return_value == 1) {
                 alert("登録しました！");
             } else {
@@ -18,9 +18,9 @@ function Register() {
         }
     }
     
-    function deleteUserHere() {
+    async function deleteUserHere() {
         event.preventDefault();
-        let return_value = deleteUser(document.getElementById("deleteusername").value, document.getElementById("deletepassword").value)
+        let return_value = await deleteUser(document.getElementById("deleteusername").value, document.getElementById("deletepassword").value)
         if (return_value == 1) {
             alert("削除しました！");
         } else {

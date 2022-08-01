@@ -11,8 +11,16 @@ import GanttChart from './components/GanttChart/ganttChart'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 const userId = localStorage.getItem("loggedUserNameForJootoPakuriApp"); //NOT SECURE
-let userData = new User(userId)
+let userData = await userBuilder(userId);
 let userDataContext = React.createContext()
+
+async function userBuilder(userId) {
+  let user = new User();
+  user.userId = userId;
+  user.projects = await user.getProjects(userId);
+  return user;
+}
+
 
 if (userId == null) {
   root.render(
