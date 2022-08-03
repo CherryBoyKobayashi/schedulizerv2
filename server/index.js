@@ -186,9 +186,6 @@ app.post('/taskDB', async (req, res) => {
       delete req.body.projectId;
       delete req.body.milestoneId;
       db.data.tasks = db.data.tasks.map(obj => [req.body].find(o => o.taskId == obj.taskId) || obj)
-      // (obj => arr2.find(o => o.id === obj.id) || obj)
-      // tasks.find(task => task.taskId == req.body.taskId)
-      console.log(tasks);
       await db.write();
     }
     res.sendStatus(200);
