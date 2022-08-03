@@ -25,7 +25,7 @@ const Milestone = () => {
     const forceUpdate = React.useCallback(() => updateState({}), [])
     const userData = useContext(userDataContext)
     const {projectId} = useParams()
-    let milestoneObj = userData.projects[projectId].projectData
+    const milestoneObj = userData.projects[projectId].projectData
     const [modalIsOpen, setIsOpen] = useState(false)
     const [flag, setFlag] = useState()
     const allMembers = JSON.parse(sessionStorage.getItem("members"));
