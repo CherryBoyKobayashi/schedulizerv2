@@ -70,4 +70,21 @@ async function deleteUserFromDB(username, password) {
     return response_value;
 }
 
-export {addUserToDB, getUserFromDB, deleteUserFromDB}; 
+async function getUsersFromDB () {
+    let postData = {
+    };
+  
+    const response = await axios.post('http://localhost:3000/userDB', postData)
+    .then((res) => {
+        if (res.status == 200) {
+            return res.data;
+        }
+    })
+    .catch((err) => {
+        return "error";
+    })
+
+    return Array.from(response, (value)=> {return {"value": value, "label": value}});
+}
+
+export {addUserToDB, getUserFromDB, deleteUserFromDB, getUsersFromDB}; 

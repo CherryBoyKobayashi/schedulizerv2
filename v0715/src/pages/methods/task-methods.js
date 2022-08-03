@@ -1,28 +1,31 @@
 import { v4 as uuidv4 } from 'uuid';
 import Task from '../task';
+import { addTaskToDB, deleteTask, updateTaskInDB } from '../../api/taskDB';
 
-function addTask(tasks, taskName, startTime, finishTime, members, priority, userName, checkpoints, description, followState) {
+async function addTask(tasks, taskName, startTime, finishTime, members, priority, userName, checkpoints, description, followState, projectId, milestoneId) {
     let taskId = uuidv4();
-    tasks.push(new Task(taskId, {"task-name": taskName, "start-time":startTime, "finish-time":finishTime, "members": members, "priority": priority, "creation-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "creator":userName,  "checkpoints":checkpoints, "comments": [""], "description":description, "follow-state":followState, "progress": 20}));
-    saveTask(tasks[tasks.length-1])
+    let response = await addTaskToDB(projectId, milestoneId, taskId, taskName, startTime, finishTime, members, priority, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), userName, checkpoints, [""], description, followState, 20);
+    if (response == "OK") {
+        tasks.push(new Task(taskId, {"task-name": taskName, "start-time":startTime, "finish-time":finishTime, "members": members, "priority": priority, "creation-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "creator":userName,  "checkpoints":checkpoints, "comments": [""], "description":description, "follow-state":followState, "progress": 20}));
+    }
 }
 
-function deleteTask(tasks, taskId) {
-    for( var i = 0; i < tasks.length; i++){
-        if (tasks[i]["taskId"] === taskId) {
-            localStorage.removeItem(tasks[i]["taskId"])
-            tasks.splice(i, 1); 
+async function deleteTaskP(tasks, taskId) {
+    let response = await deleteTask(taskId);
+    if (response == "OK") {
+        for( var i = 0; i < tasks.length; i++){
+            if (tasks[i]["taskId"] === taskId) {
+                tasks.splice(i, 1); 
+            }
         }
     }
 }
 
-function updateTask(task, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress) {
-    task.taskData = {"task-name": taskName, "start-time":startTime, "finish-time":finishTime, "members": members, "priority": priority, "creation-time":creationTime, "creator":userName,  "checkpoints":checkpoints, "comments": comments, "description":description, "follow-state":followState, "progress": progress};
-    saveTask(task)
-}
-
-function saveTask(task) {
-    localStorage.setItem(task.taskId, JSON.stringify(task.taskData));
+async function updateTask(projectId, milestoneId, task, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress) {
+    let response = await updateTaskInDB(projectId, milestoneId, task.taskId, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress);
+    if (response == "OK") {
+        task.taskData = {"task-name": taskName, "start-time":startTime, "finish-time":finishTime, "members": members, "priority": priority, "creation-time":creationTime, "creator":userName,  "checkpoints":checkpoints, "comments": comments, "description":description, "follow-state":followState, "progress": progress};
+    }
 }
 
 const formatDate = (date, format) => {
@@ -36,4 +39,4 @@ const formatDate = (date, format) => {
     return format
 }
 
-export {addTask, deleteTask, updateTask, saveTask}; 
+export {addTask, deleteTaskP, updateTask}; 

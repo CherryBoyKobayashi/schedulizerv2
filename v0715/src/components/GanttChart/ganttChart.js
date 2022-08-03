@@ -12,8 +12,8 @@ import "gantt-task-react/dist/index.css"
 import React, { useState, useContext } from 'react'
 import { userDataContext } from '../..'
 import Topbar from '../Topbar/topbar'
-import {deleteMilestone, saveMilestone} from '../../pages/methods/milestone-methods';
-import {deleteTask, saveTask} from '../../pages/methods/task-methods';
+import {deleteMilestone} from '../../pages/methods/milestone-methods';
+import {deleteTaskP} from '../../pages/methods/task-methods';
 import {updateTask} from '../../pages/methods/task-methods';
 
 const GanttChart = () => {
@@ -46,11 +46,9 @@ const GanttChart = () => {
 
     function deleteMilestoneHere(milestoneId) {
         deleteMilestone(project, milestoneId);
-        saveMilestone(userData.projects[projectId]);
     }
     function deleteTaskHere(milestoneId, taskId) {
         deleteTask(project[milestoneId].tasks, taskId)
-        saveMilestone(userData.projects[projectId])
     }
     function deleteMilestoneAndTasks(id) {
         if (tasks[id].type === "project") {
@@ -104,14 +102,10 @@ const GanttChart = () => {
         }
         return tasks
     }
-    function saveMilestoneHere() {
-        saveMilestone(userData.projects[projectId]);
-    }
     function updateTaskHere(milestoneId, taskIndex, checkpoints, comments, label) {
         let startDate = sessionStorage.getItem("startDate");
         let endDate = sessionStorage.getItem("endDate");
         updateTask(userData.projects[projectId].projectData[milestoneId].tasks[taskIndex], document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), JSON.parse(sessionStorage.getItem("newMembers")).map(o => o.value), label, Date.now(), userData.userId, checkpoints, comments, document.getElementById("taskDescription").value, document.getElementById("followState").checked)
-        saveMilestoneHere()
         setTasks(initTasks())
     }
     const TaskEditChild = () => {

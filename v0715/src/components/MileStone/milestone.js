@@ -9,26 +9,26 @@ import { useParams } from 'react-router-dom'
 import {BiLabel} from "react-icons/bi"
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
-import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
+import { AiFillStar, AiOutlineConsoleSql, AiOutlineStar } from 'react-icons/ai'
 import TextField from "@mui/material/TextField";
 import ColorPicker from './colorPicker'
 import Topbar from '../Topbar/topbar'
 import {addMilestone, deleteMilestone, updateMilestone, saveMilestone} from '../../pages/methods/milestone-methods';
-import {addTask, deleteTask, updateTask} from '../../pages/methods/task-methods';
+import {addTask, deleteTaskP, updateTask} from '../../pages/methods/task-methods';
 import { userDataContext } from '../..'
 import { searchMilestone } from '../../pages/methods/search-methods';
 
 Modal.setAppElement("#root");
 
 const Milestone = () => {
-    const userData = useContext(userDataContext)
-    const {projectId} = useParams()
-    const milestoneObj = userData.projects[projectId].projectData
-    const [modalIsOpen, setIsOpen] = useState(false)
-    const [flag, setFlag] = useState()
     const [, updateState] = useState()
     const forceUpdate = React.useCallback(() => updateState({}), [])
-    const allMembers = JSON.parse(localStorage.getItem("members"))
+    const userData = useContext(userDataContext)
+    const {projectId} = useParams()
+    let milestoneObj = userData.projects[projectId].projectData
+    const [modalIsOpen, setIsOpen] = useState(false)
+    const [flag, setFlag] = useState()
+    const allMembers = JSON.parse(sessionStorage.getItem("members"));
     const [results, setResults] = useState(Object.keys(milestoneObj))
     const [dispTasks, setDispTasks] = useState((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
 
@@ -44,24 +44,25 @@ const Milestone = () => {
         localStorage.removeItem("loggedUserNameForJootoPakuriApp");
         window.location.replace("/");
     }
+
     //Milestone methods
-    function addMilestoneHere() {
-        addMilestone(milestoneObj, document.getElementById("milestoneName").value, sessionStorage.getItem("milestoneColor"), userData.userId);
-        setResults(Object.keys(milestoneObj))
-        setDispTasks((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
-        saveMilestoneHere()
-    }
-    function deleteMilestoneHere(milestoneId) {
-        deleteMilestone(milestoneObj, milestoneId);
+    async function addMilestoneHere() {
+        await addMilestone(milestoneObj, document.getElementById("milestoneName").value, sessionStorage.getItem("milestoneColor"), projectId);
+        setResults(Object.keys(milestoneObj));
+        setDispTasks((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId));
         forceUpdate();
-        saveMilestoneHere();
     }
-    function updateMilestoneHere(milestoneId, tasks) {
-        updateMilestone(milestoneObj, milestoneId,  document.getElementById("milestoneName").value, sessionStorage.getItem("milestoneColor"), tasks)
-        saveMilestoneHere()
+    async function deleteMilestoneHere(milestoneId) {
+        await deleteMilestone(milestoneObj, milestoneId, projectId);
+        forceUpdate();
     }
-    function saveMilestoneHere() {
-        saveMilestone(userData.projects[projectId]);
+    async function updateMilestoneHere(milestoneId, tasks) {
+        await updateMilestone(milestoneObj, milestoneId,  document.getElementById("milestoneName").value, sessionStorage.getItem("milestoneColor"), tasks, projectId)
+        forceUpdate();
+    }
+    async function saveMilestoneHere() {
+        await saveMilestone(projectId, milestoneObj);
+        forceUpdate();
     }
 
 
@@ -72,27 +73,30 @@ const Milestone = () => {
         myDate = new Date(myDate.getTime() - (offset*60*1000))
         return myDate.toISOString().split('T')[0];
     }
-    function addTaskHere(milestoneId, checkpoints, label) {
+    async function addTaskHere(milestoneId, checkpoints, label) {
+        console.log("AAA")
         let startDate = sessionStorage.getItem("startDate");
         let endDate = sessionStorage.getItem("endDate");
         let xmembers = JSON.parse(sessionStorage.getItem("newMembers"))
         if(xmembers.length == undefined) {
             xmembers = [xmembers]
         }
-        addTask(userData.projects[projectId].projectData[milestoneId].tasks, document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), xmembers.map(o => o.value), label, userData.userId, checkpoints, document.getElementById("taskDescription").value, document.getElementById("followState").checked);
-        setDispTasks((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
-        saveMilestoneHere();
-    }
-    function deleteTaskHere(milestoneId, taskId) {
-        deleteTask(userData.projects[projectId].projectData[milestoneId].tasks, taskId);
+        
+        await addTask(userData.projects[projectId].projectData[milestoneId].tasks, document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), xmembers.map(o => o.value), label, userData.userId, checkpoints, document.getElementById("taskDescription").value, document.getElementById("followState").checked, projectId, milestoneObj[milestoneId].milestoneId);
+        setDispTasks((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId));
         forceUpdate();
-        saveMilestoneHere();
     }
-    function updateTaskHere(milestoneId, taskIndex, checkpoints, comments, label) {
+    async function deleteTaskHere(milestoneId, taskId) {
+        await deleteTaskP(userData.projects[projectId].projectData[milestoneId].tasks, taskId);
+        await saveMilestoneHere();
+        forceUpdate();
+    }
+    async function updateTaskHere(milestoneId, taskIndex, checkpoints, comments, label) {
         let startDate = sessionStorage.getItem("startDate");
         let endDate = sessionStorage.getItem("endDate");
-        updateTask(userData.projects[projectId].projectData[milestoneId].tasks[taskIndex], document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), JSON.parse(sessionStorage.getItem("newMembers")).map(o => o.value), label, Date.now(), userData.userId, checkpoints, comments, document.getElementById("taskDescription").value, document.getElementById("followState").checked, userData.projects[projectId].projectData[milestoneId].tasks[taskIndex].taskData["progress"])
-        saveMilestoneHere()
+        await updateTask(projectId, milestoneObj[milestoneId].milestoneId, userData.projects[projectId].projectData[milestoneId].tasks[taskIndex], document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), JSON.parse(sessionStorage.getItem("newMembers")).map(o => o.value), label, Date.now(), userData.userId, checkpoints, comments, document.getElementById("taskDescription").value, document.getElementById("followState").checked, userData.projects[projectId].projectData[milestoneId].tasks[taskIndex].taskData["progress"])
+        await saveMilestoneHere();
+        forceUpdate();
     }
 
     const MilestoneInner1 = () => {
@@ -140,6 +144,7 @@ const Milestone = () => {
         } catch {
             startTime = new Date();
             finishTime = new Date();
+            console.log(allMembers);
             defaultMembers = allMembers[0];
         }
         const [dateRange, setDateRange] = useState([new Date(startTime), new Date(finishTime)]);
@@ -204,6 +209,9 @@ const Milestone = () => {
             }
     }
     const MilestoneChild = ({color, tasks, milestoneId}) => {
+        if (tasks == undefined) {
+            tasks = []
+        }
         return (
             <>
                 <Droppable droppableId={milestoneId}>

@@ -4,14 +4,18 @@
       "username": "a",
       "mail": "a@a",
       "password": "a"
+    },
+    {
+      "username": "b",
+      "mail": "a@a",
+      "password": "a"
     }
   ],
   "user_projects": [
     {
       "username": "a",
       "projects": [
-        "809d7ce9-1e3c-4ad2-8f4b-72c96bbf0607",
-        "76f9938e-918a-4ba8-ae6e-85e74ad60e82"
+        "809d7ce9-1e3c-4ad2-8f4b-72c96bbf0607"
       ]
     }
   ],
@@ -23,51 +27,62 @@
       "projectDate": "2022-07-29",
       "projectData": [
         {
-          "Milestone1": {
-            "milestoneName": "マイルストーン1",
-            "color": "red",
-            "tasks": []
-          }
-        }
-      ]
-    },
-    {
-      "projectId": "76f9938e-918a-4ba8-ae6e-85e74ad60e82",
-      "projectName": "asdfsa",
-      "projectDescription": "dfasdfasdf",
-      "projectDate": "2022-08-01",
-      "projectData": [
+          "milestoneId": "Milestone1",
+          "milestoneName": "asdfsdf",
+          "color": "red",
+          "tasks": [
+            "cd79cf23-f873-46a4-800a-266d12fbe82c"
+          ]
+        },
         {
-          "Milestone1": {
-            "milestoneName": "マイルストーン1",
-            "color": "red",
-            "tasks": []
-          }
+          "milestoneId": "4aa2c5bf-271a-434d-9022-cf2dc1cf35bf",
+          "milestoneName": "asdfsdf",
+          "color": "undefined",
+          "tasks": [
+            "a43932ef-bb15-4703-8c85-a2792759f66d"
+          ]
         }
       ]
     }
   ],
   "tasks": [
     {
-      "taskId": "t1",
-      "task-name": "タスク１",
-      "start-time": "2022-01-01",
-      "finish-time": "2022-12-11",
+      "taskId": "a43932ef-bb15-4703-8c85-a2792759f66d",
+      "task-name": "a",
+      "start-time": "2022-08-03",
+      "finish-time": "2022-08-03",
       "members": [
-        "小林",
-        "ミコラ"
+        "a"
       ],
-      "priority": "high",
-      "creation-time": "2021-01-01",
-      "creator": "ミコラ",
-      "checkpoints": [
-        "Checkpoint1",
-        "Checkpoint2"
+      "priority": "medium",
+      "creation-time": 1659510584443,
+      "creator": "a",
+      "checkpoints": [],
+      "comments": [
+        ""
       ],
-      "comments": [],
-      "description": "私の新しいタスク",
-      "follow-state": "true",
-      "progress": 10
+      "description": "Task description",
+      "follow-state": false,
+      "progress": 20
+    },
+    {
+      "taskId": "cd79cf23-f873-46a4-800a-266d12fbe82c",
+      "task-name": "asdfsadf",
+      "start-time": "2022-08-03",
+      "finish-time": "2022-08-03",
+      "members": [
+        "a"
+      ],
+      "priority": "medium",
+      "creation-time": "2022-08-03",
+      "creator": "a",
+      "checkpoints": [],
+      "comments": [
+        ""
+      ],
+      "description": "Task description",
+      "follow-state": false,
+      "progress": 20
     }
   ]
 }

@@ -6,16 +6,16 @@ import {addProjectToDB, deleteProjectFromDB, updateProjectInDB} from '../../api/
 async function addProject(userData, projectName, projectDescription) {
     let userId = userData.userId;
     let projectId = uuidv4();
-    let response = await addProjectToDB(userId, projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{Milestone1: {"milestoneName": "マイルストーン1", "color": "red", "tasks": []}}]));
+    let response = await addProjectToDB(userId, projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{"milestoneId": "Milestone1", "milestoneName": "マイルストーン1", "color": "red", "tasks": []}]));
     if (response == "OK") {
-        userData.projects[projectId] = new Project(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{Milestone1: {"milestoneName": "マイルストーン1", "color": "red", "tasks": []}}]));
+        userData.projects[projectId] = new Project(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{Milestone1: {"milestoneId": "Milestone1", "milestoneName": "マイルストーン1", "color": "red", "tasks": []}}]));
     }
 }
       
 async function deleteProject(userData, projectId) {
-    for (let milestone in userData.projects[projectId].projectData) {
-        for( let task in userData.projects[projectId].projectData[milestone][Object.keys(userData.projects[projectId].projectData[milestone])].tasks) {
-             deleteTask(userData.projects[projectId].projectData[milestone][Object.keys(userData.projects[projectId].projectData[milestone])].tasks[task].taskId)
+    for (let milestone_key in userData.projects[projectId].projectData) {
+        for( let task in userData.projects[projectId].projectData[milestone_key].tasks) {
+            deleteTask(task.taskId)
         }
     }
     let response = await deleteProjectFromDB(userData.userId, projectId);
@@ -30,25 +30,6 @@ async function updateProject(userData, projectId, newProjectName, newProjectDesc
         userData.projects[projectId].projectName = newProjectName;
         userData.projects[projectId].projectDescription = newProjectDescription;
     }
-    console.log(userData)
-}
-
-function saveProject(userData) {
-    if (Object.keys(userData.projects).length>0) {
-        let userId = userData.userId;
-        let dataString = '{';
-        for(let i=0; i<Object.keys(userData.projects).length-1; i++) {
-            let key = Object.keys(userData.projects)[i];
-            dataString += '"' + key + '": ["' + userData.projects[key].projectName + '", "' + userData.projects[key].projectDescription + '", "' + userData.projects[key].projectDate + '"], ';
-        }
-        let key = Object.keys(userData.projects)[Object.keys(userData.projects).length-1];
-        dataString += '"' + key + '": ["' + userData.projects[key].projectName + '", "' + userData.projects[key].projectDescription + '", "' + userData.projects[key].projectDate + '"]}';
-        localStorage.setItem(userId, dataString);
-    } else {
-        let userId = userData.userId;
-        let dataString = '{}';
-        localStorage.setItem(userId, dataString);
-    }
 }
 
 const formatDate = (date, format) => {
@@ -62,4 +43,4 @@ const formatDate = (date, format) => {
     return format
 }
 
-export {addProject, deleteProject, updateProject, saveProject};
+export {addProject, deleteProject, updateProject};

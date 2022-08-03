@@ -16,30 +16,32 @@ const navClick = () => {
 
 const Nav = () => {
     const {projectId} = useParams();
-    const userData = useContext(userDataContext)
-    let counter = 0
-    if (Object.keys(userData.projects[projectId].projectData).length != 0) {
-        for (let milestone in userData.projects[projectId].projectData) {
-            if(userData.projects[projectId].projectData[milestone].tasks.length != 0) {
-                counter ++;
+    const userData = useContext(userDataContext);
+    if(userData.projects[projectId].projectData != undefined) {
+        let counter = 0
+        if (Object.keys(userData.projects[projectId].projectData).length != 0) {
+            for (let milestone in userData.projects[projectId].projectData) {
+                if(userData.projects[projectId].projectData[milestone].tasks?.length != 0) {
+                    counter ++;
+                }
             }
         }
-    }
-    if (Object.keys(userData.projects[projectId].projectData).length == 0 || counter == 0) {
-        return (
-            <>
-                <div className="nav">
-                    <ul>
-                        <a href="/">project</a>
-                        <a href={'/milestone/' + projectId}>milestone</a>
-                    </ul>
-                </div>
-                <div className="open-nav" onClick={navClick}>
-                    <BiMenu id="m" className="open"/>
-                    <AiOutlineClose id="m" className="close"/>
-                </div>
-            </>
-        )
+        if (Object.keys(userData.projects[projectId].projectData).length == 0 || counter == 0) {
+            return (
+                <>
+                    <div className="nav">
+                        <ul>
+                            <a href="/">project</a>
+                            <a href={'/milestone/' + projectId}>milestone</a>
+                        </ul>
+                    </div>
+                    <div className="open-nav" onClick={navClick}>
+                        <BiMenu id="m" className="open"/>
+                        <AiOutlineClose id="m" className="close"/>
+                    </div>
+                </>
+            )
+            }
     } else {
         return (
             <>
