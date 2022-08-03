@@ -11,13 +11,13 @@ import GanttChart from './components/GanttChart/ganttChart'
 import { getUsersFromDB } from './api/userDB'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
-const userId = localStorage.getItem("loggedUserNameForJootoPakuriApp"); //NOT SECURE
+const userId = sessionStorage.getItem("loggedUserNameForJootoPakuriApp"); //NOT SECURE
 let userData = await userBuilder(userId);
 let userDataContext = React.createContext()
 
 async function userBuilder(userId) {
   let members = await getUsersFromDB();
-  sessionStorage.setItem("members", JSON.stringify(members))
+  sessionStorage.setItem("members", JSON.stringify(members));
   let user = new User();
   user.userId = userId;
   user.projects = await user.getProjects(userId);

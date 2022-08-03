@@ -7,7 +7,7 @@ function LoginPage() {
       event.preventDefault();
       let result_value = await getUserFromDB(document.getElementById("username").value, document.getElementById("password").value)
       if (result_value != "error" && result_value != "no value") {
-        localStorage.setItem("loggedUserNameForJootoPakuriApp", result_value.username);
+        sessionStorage.setItem("loggedUserNameForJootoPakuriApp", result_value.username);
         alert("ログインしました！");
         window.location.reload();
       } else {
