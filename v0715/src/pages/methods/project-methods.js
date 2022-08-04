@@ -8,10 +8,9 @@ async function addProject(userData, projectName, projectDescription) {
     let projectId = uuidv4();
     let response = await addProjectToDB(userId, projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{"milestoneId": "Milestone1", "milestoneName": "マイルストーン1", "color": "red", "tasks": []}]));
     if (response == "OK") {
-        userData.projects[projectId] = new Project(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{Milestone1: {"milestoneId": "Milestone1", "milestoneName": "マイルストーン1", "color": "red", "tasks": []}}]));
+        userData.projects[projectId] = await projectBuilder(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{Milestone1: {"milestoneId": "Milestone1", "milestoneName": "マイルストーン1", "color": "red", "tasks": []}}]));
     }
 }
-      
 async function deleteProject(userData, projectId) {
     for (let milestone_key in userData.projects[projectId].projectData) {
         for( let task in userData.projects[projectId].projectData[milestone_key].tasks) {
@@ -30,6 +29,15 @@ async function updateProject(userData, projectId, newProjectName, newProjectDesc
         userData.projects[projectId].projectName = newProjectName;
         userData.projects[projectId].projectDescription = newProjectDescription;
     }
+}
+async function projectBuilder(p1, p2, p3, p4, p5) {
+    let project = new Project();
+    project.projectId = p1;
+    project.projectName = p2;
+    project.projectDescription = p3;
+    project.projectDate = p4;
+    project.projectData = await project.getProjectData(p5);
+    return project;
 }
 
 const formatDate = (date, format) => {

@@ -1,34 +1,43 @@
+.registerDiv{
+    border-radius: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--glass);
+    overflow: hidden;
+    padding: 50px 60px;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.7);
+    text-align: center;
+}
 .form{
-    background-color: white;
+    background-color: transparent;
     border-radius: 5px;
     width: 550px;
-    margin: 20px auto;
     padding: 20px;
     /* height: 600px; */
 }
-
 .form-body{
     text-align: left;
     padding: 20px 10px;
 }
-
+.form-body div{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.form-body div span{
+    width: 50%;
+    text-align: left;
+}
 .form-body > *{
     padding: 5px;
 }
-
 .form__label{
     width: 40%;
 }
-
 .form_input{
     width: 60%;
 }
-
 .footer{
     text-align: center;
-}
-
-.login_link {
-    margin: auto;
-    padding: 10px;
 }

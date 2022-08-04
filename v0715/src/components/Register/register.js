@@ -1,76 +1,101 @@
 import './register.css'
-import React from "react";
-import {addUser, deleteUser} from '../../pages/methods/register-methods';
+import React from "react"
+import {addUser, deleteUser} from '../../pages/methods/register-methods'
+import { Link, useNavigate } from 'react-router-dom'
 
-function Register() { 
-    async function registerUser() {
-        event.preventDefault();
-        if (document.getElementById("password").value != document.getElementById("confirmPassword").value) {
-            alert("同じパスワードを入力してください");
+const Register = () => {
+    const navigate = useNavigate()
+
+    const registerUser = async (e) => {
+        const registerDatas = {}
+        e.target.querySelectorAll('input').forEach((input) => registerDatas[input.id] = input.value)
+        e.preventDefault()
+        if (registerDatas.password !== registerDatas.confirmPassword) {
+            alert("同じパスワードを入力してください")
+            return
         }
-        else {
-            let return_value = await addUser(document.getElementById("username").value, document.getElementById("email").value, document.getElementById("password").value);
-            if (return_value == 1) {
-                alert("登録しました！");
-            } else {
-                alert("エラーが発生しました！");
-            }
+        let return_value = await addUser(registerDatas.username, registerDatas.email, registerDatas.password)
+        if (return_value === 1) {
+            alert("登録しました！")
+            navigate('/')
+        } else {
+            alert("エラーが発生しました！")
         }
     }
-    
-    async function deleteUserHere() {
-        event.preventDefault();
-        let return_value = await deleteUser(document.getElementById("deleteusername").value, document.getElementById("deletepassword").value)
-        if (return_value == 1) {
-            alert("削除しました！");
+
+    const deleteUserHere = async (e) => {
+        e.preventDefault()
+        const return_value = await deleteUser(document.getElementById("deleteusername").value, document.getElementById("deletepassword").value)
+        if (return_value === 1) {
+            alert("削除しました！")
         } else {
-            alert("エラーが発生しました！");
+            alert("エラーが発生しました！")
         }
     }
 
 
     return (
         <>
-            <div className="login_link">
-                <a href="/">ログインページに戻る</a>
+            <div className='registerDiv'>
+                <h2>新規登録</h2>
+                <div className="form">
+                    <form onSubmit={(e)=>registerUser(e)}>
+                        <div className="form-body">
+                            <div className="username">
+                                <span>ユーザーネーム</span>
+                                <span>
+                                    <input className="form__input" type="text" id="username" placeholder="ユーザーネーム" required/>
+                                </span>
+                            </div>
+                            <div className="email">
+                                <span>メール</span>
+                                <span>
+                                    <input  type="email" id="email" className="form__input" placeholder="メール" required/>
+                                </span>
+                            </div>
+                            <div className="password">
+                                <span>パスワード</span>
+                                <span>
+                                    <input className="form__input" type="password"  id="password" placeholder="パスワード" required/>
+                                </span>
+                            </div>
+                            <div className="confirm-password">
+                                <span>確認用のパスワード</span>
+                                <span>
+                                    <input className="form__input" type="password" id="confirmPassword" placeholder="確認用のパスワード" required/>
+                                </span>
+                            </div>
+                        </div>
+                    <div className="footer">
+                        <button className='btn' type="submit">登録</button>
+                    </div>
+                    </form>
+                </div>
+                <div className="form">
+                    <h2>ユーザ削除</h2>
+                    <form onSubmit={(e)=>deleteUserHere(e)}>
+                    <div className="form-body">
+                        <div className="username">
+                            <span>ユーザーネーム</span>
+                            <span>
+                                <input className="form__input" type="text" id="deleteusername" placeholder="ユーザーネーム" required/>
+                            </span>
+                        </div>
+                        <div className="password">
+                            <span>パスワード</span>
+                            <span>
+                                <input className="form__input" type="password"  id="deletepassword" placeholder="パスワード" required/>
+                            </span>
+                        </div>
+                    </div>
+                    <div className="footer">
+                        <button className='btn' type="submit">ユーザー削除</button>
+                    </div>
+                    </form>
+                </div>
+                <Link to={'/'}>ログインページに戻る</Link>
             </div>
-            <div className="form">
-                <form onSubmit={()=>registerUser()}>
-                <div className="form-body">
-                    <div className="username">
-                    ユーザーネーム <input className="form__input" type="text" id="username" placeholder="ユーザーネーム" required/>
-                    </div>
-                    <div className="email">
-                    メール <input  type="email" id="email" className="form__input" placeholder="メール" required/>
-                    </div>
-                    <div className="password">
-                    パスワード <input className="form__input" type="password"  id="password" placeholder="パスワード" required/>
-                    </div>
-                    <div className="confirm-password">
-                    確認用のパスワード <input className="form__input" type="password" id="confirmPassword" placeholder="確認用のパスワード" required/>
-                    </div>
-                </div>
-                <div className="footer">
-                    <input type="submit" value="登録"></input>
-                </div>
-                </form>
-            </div>  
-            <div className="form">
-                <form onSubmit={()=>deleteUserHere()}>
-                <div className="form-body">
-                    <div className="username">
-                    ユーザーネーム <input className="form__input" type="text" id="deleteusername" placeholder="ユーザーネーム" required/>
-                    </div>
-                    <div className="password">
-                    パスワード <input className="form__input" type="password"  id="deletepassword" placeholder="パスワード" required/>
-                    </div>
-                </div>
-                <div className="footer">
-                    <input type="submit" value="ユーザー削除"></input>
-                </div>
-                </form>
-            </div>  
-      </>
+        </>
     )
 }
 

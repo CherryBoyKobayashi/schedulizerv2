@@ -5,11 +5,13 @@
   --gray: #788097;
   --purple: linear-gradient(180deg, #BB67FF 0%, #C484F3 100%);
   --pink: #FF919D;
-  --glass: rgba(255, 255, 255, 0.54);
+  --glass: rgba(255, 255, 255, 0.2);
   --divCol: white;
   --boxShadow: 0px 19px 60px rgb(0 0 0 / 8%);
   --smboxShadow: -79px 51px 60px rgba(0, 0, 0, 0.08);
   --activeItem: #f799a354;
+  --green: #C1F08D;
+  --mainBubble: 700px;
 }
 *{
   margin: 0;
@@ -25,22 +27,27 @@ body{
     #C1F08D 90.85%
   );
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
   font-family: 'Inter', sans-serif;
 }
+html{
+  scroll-behavior: smooth;
+}
 #root{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mainDiv{
   height: 97%;
   width: 97%;
   border-radius: 32px;
   /* display: flex; */
   background-color: var(--glass);
   overflow: hidden;
-}
-html{
-  scroll-behavior: smooth;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.7);
 }
 button{
   user-select: none;
@@ -50,6 +57,16 @@ button{
   cursor: pointer;
   padding: 8px;
   letter-spacing: 3px;
+}
+.btn{
+  padding: 10px 20px;
+  font-size: 15px;
+  transition: 0.5s;
+}
+.btn:hover{
+  letter-spacing: 7px;
+  border-color: var(--green);
+  box-shadow: 0 0 35px var(--green);
 }
 .borderNone{
   border: none;
@@ -63,6 +80,15 @@ button{
 input{
   padding: 10px 15px;
   /* margin: 10px 0px; */
+  width: 100%;
+  background-color: transparent;
+  border-radius: 30px;
+}
+.initInput{
+  width: initial;
+  padding: 10px 15px;
+  background-color: initial;
+  border-radius: initial;
 }
 ::-webkit-scrollbar {
   width: 5px;
