@@ -31,7 +31,7 @@ root.render(
         <Routes>
           {userId !== null ?
           <>
-            <Route path='/' element={<Milestone/>}/>
+            <Route path='/' element={<Project/>}/>
             <Route path='/milestone/:projectId' element={<Milestone/>}/>
             <Route path='/gantt/:projectId' element={<GanttChart/>}/>
           </> :
