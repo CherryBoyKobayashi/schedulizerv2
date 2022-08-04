@@ -143,7 +143,6 @@ const Milestone = () => {
         } catch {
             startTime = new Date();
             finishTime = new Date();
-            console.log(allMembers);
             defaultMembers = allMembers[0];
         }
         const [dateRange, setDateRange] = useState([new Date(startTime), new Date(finishTime)]);

@@ -32,7 +32,6 @@ const GanttChart = () => {
     useEffect(() => setBottomDivH(document.querySelector('.bottomDiv').clientHeight))
     window.addEventListener('resize', () => {
         setBottomDivH(document.querySelector('.bottomDiv').clientHeight)
-        console.log(bottomDivH)
     });
 
     function dateHelper(date) {
@@ -41,12 +40,12 @@ const GanttChart = () => {
         myDate = new Date(myDate.getTime() - (offset*60*1000))
         return myDate.toISOString().split('T')[0]
     }
-    function updateMilestoneAndTasks(task) {
+    async function updateMilestoneAndTasks(task) {
         project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["start-time"] = dateHelper(task["start"])
         project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["finish-time"] = dateHelper(task["end"])
         project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["progress"] = task.progress
-        console.log(project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)])
-        saveTask(project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)])
+        let taskX = project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)]
+        await updateTask(projectId, userData.projects[projectId].projectData[task.id.substr(0, task.id.indexOf('&'))].milestoneId, taskX, taskX.taskData["task-name"], taskX.taskData["start-time"], taskX.taskData["finish-time"], taskX.taskData["members"], taskX.taskData["priority"], taskX.taskData["creation-time"], taskX.taskData["creator"], taskX.taskData["checkpoints"], taskX.taskData["comments"], taskX.taskData["description"], taskX.taskData["follow-state"], taskX.taskData["progress"])
         setTasks(initTasks())
       }
 
@@ -115,12 +114,6 @@ const GanttChart = () => {
         }
         return tasks
     }
-    function updateTaskHere(milestoneId, taskIndex, checkpoints, comments, label) {
-        let startDate = sessionStorage.getItem("startDate");
-        let endDate = sessionStorage.getItem("endDate");
-        updateTask(userData.projects[projectId].projectData[milestoneId].tasks[taskIndex], document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), JSON.parse(sessionStorage.getItem("newMembers")).map(o => o.value), label, Date.now(), userData.userId, checkpoints, comments, document.getElementById("taskDescription").value, document.getElementById("followState").checked)
-        setTasks(initTasks())
-    }
     const TaskEditChild = () => {
         const milestoneId = sessionStorage.getItem("updateMilestoneId");
         const taskId = sessionStorage.getItem("updateTaskId");
@@ -186,7 +179,6 @@ const GanttChart = () => {
                 newTasks = newTasks.map(t => t.id === task.project ? changedProject : t)
             }
         }
-        setTasks(newTasks)
         await updateMilestoneAndTasks(task)
     }
     async function handleTaskDelete(task) {//Deleteボタン押下

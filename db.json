@@ -28,14 +28,6 @@
           "tasks": [
             "468d103f-c184-4b32-a14c-bc102c4f79e8"
           ]
-        },
-        {
-          "milestoneId": "46e3ac5b-dfe5-4d80-b0a3-f206dcc8bd75",
-          "milestoneName": "asdfasdf",
-          "color": "undefined",
-          "tasks": [
-            "261c4b51-73dc-417f-ba4d-93fcbd193f49"
-          ]
         }
       ]
     }
@@ -43,14 +35,14 @@
   "tasks": [
     {
       "taskId": "468d103f-c184-4b32-a14c-bc102c4f79e8",
-      "task-name": "asdfsadf",
-      "start-time": "2022-08-04",
-      "finish-time": "2022-08-04",
+      "task-name": "asdfsadfasdfadsf",
+      "start-time": "2022-08-05",
+      "finish-time": "2022-08-09",
       "members": [
         "a"
       ],
       "priority": "medium",
-      "creation-time": "2022-08-04",
+      "creation-time": 1659597761557,
       "creator": "a",
       "checkpoints": [],
       "comments": [
@@ -58,26 +50,7 @@
       ],
       "description": "Task description",
       "follow-state": false,
-      "progress": 20
-    },
-    {
-      "taskId": "261c4b51-73dc-417f-ba4d-93fcbd193f49",
-      "task-name": "asdfsadf",
-      "start-time": "2022-08-04",
-      "finish-time": "2022-08-04",
-      "members": [
-        "a"
-      ],
-      "priority": "medium",
-      "creation-time": "2022-08-04",
-      "creator": "a",
-      "checkpoints": [],
-      "comments": [
-        ""
-      ],
-      "description": "Task description",
-      "follow-state": false,
-      "progress": 20
+      "progress": 41
     }
   ]
 }
