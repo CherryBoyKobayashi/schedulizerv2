@@ -1,5 +1,6 @@
 {
   "users": [
+<<<<<<< HEAD
     {
       "username": "a",
       "mail": "a@a",
@@ -476,5 +477,17 @@
       "follow-state": false,
       "progress": 20
     }
+=======
+   
+  ],
+  "user_projects": [
+   
+  ],
+  "projects": [
+  
+  ],
+  "tasks": [
+   
+>>>>>>> 44da7d69cc478545faf49c6d1efc535b642df637
   ]
 }
