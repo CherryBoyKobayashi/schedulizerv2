@@ -1,7 +1,7 @@
 import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import User from './pages/user'
 import LoginPage from './components/LoginPage/loginpage'
 import Register from './components/Register/register'
@@ -23,26 +23,35 @@ async function userBuilder(userId) {
   user.projects = await user.getProjects(userId);
   return user;
 }
-root.render(
-  <>
-    <HashRouter>
-      <userDataContext.Provider value={userData}>
-        <Routes>
-          {userId !== null ?
-          <>
-            <Route path='/' element={<Project/>}/>
-            <Route path='/milestone/:projectId' element={<Milestone/>}/>
-            <Route path='/gantt/:projectId' element={<GanttChart/>}/>
-          </> :
-          <>
-            <Route path='/' element={<LoginPage/>}/>
-            <Route path='/register' element={<Register/>}/>
-          </>
-          }
-        </Routes>
-      </userDataContext.Provider>
-    </HashRouter>
-  </>
-)
+
+if (userId == null) {
+  root.render(
+    <>
+        <BrowserRouter>
+            <userDataContext.Provider value={userData}>
+              <Routes>
+                <Route exact path='/' element={<LoginPage/>}/>
+                <Route exact path='/register' element={<Register/>}/>
+              </Routes>
+            </userDataContext.Provider>
+        </BrowserRouter>
+    </>
+  );
+}
+else {
+    root.render(
+    <>
+        <BrowserRouter>
+            <userDataContext.Provider value={userData}>
+                <Routes>
+                  <Route exact path='/' element={<Project/>}/>
+                  <Route path='/milestone/:projectId' element={<Milestone/>}/>
+                  <Route path='/gantt/:projectId' element={<GanttChart/>}/>
+                </Routes>
+            </userDataContext.Provider>
+        </BrowserRouter>
+    </>
+  );
+}
 
 export {userData, userDataContext}

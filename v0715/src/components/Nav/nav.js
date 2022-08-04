@@ -42,7 +42,7 @@ const Nav = () => {
                 </>
             )
             }
-    } else {
+     else {
         return (
             <>
                 <div className="nav">
@@ -59,6 +59,7 @@ const Nav = () => {
             </>
         )
     }
+}
 
 }
 

@@ -9,7 +9,7 @@ import { BiLabel } from 'react-icons/bi'
 import DatePicker from "react-datepicker";
 import { Gantt, ViewMode} from 'gantt-task-react'
 import "gantt-task-react/dist/index.css"
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { userDataContext } from '../..'
 import Topbar from '../Topbar/topbar'
 import {deleteMilestone} from '../../pages/methods/milestone-methods';
@@ -26,9 +26,15 @@ const GanttChart = () => {
     const allMembers = JSON.parse(localStorage.getItem("members"))
     const [, updateState] = useState()
     const forceUpdate = React.useCallback(() => updateState({}), [])
+    const [bottomDivH, setBottomDivH] = useState(0)
     let columnWidth = 60
     if (view === ViewMode.Month) columnWidth = 300
     else if (view === ViewMode.Week) columnWidth = 250
+    useEffect(() => setBottomDivH(document.querySelector('.bottomDiv').clientHeight))
+    window.addEventListener('resize', () => {
+        setBottomDivH(document.querySelector('.bottomDiv').clientHeight)
+        console.log(bottomDivH)
+    });
 
     function dateHelper(date) {
         let myDate = new Date(date)
@@ -207,27 +213,29 @@ const GanttChart = () => {
     }
     return (
         <>
-            <Topbar/>
-            <Modal isOpen={modalIsOpen} overlayClassName={{base: "overlay-base", afterOpen: "overlay-after", beforeClose: "overlay-before"}} className={{base: "content-base", afterOpen: "content-after", beforeClose: "content-before"}} onRequestClose={() => setIsOpen(false)} closeTimeoutMS={500}>
-                <TaskEditChild/>
-            </Modal>
-            <div className='ganttChartDiv'>
-                <div className='topDiv'>
-                    {/* <button onClick={() => setView(ViewMode.QuarterDay)}>Quarter of Day</button>
-                    <button onClick={() => setView(ViewMode.HalfDay)}>Half of Day</button> */}
-                    <button onClick={() => setView(ViewMode.Day)}>Day</button>
-                    <button onClick={() => setView(ViewMode.Week)}>Week</button>
-                    <button onClick={() => setView(ViewMode.Month)}>Month</button>
-                    {sessionStorage.setItem("viewItem", view)}
-                    <div className="Switch">
-                        <label className="Switch_Toggle">
-                            <input type="checkbox" defaultChecked={isChecked} onClick={() => setIsChecked(!isChecked)}/>
-                            Show Task List
-                        </label>
+            <div className='mainDiv'>
+                <Topbar/>
+                <Modal isOpen={modalIsOpen} overlayClassName={{base: "overlay-base", afterOpen: "overlay-after", beforeClose: "overlay-before"}} className={{base: "content-base", afterOpen: "content-after", beforeClose: "content-before"}} onRequestClose={() => setIsOpen(false)} closeTimeoutMS={500}>
+                    <TaskEditChild/>
+                </Modal>
+                <div className='ganttChartDiv'>
+                    <div className='topDiv'>
+                        {/* <button onClick={() => setView(ViewMode.QuarterDay)}>Quarter of Day</button>
+                        <button onClick={() => setView(ViewMode.HalfDay)}>Half of Day</button> */}
+                        <button onClick={() => setView(ViewMode.Day)}>Day</button>
+                        <button onClick={() => setView(ViewMode.Week)}>Week</button>
+                        <button onClick={() => setView(ViewMode.Month)}>Month</button>
+                        {sessionStorage.setItem("viewItem", view)}
+                        <div className="Switch">
+                            <label className="Switch_Toggle">
+                                <input type="checkbox" defaultChecked={isChecked} onClick={() => setIsChecked(!isChecked)}/>
+                                Show Task List
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div className='bottomDiv'>
-                    <Gantt tasks={tasks} viewMode={view} onDateChange={handleTaskChange} onDelete={handleTaskDelete} onProgressChange={handleProgressChange} onDoubleClick={handleDblClick} onSelect={handleSelect} onExpanderClick={handleExpanderClick} listCellWidth={isChecked ? "155px" : ""} columnWidth={columnWidth} locale={new Intl.Locale('ja-Ja')} ganttHeight={window.screen.availHeight*0.6}/>
+                    <div className='bottomDiv'>
+                        <Gantt tasks={tasks} viewMode={view} onDateChange={handleTaskChange} onDelete={handleTaskDelete} onProgressChange={handleProgressChange} onDoubleClick={handleDblClick} onSelect={handleSelect} onExpanderClick={handleExpanderClick} listCellWidth={isChecked ? "155px" : ""} columnWidth={columnWidth} locale={new Intl.Locale('ja-Ja')}ganttHeight={bottomDivH - 100}/>
+                    </div>
                 </div>
             </div>
         </>

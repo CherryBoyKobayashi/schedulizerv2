@@ -15,11 +15,11 @@
     justify-content: space-around;
     display: flex;
     align-items: center;
-    height: 65px;
+    height: 10%;
     /* border: 1px solid #ddd; */
 }
 .milestoneDiv .bottomDiv{
-    height: calc(100% - 65px);
+    height: 90%;
     /* border: 1px solid #ddd; */
     display: flex;
     align-items: center;
@@ -38,6 +38,12 @@
     background-color: var(--glass);
     overflow: hidden;
     cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+    transition: 0.5s;
+}
+.milestone:hover{
+    border-color: var(--green);
+    box-shadow: 0 0 35px var(--green);
 }
 .milestone .colorDiv{
     /* background-color: aquamarine; */
@@ -81,6 +87,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+.milestone .task:hover{
+    border-color: var(--green);
+    box-shadow: 0 0 35px var(--green);
 }
 .task span{
     display: block;

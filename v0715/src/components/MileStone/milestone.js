@@ -81,7 +81,7 @@ const Milestone = () => {
         if(xmembers.length == undefined) {
             xmembers = [xmembers]
         }
-        
+
         await addTask(userData.projects[projectId].projectData[milestoneId].tasks, document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), xmembers.map(o => o.value), label, userData.userId, checkpoints, document.getElementById("taskDescription").value, document.getElementById("followState").checked, projectId, milestoneObj[milestoneId].milestoneId);
         setDispTasks((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId));
         forceUpdate();
@@ -285,31 +285,33 @@ const Milestone = () => {
     }
     return (
         <>
-            <Topbar/>
-            <Modal isOpen={modalIsOpen} overlayClassName={{base: "overlay-base", afterOpen: "overlay-after", beforeClose: "overlay-before"}} className={{base: "content-base", afterOpen: "content-after", beforeClose: "content-before"}} onRequestClose={() => setIsOpen(false)} closeTimeoutMS={500}>
-                { flag === 1 && <MilestoneInner1/>}
-                { flag === 2 && <MilestoneInner1/>}
-                { flag === 3 && <MilestoneInner2/>}
-                { flag === 4 && <MilestoneInner2/>}
-            </Modal>
-            <div className='milestoneDiv'>
-                <div className='topDiv'>
-                    <div>
-                        <TextField
-                        id="outlined-basic"
-                        onChange={inputHandler}
-                        variant="outlined"
-                        label="Search"
-                        />
+            <div className='mainDiv'>
+                <Topbar/>
+                <Modal isOpen={modalIsOpen} overlayClassName={{base: "overlay-base", afterOpen: "overlay-after", beforeClose: "overlay-before"}} className={{base: "content-base", afterOpen: "content-after", beforeClose: "content-before"}} onRequestClose={() => setIsOpen(false)} closeTimeoutMS={500}>
+                    { flag === 1 && <MilestoneInner1/>}
+                    { flag === 2 && <MilestoneInner1/>}
+                    { flag === 3 && <MilestoneInner2/>}
+                    { flag === 4 && <MilestoneInner2/>}
+                </Modal>
+                <div className='milestoneDiv'>
+                    <div className='topDiv'>
+                        <div>
+                            <TextField
+                            id="outlined-basic"
+                            onChange={inputHandler}
+                            variant="outlined"
+                            label="Search"
+                            />
+                        </div>
+                        <div className='userlabel'><span>ログイン中のユーザー:</span>{userData.userId}<button onClick={()=>logOut()}>ロッグアウト</button></div>
+                        <button onClick={() => {OverShow(1)}}>新規マイルストーン</button>
                     </div>
-                    <div className='userlabel'><span>ログイン中のユーザー:</span>{userData.userId}<button onClick={()=>logOut()}>ロッグアウト</button></div>
-                    <button onClick={() => {OverShow(1)}}>新規マイルストーン</button>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <div className='bottomDiv'>
+                            {Object.entries(milestoneObj).filter(milestone => results.includes(milestone[0])).map(e => e[1]).map((e, i) => <MilestoneChild key={Object.keys(milestoneObj)[i]} {...e} milestoneId={Object.keys(milestoneObj)[i]}/>)}
+                        </div>
+                    </DragDropContext>
                 </div>
-                <DragDropContext onDragEnd={onDragEnd}>
-                    <div className='bottomDiv'>
-                        {Object.entries(milestoneObj).filter(milestone => results.includes(milestone[0])).map(e => e[1]).map((e, i) => <MilestoneChild key={Object.keys(milestoneObj)[i]} {...e} milestoneId={Object.keys(milestoneObj)[i]}/>)}
-                    </div>
-                </DragDropContext>
             </div>
         </>
     )
