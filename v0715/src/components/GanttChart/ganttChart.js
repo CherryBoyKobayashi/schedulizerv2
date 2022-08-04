@@ -13,7 +13,6 @@ import React, { useState, useContext } from 'react'
 import { userDataContext } from '../..'
 import Topbar from '../Topbar/topbar'
 import {deleteMilestone} from '../../pages/methods/milestone-methods';
-import {deleteTaskP} from '../../pages/methods/task-methods';
 import {updateTask} from '../../pages/methods/task-methods';
 
 const GanttChart = () => {
@@ -45,7 +44,7 @@ const GanttChart = () => {
       }
 
     function deleteMilestoneHere(milestoneId) {
-        deleteMilestone(project, milestoneId);
+        deleteMilestone(project, milestoneId, );
     }
     function deleteTaskHere(milestoneId, taskId) {
         deleteTask(project[milestoneId].tasks, taskId)
