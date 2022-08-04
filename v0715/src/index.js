@@ -23,6 +23,7 @@ async function userBuilder(userId) {
   user.projects = await user.getProjects(userId);
   return user;
 }
+
 root.render(
   <>
     <BrowserRouter>

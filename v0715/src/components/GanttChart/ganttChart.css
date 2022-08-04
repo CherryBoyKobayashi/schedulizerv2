@@ -2,11 +2,10 @@
 :root{
     --ganttTopH: 65px;
 }
-
 .ganttChartDiv{
     height: calc(100% - (var(--topH) + var(--topMaginH)));
     width: var(--topW);
-    border: 1px solid #ddd;
+    /* border: 1px solid #ddd; */
     margin: auto;
     overflow: hidden;
     user-select: none;
@@ -22,6 +21,6 @@
     height: calc(100% - var(--ganttTopH));
     /* border: 1px solid #ddd; */
     text-align: center;
-    overflow: scroll;
+    /* overflow: scroll; */
     padding: 5px 30px;
 }
