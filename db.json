@@ -16,7 +16,7 @@
       "username": "a",
       "projects": [
         "809d7ce9-1e3c-4ad2-8f4b-72c96bbf0607",
-        "9798cd7d-25fe-4b69-9dc2-9d158d4d7ad1"
+        "eb747c18-732e-49be-81c2-b6173c204888"
       ]
     }
   ],
@@ -44,27 +44,17 @@
       ]
     },
     {
-      "projectId": "9798cd7d-25fe-4b69-9dc2-9d158d4d7ad1",
-      "projectName": "",
-      "projectDescription": "",
+      "projectId": "eb747c18-732e-49be-81c2-b6173c204888",
+      "projectName": "asdfs",
+      "projectDescription": "dfaasdf",
       "projectDate": "2022-08-04",
       "projectData": [
         {
           "milestoneId": "Milestone1",
           "milestoneName": "マイルストーン1",
           "color": "red",
-          "tasks": [
-            "6630214a-b747-47a7-bc3b-34d26b1dc490"
-          ]
-        },
-        {
-          "milestoneId": "88673b86-36f0-4a23-8949-864296d251db",
-          "milestoneName": "",
-          "color": "undefined",
-          "tasks": [
-            "f09b9039-1fd9-4b8a-b051-cb9e3e9817a4"
-          ]
-        }
+          "tasks": []
+        } 
       ]
     }
   ],
@@ -79,45 +69,6 @@
       ],
       "priority": "medium",
       "creation-time": "2022-08-03",
-      "creator": "a",
-      "checkpoints": [],
-      "comments": [
-        ""
-      ],
-      "description": "Task description",
-      "follow-state": false,
-      "progress": 20
-    },
-    {
-      "taskId": "6630214a-b747-47a7-bc3b-34d26b1dc490",
-      "task-name": "",
-      "start-time": "2022-08-04",
-      "finish-time": "2022-08-04",
-      "members": [
-        "a"
-      ],
-      "priority": "medium",
-      "creation-time": "2022-08-04",
-      "creator": "a",
-      "checkpoints": [],
-      "comments": [
-        ""
-      ],
-      "description": "Task description",
-      "follow-state": false,
-      "progress": 20
-    },
-    {
-      "taskId": "f09b9039-1fd9-4b8a-b051-cb9e3e9817a4",
-      "task-name": "",
-      "start-time": "2022-08-04",
-      "finish-time": "2022-08-19",
-      "members": [
-        "a",
-        "b"
-      ],
-      "priority": "medium",
-      "creation-time": 1659577000927,
       "creator": "a",
       "checkpoints": [],
       "comments": [
