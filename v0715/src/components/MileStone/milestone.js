@@ -74,7 +74,6 @@ const Milestone = () => {
         return myDate.toISOString().split('T')[0];
     }
     async function addTaskHere(milestoneId, checkpoints, label) {
-        console.log("AAA")
         let startDate = sessionStorage.getItem("startDate");
         let endDate = sessionStorage.getItem("endDate");
         let xmembers = JSON.parse(sessionStorage.getItem("newMembers"))

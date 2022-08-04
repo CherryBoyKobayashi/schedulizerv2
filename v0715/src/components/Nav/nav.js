@@ -41,12 +41,7 @@ const Nav = () => {
                     </div>
                 </>
             )
-<<<<<<< HEAD
-            }
-     else {
-=======
     } else {
->>>>>>> 44da7d69cc478545faf49c6d1efc535b642df637
         return (
             <>
                 <div className="nav">
@@ -63,12 +58,7 @@ const Nav = () => {
             </>
         )
     }
-<<<<<<< HEAD
-}
-
-=======
     }
->>>>>>> 44da7d69cc478545faf49c6d1efc535b642df637
 }
 
 export default Nav;

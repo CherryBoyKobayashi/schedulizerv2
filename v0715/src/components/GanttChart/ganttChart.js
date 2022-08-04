@@ -13,8 +13,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { userDataContext } from '../..'
 import Topbar from '../Topbar/topbar'
 import {deleteMilestone} from '../../pages/methods/milestone-methods';
-import {deleteTaskP} from '../../pages/methods/task-methods';
-import {updateTask} from '../../pages/methods/task-methods';
+import {updateTask, deleteTaskP} from '../../pages/methods/task-methods';
 
 const GanttChart = () => {
     const [view, setView] = useState(ViewMode.Day)
@@ -50,11 +49,13 @@ const GanttChart = () => {
         setTasks(initTasks())
       }
 
-    function deleteMilestoneHere(milestoneId) {
-        deleteMilestone(project, milestoneId);
+    async function deleteMilestoneHere(milestoneId) {
+        await deleteMilestone(project, milestoneId, projectId);
+        forceUpdate();
     }
-    function deleteTaskHere(milestoneId, taskId) {
-        deleteTask(project[milestoneId].tasks, taskId)
+    async function deleteTaskHere(milestoneId, taskId) {
+        await deleteTaskP(project[milestoneId].tasks, taskId);
+        forceUpdate();
     }
     function deleteMilestoneAndTasks(id) {
         if (tasks[id].type === "project") {
