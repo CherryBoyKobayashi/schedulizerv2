@@ -1,7 +1,7 @@
 import './index.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { HashRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import User from './pages/user'
 import LoginPage from './components/LoginPage/loginpage'
 import Register from './components/Register/register'
@@ -25,12 +25,12 @@ async function userBuilder(userId) {
 }
 root.render(
   <>
-    <HashRouter>
+    <BrowserRouter>
       <userDataContext.Provider value={userData}>
         <Routes>
           {userId !== null ?
           <>
-            <Route path='/' element={<Project/>}/>
+            <Route path='/' element={<Milestone/>}/>
             <Route path='/milestone/:projectId' element={<Milestone/>}/>
             <Route path='/gantt/:projectId' element={<GanttChart/>}/>
           </> :
@@ -41,7 +41,7 @@ root.render(
           }
         </Routes>
       </userDataContext.Provider>
-    </HashRouter>
+    </BrowserRouter>
   </>
 )
 

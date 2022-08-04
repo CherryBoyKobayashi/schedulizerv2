@@ -5,3 +5,4 @@ dist
 build
 public/kanna.ico
 public/start-electron.js
+../db.json

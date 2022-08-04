@@ -12,7 +12,7 @@ import "gantt-task-react/dist/index.css"
 import React, { useState, useContext } from 'react'
 import { userDataContext } from '../..'
 import Topbar from '../Topbar/topbar'
-import {deleteMilestone} from '../../pages/methods/milestone-methods';
+import {deleteMilestone, saveMilestone} from '../../pages/methods/milestone-methods';
 import {updateTask, deleteTaskP} from '../../pages/methods/task-methods';
 
 const GanttChart = () => {
@@ -39,6 +39,7 @@ const GanttChart = () => {
         project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["start-time"] = dateHelper(task["start"])
         project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["finish-time"] = dateHelper(task["end"])
         project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["progress"] = task.progress
+        console.log(project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)])
         saveTask(project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)])
         setTasks(initTasks())
       }
@@ -49,15 +50,20 @@ const GanttChart = () => {
     }
     async function deleteTaskHere(milestoneId, taskId) {
         await deleteTaskP(project[milestoneId].tasks, taskId);
+        await saveMilestoneHere();
         forceUpdate();
     }
-    function deleteMilestoneAndTasks(id) {
+    async function deleteMilestoneAndTasks(id) {
         if (tasks[id].type === "project") {
-            deleteMilestoneHere(tasks[id].id)
+            await deleteMilestoneHere(tasks[id].id)
         } else {
             var taskId = tasks[id].id
-            deleteTaskHere(taskId.substr(0, taskId.indexOf('&')), project[taskId.substr(0, taskId.indexOf('&'))].tasks[taskId.substr(taskId.indexOf('&')+1)].taskId);
+            await deleteTaskHere(taskId.substr(0, taskId.indexOf('&')), project[taskId.substr(0, taskId.indexOf('&'))].tasks[taskId.substr(taskId.indexOf('&')+1)].taskId);
         }
+    }
+    async function saveMilestoneHere() {
+        await saveMilestone(projectId, userData.projects[projectId].projectData);
+        forceUpdate();
     }
 
     const initTasks = () => {
@@ -164,7 +170,7 @@ const GanttChart = () => {
         }
         return [start, end]
     }
-    const handleTaskChange = (task) => {
+    async function handleTaskChange(task) {
         let newTasks = tasks.map(t => (t.id === task.id ? task : t))
         if (task.project) {
             const [start, end] = getStartEndDateForProject(newTasks, task.project)
@@ -175,12 +181,12 @@ const GanttChart = () => {
             }
         }
         setTasks(newTasks)
-        updateMilestoneAndTasks(task)
+        await updateMilestoneAndTasks(task)
     }
-    const handleTaskDelete = (task) => {//Deleteボタン押下
+    async function handleTaskDelete(task) {//Deleteボタン押下
         const conf = window.confirm("本当に消すでな " + task.name + "を?")
         if (conf) {
-            deleteMilestoneAndTasks(task.index)
+            await deleteMilestoneAndTasks(task.index)
             setTasks(tasks.filter(t => !t.id.includes(task.id)))
         }
         setTasks(initTasks())

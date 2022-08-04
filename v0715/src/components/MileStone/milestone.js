@@ -30,7 +30,7 @@ const Milestone = () => {
     const [flag, setFlag] = useState()
     const allMembers = JSON.parse(sessionStorage.getItem("members"));
     const [results, setResults] = useState(Object.keys(milestoneObj))
-    const [dispTasks, setDispTasks] = useState((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
+    const [dispTasks, setDispTasks] = useState((Object.values(milestoneObj).map(e => e?.tasks)).flat().map(e=>e?.taskId))
 
     let inputHandler = (e) => {
         var lowerCase = e.target.value.toLowerCase();
@@ -49,7 +49,7 @@ const Milestone = () => {
     async function addMilestoneHere() {
         await addMilestone(milestoneObj, document.getElementById("milestoneName").value, sessionStorage.getItem("milestoneColor"), projectId);
         setResults(Object.keys(milestoneObj));
-        setDispTasks((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId));
+        setDispTasks((Object.values(milestoneObj).map(e => e?.tasks)).flat().map(e=>e?.taskId));
         forceUpdate();
     }
     async function deleteMilestoneHere(milestoneId) {
@@ -82,7 +82,7 @@ const Milestone = () => {
         }
         
         await addTask(userData.projects[projectId].projectData[milestoneId].tasks, document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), xmembers.map(o => o.value), label, userData.userId, checkpoints, document.getElementById("taskDescription").value, document.getElementById("followState").checked, projectId, milestoneObj[milestoneId].milestoneId);
-        setDispTasks((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId));
+        setDispTasks((Object.values(milestoneObj).map(e => e?.tasks)).flat().map(e=>e?.taskId));
         forceUpdate();
     }
     async function deleteTaskHere(milestoneId, taskId) {
@@ -228,7 +228,7 @@ const Milestone = () => {
                                 <button onClick={() => {OverShow(3); sessionStorage.setItem("updateMilestoneId", milestoneId)}}>新規タスク追加</button>
                             </div>
                             <div className='tasksDiv'  {...provided.droppableProps} ref={provided.innerRef}>
-                            {Object.values(tasks).map((e, i) => <TaskChild key={e.taskId} {...e} milestoneId={milestoneId} index={i}/>)}
+                            {Object.values(tasks).map((e, i) => <TaskChild key={e?.taskId} {...e} milestoneId={milestoneId} index={i}/>)}
                             </div>
                             {provided.placeholder}
                         </div>
