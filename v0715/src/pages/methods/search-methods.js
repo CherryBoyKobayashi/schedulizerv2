@@ -15,8 +15,8 @@ function searchProject(keyword, userData){
                             if (userData.projects[project][property][new_property][new_new_property].toLowerCase().includes(keyword)) {
                                 results.add(project);
                                 continue
-                            } 
-                        } 
+                            }
+                        }
                         else {
                             for (let new_new_new_property in userData.projects[project][property][new_property][new_new_property]) {
                                 for(let new_new_new_new_property in userData.projects[project][property][new_property][new_new_property][new_new_new_property]) {
@@ -24,28 +24,28 @@ function searchProject(keyword, userData){
                                         if (userData.projects[project][property][new_property][new_new_property][new_new_new_property][new_new_new_new_property].toLowerCase().includes(keyword)) {
                                             results.add(project);
                                             continue
-                                        } 
-                                    } 
+                                        }
+                                    }
                                     else {
                                         for (let new_new_new_new_new_property in userData.projects[project][property][new_property][new_new_property][new_new_new_property][new_new_new_new_property]) {
                                             if(typeof userData.projects[project][property][new_property][new_new_property][new_new_new_property][new_new_new_new_property][new_new_new_new_new_property] == "string") {
                                                 if (userData.projects[project][property][new_property][new_new_property][new_new_new_property][new_new_new_new_property][new_new_new_new_new_property].toLowerCase().includes(keyword)) {
                                                     results.add(project);
                                                     continue
-                                                } 
-                                            } 
+                                                }
+                                            }
                                             else {
                                                 if (userData.projects[project][property][new_property][new_new_property][new_new_new_property][new_new_new_new_property][new_new_new_new_new_property].toString().toLowerCase().includes(keyword)) {
                                                     results.add(project);
                                                     continue
-                                                } 
+                                                }
                                             }
-                                        } 
+                                        }
                                     }
                                 }
                             }
-                        } 
-                    }                 
+                        }
+                    }
                 }
             }
         }
@@ -62,8 +62,8 @@ function searchMilestone(keyword, milestoneObj){
                 if (milestoneObj[milestone][property].toLowerCase().includes(keyword)) {
                     results.add(milestone);
                     continue
-                } 
-            } 
+                }
+            }
             else {
                 for (let new_property in milestoneObj[milestone][property]) {
                     for (let new_new_property in milestoneObj[milestone][property][new_property]) {
@@ -71,21 +71,21 @@ function searchMilestone(keyword, milestoneObj){
                             if (milestoneObj[milestone][property][new_property][new_new_property].toLowerCase().includes(keyword)) {
                                 results.add(milestone);
                                 continue
-                            } 
-                        } 
+                            }
+                        }
                         else {
                             for (let new_new_new_new_property in milestoneObj[milestone][property][new_property][new_new_property]){
                                 if(typeof milestoneObj[milestone][property][new_property][new_new_property][new_new_new_new_property] == "string") {
                                     if (milestoneObj[milestone][property][new_property][new_new_property][new_new_new_new_property].toLowerCase().includes(keyword)) {
                                         results.add(milestone);
                                         continue
-                                    } 
-                                } 
+                                    }
+                                }
                                 else {
                                     if (milestoneObj[milestone][property][new_property][new_new_property][new_new_new_new_property].toString().toLowerCase().includes(keyword)) {
                                         results.add(milestone);
                                         continue
-                                    } 
+                                    }
                                 }
                             }
                         }
@@ -99,16 +99,16 @@ function searchMilestone(keyword, milestoneObj){
                     if (milestoneObj[milestone].tasks[task][property].toLowerCase().includes(keyword)) {
                         tasks.add(milestoneObj[milestone].tasks[task].taskId);
                         continue
-                    } 
-                } 
+                    }
+                }
                 else {
                     for (let new_property in milestoneObj[milestone].tasks[task][property]) {
                         if(typeof milestoneObj[milestone].tasks[task][property][new_property] == "string") {
                             if (milestoneObj[milestone].tasks[task][property][new_property].toLowerCase().includes(keyword)) {
                                 tasks.add(milestoneObj[milestone].tasks[task].taskId);
                                 continue
-                            } 
-                        } 
+                            }
+                        }
                         else {
                             if (milestoneObj[milestone].tasks[task][property][new_property].toString().toLowerCase().includes(keyword)) {
                                 tasks.add(milestoneObj[milestone].tasks[task].taskId);
@@ -124,4 +124,4 @@ function searchMilestone(keyword, milestoneObj){
 }
 
 
-export {searchProject, searchMilestone}; 
+export {searchProject, searchMilestone};

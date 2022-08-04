@@ -11,7 +11,6 @@ async function addProject(userData, projectName, projectDescription) {
         userData.projects[projectId] = await projectBuilder(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{Milestone1: {"milestoneId": "Milestone1", "milestoneName": "マイルストーン1", "color": "red", "tasks": []}}]));
     }
 }
-      
 async function deleteProject(userData, projectId) {
     for (let milestone_key in userData.projects[projectId].projectData) {
         for( let task in userData.projects[projectId].projectData[milestone_key].tasks) {
@@ -31,7 +30,6 @@ async function updateProject(userData, projectId, newProjectName, newProjectDesc
         userData.projects[projectId].projectDescription = newProjectDescription;
     }
 }
-
 async function projectBuilder(p1, p2, p3, p4, p5) {
     let project = new Project();
     project.projectId = p1;
@@ -40,7 +38,7 @@ async function projectBuilder(p1, p2, p3, p4, p5) {
     project.projectDate = p4;
     project.projectData = await project.getProjectData(p5);
     return project;
-  }
+}
 
 const formatDate = (date, format) => {
     format = format.replace(/yyyy/g, date.getFullYear());

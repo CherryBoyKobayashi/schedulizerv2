@@ -41,7 +41,7 @@ const Nav = () => {
                     </div>
                 </>
             )
-            } else {
+    } else {
         return (
             <>
                 <div className="nav">
@@ -58,8 +58,7 @@ const Nav = () => {
             </>
         )
     }
-}
-
+    }
 }
 
 export default Nav;
