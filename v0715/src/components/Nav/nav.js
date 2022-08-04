@@ -20,6 +20,7 @@ const Nav = () => {
     if(userData.projects[projectId].projectData != undefined) {
         let counter = 0
         if (Object.keys(userData.projects[projectId].projectData).length != 0) {
+            console.log("A")
             for (let milestone in userData.projects[projectId].projectData) {
                 if(userData.projects[projectId].projectData[milestone].tasks?.length != 0) {
                     counter ++;
@@ -27,6 +28,7 @@ const Nav = () => {
             }
         }
         if (Object.keys(userData.projects[projectId].projectData).length == 0 || counter == 0) {
+            console.log("B")
             return (
                 <>
                     <div className="nav">
@@ -41,8 +43,8 @@ const Nav = () => {
                     </div>
                 </>
             )
-            }
-    } else {
+            } else {
+        console.log("C")
         return (
             <>
                 <div className="nav">
@@ -59,6 +61,7 @@ const Nav = () => {
             </>
         )
     }
+}
 
 }
 
