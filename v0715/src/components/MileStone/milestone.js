@@ -25,7 +25,6 @@ const Milestone = () => {
     const forceUpdate = React.useCallback(() => updateState({}), [])
     const userData = useContext(userDataContext)
     const {projectId} = useParams()
-    console.log(userData.projects[projectId])
     const milestoneObj = userData.projects[projectId].projectData
     const [modalIsOpen, setIsOpen] = useState(false)
     const [flag, setFlag] = useState()
@@ -75,7 +74,6 @@ const Milestone = () => {
         return myDate.toISOString().split('T')[0];
     }
     async function addTaskHere(milestoneId, checkpoints, label) {
-        console.log("AAA")
         let startDate = sessionStorage.getItem("startDate");
         let endDate = sessionStorage.getItem("endDate");
         let xmembers = JSON.parse(sessionStorage.getItem("newMembers"))
