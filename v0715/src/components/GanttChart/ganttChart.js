@@ -72,9 +72,12 @@ const GanttChart = () => {
     }
 
     const initTasks = () => {
+        
         const tasks = []
+        let counter = 0;
         for(let milestoneId in project){
             if (project[milestoneId].tasks.length != 0) {
+                counter++;
                 let milestone = project[milestoneId].tasks
                 let startDate = new Date(3022,3,2)
                 let finishDate = new Date(2020,3,2)
@@ -112,7 +115,11 @@ const GanttChart = () => {
                 }
             }
         }
-        return tasks
+        if (counter == 0) {
+            window.location.replace('/milestone/' + projectId)
+        } else {
+            return tasks
+        }
     }
     const TaskEditChild = () => {
         const milestoneId = sessionStorage.getItem("updateMilestoneId");

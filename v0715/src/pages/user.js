@@ -27,6 +27,8 @@ class User {
     project.projectDescription = p3;
     project.projectDate = p4;
     project.projectData = await project.getProjectData(p5);
+    console.log("A")
+    console.log(project)
     return project;
   }
 }
