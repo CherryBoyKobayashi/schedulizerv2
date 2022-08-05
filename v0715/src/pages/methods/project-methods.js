@@ -8,7 +8,7 @@ async function addProject(userData, projectName, projectDescription) {
     let projectId = uuidv4();
     let response = await addProjectToDB(userId, projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{"milestoneId": "Milestone1", "milestoneName": "マイルストーン1", "color": "red", "tasks": []}]));
     if (response == "OK") {
-        userData.projects[projectId] = await projectBuilder(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{Milestone1: {"milestoneId": "Milestone1", "milestoneName": "マイルストーン1", "color": "red", "tasks": []}}]));
+        userData.projects[projectId] = await projectBuilder(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), [{"milestoneId": "Milestone1", "milestoneName": "マイルストーン1", "color": "red", "tasks": []}]);
     }
 }
 async function deleteProject(userData, projectId) {
@@ -37,6 +37,8 @@ async function projectBuilder(p1, p2, p3, p4, p5) {
     project.projectDescription = p3;
     project.projectDate = p4;
     project.projectData = await project.getProjectData(p5);
+    console.log("B")
+    console.log(project)
     return project;
 }
 

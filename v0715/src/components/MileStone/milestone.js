@@ -168,6 +168,7 @@ const Milestone = () => {
     // }
     const MilestoneChild = (props) => {
         const {color, tasks, milestoneId} = props
+
         return (
             <>
                 <Droppable droppableId={milestoneId}>
