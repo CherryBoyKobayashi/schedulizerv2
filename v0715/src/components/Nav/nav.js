@@ -29,31 +29,35 @@ const Nav = () => {
         if (Object.keys(userData.projects[projectId].projectData).length == 0 || counter == 0) {
             return (
                 <>
-                    <div className="nav">
-                        <ul>
-                            <a href="/">project</a>
-                            <a href={'/milestone/' + projectId}>milestone</a>
-                        </ul>
-                    </div>
-                    <div className="open-nav" onClick={navClick}>
-                        <BiMenu id="m" className="open"/>
-                        <AiOutlineClose id="m" className="close"/>
+                    <div className="toggleDiv">
+                        <div className="nav">
+                            <ul>
+                                <a href="/">project</a>
+                                <a href={'/milestone/' + projectId}>milestone</a>
+                            </ul>
+                        </div>
+                        <div className="open-nav" onClick={navClick}>
+                            <BiMenu id="m" className="open"/>
+                            <AiOutlineClose id="m" className="close"/>
+                        </div>
                     </div>
                 </>
             )
     } else {
         return (
             <>
-                <div className="nav">
-                    <ul>
-                        <a href="/">project</a>
-                        <a href={'/milestone/' + projectId}>milestone</a>
-                        <a href={'/gantt/' + projectId}>gantt chart</a>
-                    </ul>
-                </div>
-                <div className="open-nav" onClick={navClick}>
-                    <BiMenu id="m" className="open"/>
-                    <AiOutlineClose id="m" className="close"/>
+                <div className="toggleDiv">
+                    <div className="nav">
+                        <ul>
+                            <a href="/">project</a>
+                            <a href={'/milestone/' + projectId}>milestone</a>
+                            <a href={'/gantt/' + projectId}>gantt chart</a>
+                        </ul>
+                    </div>
+                    <div className="open-nav" onClick={navClick}>
+                        <BiMenu id="m" className="open"/>
+                        <AiOutlineClose id="m" className="close"/>
+                    </div>
                 </div>
             </>
         )

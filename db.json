@@ -1,56 +1,14 @@
 {
   "users": [
-    {
-      "username": "a",
-      "mail": "a@a",
-      "password": "a"
-    }
+ 
   ],
   "user_projects": [
-    {
-      "username": "a",
-      "projects": [
-        "5b38c5ac-82d5-4390-8ed1-92495368f6b6"
-      ]
-    }
+   
   ],
   "projects": [
-    {
-      "projectId": "5b38c5ac-82d5-4390-8ed1-92495368f6b6",
-      "projectName": "sdafsdf",
-      "projectDescription": "asdfasdf",
-      "projectDate": "2022-08-08",
-      "projectData": [
-        {
-          "milestoneId": "305856ed-f623-4005-8a31-8306efb9dbca",
-          "milestoneName": "a",
-          "color": "undefined",
-          "tasks": [
-            "6714ad9c-a907-4324-99cb-db553e4e5313"
-          ]
-        }
-      ]
-    }
+   
   ],
   "tasks": [
-    {
-      "taskId": "6714ad9c-a907-4324-99cb-db553e4e5313",
-      "task-name": "d",
-      "start-time": "2022-08-07",
-      "finish-time": "2022-08-07",
-      "members": [
-        "a"
-      ],
-      "priority": "medium",
-      "creation-time": "2022-08-08",
-      "creator": "a",
-      "checkpoints": [],
-      "comments": [
-        ""
-      ],
-      "description": "Task description",
-      "follow-state": false,
-      "progress": 62
-    }
+
   ]
 }

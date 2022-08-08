@@ -2,7 +2,9 @@
     --nav_posi: 3%;
     --nav_side: 50px;
 }
-
+.toggleDiv{
+    display: flex;
+}
 .open-nav{
     height: var(--topH);
     width: var(--topH);
@@ -16,6 +18,7 @@
     transform: translateX(50px); /*右からやってくるぜ*/
     opacity: 0;
     animation: show 0.5s ease 0.5s 1 forwards;/*later*/
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
 }
 @keyframes show{
     to{
@@ -55,6 +58,7 @@
     pointer-events: none;
     user-select: none; /*これでテキストを選択できないようにする*/
     transition: 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
 }
 .nav.active{
     opacity: 1;
