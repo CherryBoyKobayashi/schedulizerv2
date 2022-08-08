@@ -26,7 +26,7 @@ class ColorPicker extends React.Component{
                 <div className="colorPickLeftDiv">
                     <div className="colorBar">
                         <div className="colorBarLeft" onClick={this.handleOpenClose}>カラー選択</div>
-                        <div className="colorBarRight" style={{background: this.state.color}}></div>
+                        <div className="colorBarRight" style={{background: this.state.color}}  id='milestoneColor'></div>
                     </div>
                 </div>
                 {this.state.open && (
