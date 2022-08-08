@@ -1,5 +1,7 @@
 const axios = require('axios').default;
 
+const adress = 'http://localhost:3000/';
+
 async function addMilestoneToDB (projectId, milestoneId, milestoneName, newColor, tasks) {
     let postData = {
         projectId: projectId,
@@ -8,18 +10,19 @@ async function addMilestoneToDB (projectId, milestoneId, milestoneName, newColor
         color: newColor,
         tasks: tasks
     };
-  
-    const response = await axios.post('http://localhost:3000/milestoneDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'milestoneDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response;
+        return response;
+    }
 }
 
 async function deleteMilestoneFromDB (projectId, milestoneId) {
@@ -27,18 +30,19 @@ async function deleteMilestoneFromDB (projectId, milestoneId) {
         projectId: projectId,
         milestoneId: milestoneId
     };
-  
-    const response = await axios.post('http://localhost:3000/milestoneDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'milestoneDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response;
+        return response;
+    }
 }
 
 async function updateMilestoneInDB (projectId, milestoneId, milestoneName, newColor, tasks) {
@@ -49,18 +53,19 @@ async function updateMilestoneInDB (projectId, milestoneId, milestoneName, newCo
         color: newColor,
         tasks: tasks
     };
-  
-    const response = await axios.post('http://localhost:3000/milestoneDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'milestoneDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response;
+        return response;
+    }
 }
 
 async function saveMilestoneToDB(projectId, projectData) {
@@ -68,18 +73,19 @@ async function saveMilestoneToDB(projectId, projectData) {
         projectId: projectId,
         projectData: projectData
     };
-  
-    const response = await axios.post('http://localhost:3000/milestoneDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'milestoneDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response;
+        return response;
+    }
 }
 
 export {addMilestoneToDB, deleteMilestoneFromDB, updateMilestoneInDB, saveMilestoneToDB}; 

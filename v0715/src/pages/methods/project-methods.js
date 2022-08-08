@@ -13,6 +13,13 @@ async function addProject(userData, projectName, projectDescription) {
 }
 async function deleteProject(userData, projectId) {
     for (let milestone_key in userData.projects[projectId].projectData) {
+        if (milestone_key != undefined) {
+            for( let task in userData.projects[projectId].projectData[milestone_key].tasks) {
+                if (userData.projects[projectId].projectData[milestone_key].tasks[task] != undefined) {
+                    deleteTask(userData.projects[projectId].projectData[milestone_key].tasks[task].taskId)
+                }
+            }
+        }
         for( let task in userData.projects[projectId].projectData[milestone_key].tasks) {
             deleteTask(task.taskId)
         }
@@ -37,8 +44,6 @@ async function projectBuilder(p1, p2, p3, p4, p5) {
     project.projectDescription = p3;
     project.projectDate = p4;
     project.projectData = await project.getProjectData(p5);
-    console.log("B")
-    console.log(project)
     return project;
 }
 

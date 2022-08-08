@@ -1,5 +1,7 @@
 const axios = require('axios').default;
 
+const adress = 'http://localhost:3000/';
+
 async function addUserToDB(username, mail, password) {
     let return_value = 0;
     const response = await getUserFromDB(username, password)
@@ -11,7 +13,7 @@ async function addUserToDB(username, mail, password) {
                 password: password
             };
 
-            const new_response = await axios.post('http://localhost:3000/userDB', postData).catch((err) => {
+            const new_response = await axios.post(adress + 'userDB', postData).catch((err) => {
                 return "error";
             })
 
@@ -29,21 +31,23 @@ async function getUserFromDB (username, password) {
         username: username,
         password: password
     };
-  
-    const response = axios.post('http://localhost:3000/userDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-        else {
-            return "no value";
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
 
-    return response;
+    if (postData != null) {
+        const response = axios.post(adress + 'userDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+            else {
+                return "no value";
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
+
+        return response;
+    }
 }
 
 async function deleteUserFromDB(username, password) {
@@ -53,38 +57,42 @@ async function deleteUserFromDB(username, password) {
         password: password
     };
   
-    const response = await axios.post('http://localhost:3000/userDBdelete', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            response_value = 1;
-            return res.data;
-        }
-        else {
-            return "no value";
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'userDBdelete', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                response_value = 1;
+                return res.data;
+            }
+            else {
+                return "no value";
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response_value;
+        return response_value;
+    }
 }
 
 async function getUsersFromDB () {
     let postData = {
     };
   
-    const response = await axios.post('http://localhost:3000/userDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'userDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return Array.from(response, (value)=> {return {"value": value, "label": value}});
+        return Array.from(response, (value)=> {return {"value": value, "label": value}});
+    }
 }
 
 export {addUserToDB, getUserFromDB, deleteUserFromDB, getUsersFromDB}; 

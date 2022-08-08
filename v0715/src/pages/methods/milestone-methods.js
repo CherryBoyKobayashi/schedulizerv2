@@ -13,7 +13,9 @@ import {deleteTask} from '../../api/taskDB';
 
     async function deleteMilestone(project, milestoneId, projectId) {
         for (let task in project[milestoneId].tasks) {
-            deleteTask(project[milestoneId].tasks[task].taskId)
+            if (task != undefined) {
+                deleteTask(project[milestoneId].tasks[task].taskId)
+            }
         }
         let response = await deleteMilestoneFromDB(projectId, project[milestoneId].milestoneId);
         if (response == "OK") {
@@ -22,13 +24,14 @@ import {deleteTask} from '../../api/taskDB';
     }
 
     async function updateMilestone(project, milestoneId, milestoneName, newColor, tasks, projectId) {
-        let response = await updateMilestoneInDB(projectId, project[milestoneId].milestoneId, milestoneName, newColor, tasks);
+        let response = await updateMilestoneInDB(projectId, project[milestoneId].milestoneId, milestoneName, newColor, tasks.map((u) => u.taskId));
         if (response == "OK") {
             project[milestoneId]= {"milestoneId": project[milestoneId].milestoneId, "milestoneName": milestoneName, "color":newColor,"tasks":tasks};
         }
     }
 
-    async function saveMilestone(projectId,milestoneObj){
+    async function saveMilestone(projectId, milestoneObj){
+        milestoneObj = milestoneObj.filter(n => n)
         let projectData = JSON.parse(JSON.stringify(milestoneObj))
         for (let i in milestoneObj) {
             projectData[i].tasks = milestoneObj[i].tasks.map((a) => a.taskId);

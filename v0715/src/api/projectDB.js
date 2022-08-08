@@ -1,5 +1,7 @@
 const axios = require('axios').default;
 
+const adress = 'http://localhost:3000/';
+
 function getMilestones(projectId) {
     return JSON.parse(localStorage[projectId]);
 }
@@ -8,21 +10,22 @@ async function getProjectsFromDB (username) {
     let postData = {
         username: username
     };
-  
-    const response = axios.post('http://localhost:3000/projectsDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-        else {
-            return "no value";
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = axios.post(adress + 'projectsDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+            else {
+                return "no value";
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response;
+        return response;
+    }
 }
 
 async function addProjectToDB (userId, projectId, projectName, projectDescription, projectDate, projectData) {
@@ -35,17 +38,19 @@ async function addProjectToDB (userId, projectId, projectName, projectDescriptio
         projectData: projectData
     };
   
-    const response = await axios.post('http://localhost:3000/projectDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'projectDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response;
+        return response;
+    }
 }
 
 async function getProjectDetailsFromDB (projectId) {
@@ -53,19 +58,21 @@ async function getProjectDetailsFromDB (projectId) {
         projectId: projectId
     };
   
-    const response = axios.post('http://localhost:3000/projectDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-        else {
-            return "no value";
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
-    return response;
+    if (postData != null) {
+        const response = axios.post(adress + 'projectDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+            else {
+                return "no value";
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
+        return response;
+    }
 }
 
 async function deleteProjectFromDB(userId, projectId) {
@@ -74,17 +81,19 @@ async function deleteProjectFromDB(userId, projectId) {
         projectId: projectId
     };
   
-    const response = await axios.post('http://localhost:3000/projectDBdelete', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'projectDBdelete', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response;
+        return response;
+    }
 }
 
 async function updateProjectInDB(projectId, newProjectName, newProjectDescription){
@@ -94,18 +103,20 @@ async function updateProjectInDB(projectId, newProjectName, newProjectDescriptio
         projectDescription: newProjectDescription
     };
 
-    const response = await axios.post('http://localhost:3000/projectDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
-    console.log(response)
+    if (postData != null) {
+        const response = await axios.post(adress + 'projectDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
+        console.log(response)
 
-    return response;
+        return response;
+    }
 }
 
 export {getProjectsFromDB, getProjectDetailsFromDB, addProjectToDB, deleteProjectFromDB, updateProjectInDB, getMilestones}; 

@@ -1,5 +1,7 @@
 const axios = require('axios').default;
 
+const adress = 'http://localhost:3000/';
+
 async function addTaskToDB (projectId, milestoneId, taskId, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress) {
     let postData = {
         projectId: projectId,
@@ -19,17 +21,19 @@ async function addTaskToDB (projectId, milestoneId, taskId, taskName, startTime,
         progress: progress
     };
 
-    const response = await axios.post('http://localhost:3000/taskDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'taskDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response;
+        return response;
+    }
 }
 
 async function getTaskDetails(taskId) {
@@ -37,20 +41,22 @@ async function getTaskDetails(taskId) {
         taskId: taskId
     };
   
-    const response = await axios.post('http://localhost:3000/tasksDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-        else {
-            return "no value";
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'tasksDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+            else {
+                return "no value";
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response;
+        return response;
+    }
 }
 
 async function deleteTask(taskId) {
@@ -58,17 +64,19 @@ async function deleteTask(taskId) {
         taskId: taskId
     };
   
-    const response = await axios.post('http://localhost:3000/tasksDBdelete', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'tasksDBdelete', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response
+        return response
+    }
 }
 
 async function updateTaskInDB(projectId, milestoneId, taskId, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress) {
@@ -90,17 +98,19 @@ async function updateTaskInDB(projectId, milestoneId, taskId, taskName, startTim
         progress: progress
     };
   
-    const response = await axios.post('http://localhost:3000/taskDB', postData)
-    .then((res) => {
-        if (res.status == 200) {
-            return res.data;
-        }
-    })
-    .catch((err) => {
-        return "error";
-    })
+    if (postData != null) {
+        const response = await axios.post(adress + 'taskDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
 
-    return response;
+        return response;
+    }
 }
 
 export {getTaskDetails, deleteTask, addTaskToDB, updateTaskInDB}; 
