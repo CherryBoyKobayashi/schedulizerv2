@@ -30,58 +30,8 @@
       "projectName": "a",
       "projectDescription": "a",
       "projectDate": "2022-08-09",
-      "projectData": [
-        {
-          "milestoneId": "Milestone1",
-          "milestoneName": "マイルストーン1",
-          "color": "red",
-          "tasks": [
-            "8d0c13f8-08ae-4737-bf81-6e53e0c0fab1",
-            "d75833af-75b4-4ec0-89dc-8c31ad82e586"
-          ]
-        }
-      ]
+      "projectData": []
     }
   ],
-  "tasks": [
-    {
-      "taskId": "8d0c13f8-08ae-4737-bf81-6e53e0c0fab1",
-      "task-name": "as",
-      "start-time": "2022-07-21",
-      "finish-time": "2022-07-30",
-      "members": [
-        "a"
-      ],
-      "priority": "medium",
-      "creation-time": 1660029115914,
-      "creator": "a",
-      "checkpoints": [],
-      "comments": [
-        ""
-      ],
-      "description": "Task description",
-      "follow-state": false,
-      "progress": 10
-    },
-    {
-      "taskId": "d75833af-75b4-4ec0-89dc-8c31ad82e586",
-      "task-name": "b",
-      "start-time": "2022-08-03",
-      "finish-time": "2022-08-11",
-      "members": [
-        "a",
-        "b"
-      ],
-      "priority": "medium",
-      "creation-time": 1660029606070,
-      "creator": "a",
-      "checkpoints": [],
-      "comments": [
-        ""
-      ],
-      "description": "Task description",
-      "follow-state": false,
-      "progress": 45
-    }
-  ]
+  "tasks": []
 }

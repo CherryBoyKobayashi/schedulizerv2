@@ -21,6 +21,8 @@
   "homepage": "https://github.com/CherryBoyKobayashi/schedulizerv2#readme",
   "dependencies": {
     "express": "^4.18.1",
-    "lowdb": "^3.0.0"
+    "express-winston": "^4.2.0",
+    "lowdb": "^3.0.0",
+    "winston": "^3.8.1"
   }
 }

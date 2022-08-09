@@ -1,10 +1,24 @@
 import express from 'express'
 import { LowSync, JSONFileSync } from 'lowdb'
+import winston from 'winston'
+import expressWinston from 'express-winston'
 
 const app = express()
 app.use(express.json())
 const adapter = new JSONFileSync('./db.json')
 const db = new LowSync(adapter)
+
+app.use(expressWinston.logger({
+  level: "info",
+  format: winston.format.simple(),
+  transports: [
+      new winston.transports.Console()
+  ],
+  meta: false,
+  metaField: null,
+  msg: "HTTP {{ req.method }} {{ req.url }}",
+  expressFormat: true
+}));
 
 app.post('/userDB', async (req, res) => {
   try {
