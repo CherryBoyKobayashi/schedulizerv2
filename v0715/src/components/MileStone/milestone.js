@@ -92,7 +92,7 @@ const Milestone = () => {
     async function updateTaskHere(milestoneId, taskIndex, checkpoints, comments, label) {
         let startDate = sessionStorage.getItem("startDate");
         let endDate = sessionStorage.getItem("endDate");
-        await updateTask(projectId, userData.projects[projectId].projectData[milestoneId].milestoneId, userData.projects[projectId].projectData[milestoneId].tasks[taskIndex], document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), JSON.parse(sessionStorage.getItem("newMembers")).map(o => o.value), label, Date.now(), userData.userId, checkpoints, comments, document.getElementById("taskDescription").value, document.getElementById("followState").checked, userData.projects[projectId].projectData[milestoneId].tasks[taskIndex].taskData["progress"])
+        await updateTask(projectId, userData.projects[projectId].projectData[milestoneId].milestoneId, userData.projects[projectId].projectData[milestoneId].tasks[taskIndex], document.getElementById("taskName").value, dateHelper(startDate), dateHelper(endDate), JSON.parse(sessionStorage.getItem("newMembers")).map(o => o.value), label, Date.now(), userData.projects[projectId].projectData[milestoneId].tasks[taskIndex].taskData["creator"], checkpoints, comments, document.getElementById("taskDescription").value, document.getElementById("followState").checked, userData.projects[projectId].projectData[milestoneId].tasks[taskIndex].taskData["progress"])
         forceUpdate()
     }
 

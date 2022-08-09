@@ -24,6 +24,7 @@ class User {
       let projectDetails = await getProjectDetailsFromDB(additionalProjectList[i]);
       projects[additionalProjectList[i]] = await this.projectBuilder(additionalProjectList[i], projectDetails.projectName, projectDetails.projectDescription, projectDetails.projectDate, projectDetails.projectData, userId);
     }
+    console.log(additionalProjectResponse)
     return projects;
   }
   catch{}
