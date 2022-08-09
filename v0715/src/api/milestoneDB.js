@@ -25,10 +25,11 @@ async function addMilestoneToDB (projectId, milestoneId, milestoneName, newColor
     }
 }
 
-async function deleteMilestoneFromDB (projectId, milestoneId) {
+async function deleteMilestoneFromDB (projectId, milestoneId, userId) {
     let postData = {
         projectId: projectId,
-        milestoneId: milestoneId
+        milestoneId: milestoneId,
+        userId: userId
     };
     if (postData != null) {
         const response = await axios.post(adress + 'milestoneDB', postData)

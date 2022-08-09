@@ -54,11 +54,12 @@ async function deleteUserFromDB(username, password) {
     let response_value = 0;
     let postData = {
         username: username,
-        password: password
+        password: password,
+        delete: true
     };
   
     if (postData != null) {
-        const response = await axios.post(adress + 'userDBdelete', postData)
+        const response = await axios.post(adress + 'userDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 response_value = 1;

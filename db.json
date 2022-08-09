@@ -1,27 +1,14 @@
 {
   "users": [
-    {
-      "username": "a",
-      "mail": "a@a",
-      "password": "a"
-    }
+
   ],
   "user_projects": [
-    {
-      "username": "a",
-      "projects": [
-        "2ad3778f-59cd-4129-a04a-f6e11a434e38"
-      ]
-    }
+
   ],
   "projects": [
-    {
-      "projectId": "2ad3778f-59cd-4129-a04a-f6e11a434e38",
-      "projectName": "asdf",
-      "projectDescription": "sadfasdf",
-      "projectDate": "2022-08-08",
-      "projectData": []
-    }
+
   ],
-  "tasks": []
+  "tasks": [
+
+  ]
 }

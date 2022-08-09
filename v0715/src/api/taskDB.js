@@ -36,13 +36,14 @@ async function addTaskToDB (projectId, milestoneId, taskId, taskName, startTime,
     }
 }
 
-async function getTaskDetails(taskId) {
+async function getTaskDetails(taskId, userId) {
     let postData = {
-        taskId: taskId
+        taskId: taskId,
+        userId: userId
     };
   
     if (postData != null) {
-        const response = await axios.post(adress + 'tasksDB', postData)
+        const response = await axios.post(adress + 'taskDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -59,13 +60,15 @@ async function getTaskDetails(taskId) {
     }
 }
 
-async function deleteTask(taskId) {
+async function deleteTask(taskId,userId) {
     let postData = {
-        taskId: taskId
+        taskId: taskId,
+        userId: userId,
+        delete: true
     };
   
     if (postData != null) {
-        const response = await axios.post(adress + 'tasksDBdelete', postData)
+        const response = await axios.post(adress + 'taskDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;

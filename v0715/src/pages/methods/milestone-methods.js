@@ -11,13 +11,13 @@ import {deleteTask} from '../../api/taskDB';
         }
     }
 
-    async function deleteMilestone(project, milestoneId, projectId) {
+    async function deleteMilestone(project, milestoneId, projectId, userId) {
         for (let task in project[milestoneId].tasks) {
             if (task != undefined) {
-                deleteTask(project[milestoneId].tasks[task].taskId)
+                deleteTask(project[milestoneId].tasks[task].taskId, userId)
             }
         }
-        let response = await deleteMilestoneFromDB(projectId, project[milestoneId].milestoneId);
+        let response = await deleteMilestoneFromDB(projectId, project[milestoneId].milestoneId, userId);
         if (response == "OK") {
             delete project[milestoneId];
         }

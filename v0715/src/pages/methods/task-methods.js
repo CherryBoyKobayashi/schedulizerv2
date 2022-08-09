@@ -10,8 +10,8 @@ async function addTask(tasks, taskName, startTime, finishTime, members, priority
     }
 }
 
-async function deleteTaskP(tasks, taskId) {
-    let response = await deleteTask(taskId);
+async function deleteTaskP(tasks, taskId, userId) {
+    let response = await deleteTask(taskId, userId);
     if (response == "OK") {
         for( var i = 0; i < tasks.length; i++){
             if (tasks[i]["taskId"] === taskId) {

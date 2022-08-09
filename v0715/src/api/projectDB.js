@@ -2,16 +2,12 @@ const axios = require('axios').default;
 
 const adress = 'http://localhost:3000/';
 
-function getMilestones(projectId) {
-    return JSON.parse(localStorage[projectId]);
-}
-
 async function getProjectsFromDB (username) {
     let postData = {
         username: username
     };
     if (postData != null) {
-        const response = axios.post(adress + 'projectsDB', postData)
+        const response = axios.post(adress + 'projectDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -31,6 +27,7 @@ async function getProjectsFromDB (username) {
 async function addProjectToDB (userId, projectId, projectName, projectDescription, projectDate, projectData) {
     let postData = {
         userId: userId,
+        projectCreator: userId,
         projectId: projectId,
         projectName: projectName,
         projectDescription: projectDescription,
@@ -78,11 +75,12 @@ async function getProjectDetailsFromDB (projectId) {
 async function deleteProjectFromDB(userId, projectId) {
     let postData = {
         userId: userId,
-        projectId: projectId
+        projectId: projectId,
+        delete: true
     };
   
     if (postData != null) {
-        const response = await axios.post(adress + 'projectDBdelete', postData)
+        const response = await axios.post(adress + 'projectDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -113,10 +111,29 @@ async function updateProjectInDB(projectId, newProjectName, newProjectDescriptio
         .catch((err) => {
             return "error";
         })
-        console.log(response)
 
         return response;
     }
 }
 
-export {getProjectsFromDB, getProjectDetailsFromDB, addProjectToDB, deleteProjectFromDB, updateProjectInDB, getMilestones}; 
+async function getAdditionalProjectsFromDB (username){
+    let postData = {
+        username: username,
+        additional: true
+    };
+    if (postData != null) {
+        const response = await axios.post(adress + 'projectDB', postData)
+        .then((res) => {
+            if (res.status == 200) {
+                return res.data;
+            }
+        })
+        .catch((err) => {
+            return "error";
+        })
+
+        return response;
+    }
+}
+
+export {getProjectsFromDB, getProjectDetailsFromDB, addProjectToDB, deleteProjectFromDB, updateProjectInDB, getAdditionalProjectsFromDB}; 

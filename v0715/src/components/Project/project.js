@@ -12,7 +12,6 @@ import ProjectInner from './projectInner'
 
 const Project = () => {
     const userData = useContext(userDataContext)
-    console.log(userData)
     const [modalIsOpen, setIsOpen] = useState(false)
     const projectProps = useRef()
     const [results, setResults] = useState(Object.values(userData.projects).map((e => e.projectId)))

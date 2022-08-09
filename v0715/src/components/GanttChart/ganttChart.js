@@ -20,6 +20,7 @@ const GanttChart = () => {
     const [isChecked, setIsChecked] = useState(true)
     const userData = useContext(userDataContext)
     const {projectId} = useParams()
+    console.log(userData)
     const project = userData.projects[projectId].projectData
     const [modalIsOpen, setIsOpen] = useState(false)
     const allMembers = JSON.parse(localStorage.getItem("members"))
@@ -50,11 +51,11 @@ const GanttChart = () => {
       }
 
     async function deleteMilestoneHere(milestoneId) {
-        await deleteMilestone(project, milestoneId, projectId);
+        await deleteMilestone(project, milestoneId, projectId, userData.userId);
         forceUpdate();
     }
     async function deleteTaskHere(milestoneId, taskId) {
-        await deleteTaskP(project[milestoneId].tasks, taskId);
+        await deleteTaskP(project[milestoneId].tasks, taskId, userData.userId);
         await saveMilestoneHere();
         forceUpdate();
     }

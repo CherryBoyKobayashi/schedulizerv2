@@ -1,6 +1,6 @@
 import './milestone.css'
 import "react-datepicker/dist/react-datepicker.css"
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Modal from 'react-modal/lib/components/Modal'
 import {MdEditNote, MdDeleteForever, MdOutlineSupervisorAccount} from "react-icons/md"
 import {BsBookmarkCheck, BsCalendarDate} from "react-icons/bs"
@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom'
 import {BiLabel} from "react-icons/bi"
 import DatePicker from "react-datepicker";
 import Select from 'react-select';
-import { AiFillStar, AiOutlineConsoleSql, AiOutlineStar } from 'react-icons/ai'
+import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import TextField from "@mui/material/TextField";
 import ColorPicker from './colorPicker'
 import Topbar from '../Topbar/topbar'
@@ -32,6 +32,7 @@ const Milestone = () => {
     const [results, setResults] = useState(Object.keys(milestoneObj))
     const [dispTasks, setDispTasks] = useState((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
 
+
     let inputHandler = (e) => {
         var lowerCase = e.target.value.toLowerCase();
         let [newResults, newTasks] = searchMilestone(lowerCase, milestoneObj);
@@ -53,7 +54,7 @@ const Milestone = () => {
         forceUpdate();
     }
     async function deleteMilestoneHere(milestoneId) {
-        await deleteMilestone(milestoneObj, milestoneId, projectId);
+        await deleteMilestone(milestoneObj, milestoneId, projectId, userData.userId);
         forceUpdate();
     }
     async function updateMilestoneHere(milestoneId, tasks) {
@@ -85,7 +86,7 @@ const Milestone = () => {
         forceUpdate();
     }
     async function deleteTaskHere(milestoneId, taskId) {
-        await deleteTaskP(userData.projects[projectId].projectData[milestoneId].tasks, taskId);
+        await deleteTaskP(userData.projects[projectId].projectData[milestoneId].tasks, taskId, userData.userId);
         forceUpdate();
     }
     async function updateTaskHere(milestoneId, taskIndex, checkpoints, comments, label) {
@@ -140,7 +141,7 @@ const Milestone = () => {
         } catch {
             startTime = new Date();
             finishTime = new Date();
-            defaultMembers = allMembers[0];
+            defaultMembers = allMembers.filter((e) => e.label==userData.userId);
         }
         const [dateRange, setDateRange] = useState([new Date(startTime), new Date(finishTime)]);
         const [startDate, endDate] = dateRange;
@@ -300,7 +301,7 @@ const Milestone = () => {
                     </div>
                     <DragDropContext onDragEnd={onDragEnd}>
                         <div className='bottomDiv'>
-                            {Object.entries(milestoneObj).filter(milestone => results.includes(milestone[0])).map(e => e[1]).map((e, i) => <MilestoneChild key={Object.keys(milestoneObj)[i]} {...e} milestoneId={Object.keys(milestoneObj)[i]}/>)}
+                            {Object.entries(milestoneObj).filter(milestone => results.includes(milestone[0])).map((e, i) => <MilestoneChild key={e[0]} {...e[1]} milestoneId={e[0]}/>)}
                         </div>
                     </DragDropContext>
                 </div>
