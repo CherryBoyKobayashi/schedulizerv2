@@ -16,7 +16,11 @@ async function deleteProject(userData, projectId) {
         if (milestone_key != undefined) {
             for( let task in userData.projects[projectId].projectData[milestone_key].tasks) {
                 if (userData.projects[projectId].projectData[milestone_key].tasks[task] != undefined) {
-                    deleteTask(userData.projects[projectId].projectData[milestone_key].tasks[task].taskId, userData.userId)
+                    let userId = userData.userId
+                    if(userData.projects[projectId].projectCreator == userData.userId) {
+                        userId = userData.projects[projectId].projectData[milestone_key].tasks[task].taskData.creator
+                    }
+                    deleteTask(userData.projects[projectId].projectData[milestone_key].tasks[task].taskId, userId)
                 }
             }
         }

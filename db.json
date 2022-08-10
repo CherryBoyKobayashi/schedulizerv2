@@ -14,24 +14,13 @@
   "user_projects": [
     {
       "username": "a",
-      "projects": [
-        "b978c759-1087-4304-b114-1c785b3cc32a"
-      ]
+      "projects": []
     },
     {
       "username": "b",
       "projects": []
     }
   ],
-  "projects": [
-    {
-      "projectCreator": "a",
-      "projectId": "b978c759-1087-4304-b114-1c785b3cc32a",
-      "projectName": "a",
-      "projectDescription": "a",
-      "projectDate": "2022-08-09",
-      "projectData": []
-    }
-  ],
+  "projects": [],
   "tasks": []
 }

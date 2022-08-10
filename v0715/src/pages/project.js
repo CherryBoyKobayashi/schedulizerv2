@@ -3,7 +3,6 @@ import Task from './task';
 
 class Project {
     async getProjectData(projectData, userId) {
-      console.log(userId)
       try {
         for(let i=0; i<projectData.length; i++) {
           let tasks = [];
