@@ -1,6 +1,6 @@
 const axios = require('axios').default;
 
-const adress = 'http://localhost:3000/';
+const address = 'http:// ip-172-31-80-127.ec2.internal:3000/';
 
 async function addMilestoneToDB (projectId, milestoneId, milestoneName, newColor, tasks) {
     let postData = {
@@ -11,7 +11,7 @@ async function addMilestoneToDB (projectId, milestoneId, milestoneName, newColor
         tasks: tasks
     };
     if (postData != null) {
-        const response = await axios.post(adress + 'milestoneDB', postData)
+        const response = await axios.post(address + 'milestoneDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -32,7 +32,7 @@ async function deleteMilestoneFromDB (projectId, milestoneId, userId) {
         userId: userId
     };
     if (postData != null) {
-        const response = await axios.post(adress + 'milestoneDB', postData)
+        const response = await axios.post(address + 'milestoneDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -55,7 +55,7 @@ async function updateMilestoneInDB (projectId, milestoneId, milestoneName, newCo
         tasks: tasks
     };
     if (postData != null) {
-        const response = await axios.post(adress + 'milestoneDB', postData)
+        const response = await axios.post(address + 'milestoneDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -75,7 +75,7 @@ async function saveMilestoneToDB(projectId, projectData) {
         projectData: projectData
     };
     if (postData != null) {
-        const response = await axios.post(adress + 'milestoneDB', postData)
+        const response = await axios.post(address + 'milestoneDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;

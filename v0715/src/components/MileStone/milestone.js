@@ -296,7 +296,6 @@ const Milestone = () => {
                             label="Search"
                             />
                         </div>
-                        <div className='userlabel'><span>ログイン中のユーザー:</span>{userData.userId}<button onClick={()=>logOut()}>ロッグアウト</button></div>
                         <button onClick={() => {OverShow(1)}}>新規マイルストーン</button>
                     </div>
                     <DragDropContext onDragEnd={onDragEnd}>

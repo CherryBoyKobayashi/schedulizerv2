@@ -1,13 +1,13 @@
 const axios = require('axios').default;
 
-const adress = 'http://localhost:3000/';
+const address = 'http:// ip-172-31-80-127.ec2.internal:3000/';
 
 async function getProjectsFromDB (username) {
     let postData = {
         username: username
     };
     if (postData != null) {
-        const response = axios.post(adress + 'projectDB', postData)
+        const response = axios.post(address + 'projectDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -36,7 +36,7 @@ async function addProjectToDB (userId, projectId, projectName, projectDescriptio
     };
   
     if (postData != null) {
-        const response = await axios.post(adress + 'projectDB', postData)
+        const response = await axios.post(address + 'projectDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -56,7 +56,7 @@ async function getProjectDetailsFromDB (projectId) {
     };
   
     if (postData != null) {
-        const response = axios.post(adress + 'projectDB', postData)
+        const response = axios.post(address + 'projectDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -80,7 +80,7 @@ async function deleteProjectFromDB(userId, projectId) {
     };
   
     if (postData != null) {
-        const response = await axios.post(adress + 'projectDB', postData)
+        const response = await axios.post(address + 'projectDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -102,7 +102,7 @@ async function updateProjectInDB(projectId, newProjectName, newProjectDescriptio
     };
 
     if (postData != null) {
-        const response = await axios.post(adress + 'projectDB', postData)
+        const response = await axios.post(address + 'projectDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -122,7 +122,7 @@ async function getAdditionalProjectsFromDB (username){
         additional: true
     };
     if (postData != null) {
-        const response = await axios.post(adress + 'projectDB', postData)
+        const response = await axios.post(address + 'projectDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;

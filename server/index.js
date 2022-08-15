@@ -7,7 +7,7 @@ import { LowSync, JSONFileSync } from 'lowdb'
 
 const app = express()
 app.use(express.json())
-const adapter = new JSONFileSync('./db.json')
+const adapter = new JSONFileSync('../db.json')
 const db = new LowSync(adapter)
 
 // const myFormat = printf(({ level, message,  timestamp }) => {

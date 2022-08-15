@@ -1,6 +1,6 @@
 const axios = require('axios').default;
 
-const adress = 'http://localhost:3000/';
+const address = 'http:// ip-172-31-80-127.ec2.internal:3000/';
 
 async function addTaskToDB (projectId, milestoneId, taskId, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress) {
     let postData = {
@@ -22,7 +22,7 @@ async function addTaskToDB (projectId, milestoneId, taskId, taskName, startTime,
     };
 
     if (postData != null) {
-        const response = await axios.post(adress + 'taskDB', postData)
+        const response = await axios.post(address + 'taskDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -43,7 +43,7 @@ async function getTaskDetails(taskId, userId) {
     };
   
     if (postData != null) {
-        const response = await axios.post(adress + 'taskDB', postData)
+        const response = await axios.post(address + 'taskDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -68,7 +68,7 @@ async function deleteTask(taskId,userId) {
     };
   
     if (postData != null) {
-        const response = await axios.post(adress + 'taskDB', postData)
+        const response = await axios.post(address + 'taskDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -102,7 +102,7 @@ async function updateTaskInDB(projectId, milestoneId, taskId, taskName, startTim
     };
   
     if (postData != null) {
-        const response = await axios.post(adress + 'taskDB', postData)
+        const response = await axios.post(address + 'taskDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;

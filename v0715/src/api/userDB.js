@@ -1,6 +1,6 @@
 const axios = require('axios').default;
 
-const adress = 'http://localhost:3000/';
+const address = 'http:// ip-172-31-80-127.ec2.internal:3000/';
 
 async function addUserToDB(username, mail, password) {
     let return_value = 0;
@@ -13,7 +13,7 @@ async function addUserToDB(username, mail, password) {
                 password: password
             };
 
-            const new_response = await axios.post(adress + 'userDB', postData).catch((err) => {
+            const new_response = await axios.post(address + 'userDB', postData).catch((err) => {
                 return "error";
             })
 
@@ -33,7 +33,7 @@ async function getUserFromDB (username, password) {
     };
 
     if (postData != null) {
-        const response = axios.post(adress + 'userDB', postData)
+        const response = axios.post(address + 'userDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -59,7 +59,7 @@ async function deleteUserFromDB(username, password) {
     };
   
     if (postData != null) {
-        const response = await axios.post(adress + 'userDB', postData)
+        const response = await axios.post(address + 'userDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 response_value = 1;
@@ -82,7 +82,7 @@ async function getUsersFromDB () {
     };
   
     if (postData != null) {
-        const response = await axios.post(adress + 'userDB', postData)
+        const response = await axios.post(address + 'userDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
