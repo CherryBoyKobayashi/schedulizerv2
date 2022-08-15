@@ -1,6 +1,6 @@
 const axios = require('axios').default;
 
-const address = 'http://localhost:3000/';
+const address = 'http://44.204.175.25:3000/';
 
 async function addTaskToDB (projectId, milestoneId, taskId, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress) {
     let postData = {
