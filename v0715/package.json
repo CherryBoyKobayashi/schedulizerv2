@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Cleaned up version of Jooto-pakuri",
   "scripts": {
-    "start": "concurrently --kill-others \"node ../server/index.js\" \"webpack serve\"",
+    "start": "webpack serve",
     "build": "webpack --mode production"
   },
   "repository": {
