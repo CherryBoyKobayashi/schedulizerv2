@@ -7,7 +7,7 @@ import { LowSync, JSONFileSync } from 'lowdb'
 
 const app = express()
 app.use(express.json())
-const adapter = new JSONFileSync('../db.json')
+const adapter = new JSONFileSync('./db.json')
 const db = new LowSync(adapter)
 
 // const myFormat = printf(({ level, message,  timestamp }) => {
@@ -23,6 +23,11 @@ const db = new LowSync(adapter)
 //     new winston.transports.File({ filename: 'error.log' }),
 //   ]
 // }));
+
+app.get('/hello', function (req, res) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.send('Hello World');
+})
 
 app.post('/userDB', async (req, res) => {
   try {
@@ -41,17 +46,21 @@ app.post('/userDB', async (req, res) => {
             db.data.user_projects = db.data.user_projects.filter(data => data.username != user.username)
             db.data.tasks = db.data.tasks.filter(data => data.creator != user.username)
             await db.write()
+            res.header("Access-Control-Allow-Origin", "*");
             res.sendStatus(200);
           } else {
+            res.header("Access-Control-Allow-Origin", "*");
             res.send(user);
           }
         }
         else {
+          res.header("Access-Control-Allow-Origin", "*");
           res.sendStatus(401);
         }
       }
       else {
         if (req.body.mail == undefined) {
+          res.header("Access-Control-Allow-Origin", "*");
           res.sendStatus(204);
         } else {
           const {users} = db.data
@@ -59,14 +68,17 @@ app.post('/userDB', async (req, res) => {
           const {user_projects} = db.data
           user_projects.push({username: req.body.username, projects: []})
           await db.write()
+          res.header("Access-Control-Allow-Origin", "*");
           res.sendStatus(200)
         }
       }
     }
     else {
+      res.header("Access-Control-Allow-Origin", "*");
       res.send(users.map(a => a.username))
     }
   } catch {
+    res.header("Access-Control-Allow-Origin", "*");
     res.sendStatus(500);
   }
 })
@@ -90,14 +102,17 @@ app.post('/projectDB', async (req, res) => {
             }
           }
         }
+        res.header("Access-Control-Allow-Origin", "*");
         res.send(additionalProjects)
       } else {
         const {user_projects} = db.data
         let user_project = user_projects.find((u) => u.username == req.body.username)
         if(user_project != undefined) {
+          res.header("Access-Control-Allow-Origin", "*");
           res.send(user_project);
         }
         else {
+          res.header("Access-Control-Allow-Origin", "*");
           res.sendStatus(204)
         }
       }
@@ -113,23 +128,28 @@ app.post('/projectDB', async (req, res) => {
             let user_project = user_projects.find((u) => u.username == req.body.userId)
             user_project.projects = user_project.projects.filter(data => data != req.body.projectId)
             await db.write()
+            res.header("Access-Control-Allow-Origin", "*");
             res.sendStatus(200);
           } else {
+            res.header("Access-Control-Allow-Origin", "*");
             res.sendStatus(204);
           }
         } else {
           if (req.body.projectName == undefined) {
+            res.header("Access-Control-Allow-Origin", "*");
             res.send(project);
           } else {
             project.projectName = req.body.projectName;
             project.projectDescription = req.body.projectDescription;
             await db.write()
+            res.header("Access-Control-Allow-Origin", "*");
             res.sendStatus(200)
           }
         }
       }
       else {
         if (req.body.userId == undefined) {
+          res.header("Access-Control-Allow-Origin", "*");
           res.send(204);
         } else {
           db.data ||= { user_projects: [] }
@@ -142,11 +162,13 @@ app.post('/projectDB', async (req, res) => {
           const {projects} = db.data
           projects.push(pproject)
           await db.write()
+          res.header("Access-Control-Allow-Origin", "*");
           res.sendStatus(200)
         }
       }
     }
   } catch {
+    res.header("Access-Control-Allow-Origin", "*");
     res.sendStatus(500);
   }
 })
@@ -161,6 +183,7 @@ app.post('/milestoneDB', async (req, res) => {
       if(req.body.projectData != undefined) {
         project.projectData = req.body.projectData
         await db.write()
+        res.header("Access-Control-Allow-Origin", "*");
         res.sendStatus(200)
       } else {
         if(project.projectData != undefined) {
@@ -172,12 +195,14 @@ app.post('/milestoneDB', async (req, res) => {
               milestone.color = req.body.color;
               milestone.tasks = req.body.tasks;
               await db.write()
+              res.header("Access-Control-Allow-Origin", "*");
               res.sendStatus(200)
             } else {
               if (project.projectData.filter(data => data.milestoneId != req.body.milestoneId) != null) {
                 if(project.projectCreator == req.body.userId) {
                   project.projectData = project.projectData.filter(data => data.milestoneId != req.body.milestoneId)
                   await db.write()
+                  res.header("Access-Control-Allow-Origin", "*");
                   res.sendStatus(200)
                 }
               }
@@ -186,6 +211,7 @@ app.post('/milestoneDB', async (req, res) => {
             delete req.body.projectId;
             project.projectData.push(req.body)
             await db.write()
+            res.header("Access-Control-Allow-Origin", "*");
             res.sendStatus(200)
           }
         }
@@ -193,10 +219,12 @@ app.post('/milestoneDB', async (req, res) => {
     }
     else {
       if (req.body.userId == undefined) {
+        res.header("Access-Control-Allow-Origin", "*");
         res.send(204);
       }
     }
   } catch {
+    res.header("Access-Control-Allow-Origin", "*");
     res.sendStatus(500);
   }
 })
@@ -212,9 +240,11 @@ app.post('/taskDB', async (req, res) => {
         if(task != undefined && task.creator == req.body.userId) {
           db.data.tasks = db.data.tasks.filter(data => data.taskId != task.taskId)
           await db.write()
+          res.header("Access-Control-Allow-Origin", "*");
           res.sendStatus(200);
         }
         else {
+          res.header("Access-Control-Allow-Origin", "*");
           res.sendStatus(204)
         }
       } else {
@@ -222,9 +252,11 @@ app.post('/taskDB', async (req, res) => {
         const {tasks} = db.data
         let task = tasks.find((u) => u.taskId == req.body.taskId && u.members.includes(req.body.userId))
         if(task != undefined) {
+          res.header("Access-Control-Allow-Origin", "*");
           res.send(task);
         }
         else {
+          res.header("Access-Control-Allow-Origin", "*");
           res.sendStatus(204)
         }
       }
@@ -249,9 +281,11 @@ app.post('/taskDB', async (req, res) => {
         db.data.tasks = db.data.tasks.map(obj => [req.body].find(o => o.taskId == obj.taskId) || obj)
         await db.write();
       }
+      res.header("Access-Control-Allow-Origin", "*");
       res.sendStatus(200);
     }
   } catch {
+    res.header("Access-Control-Allow-Origin", "*");
     res.sendStatus(500);
   }
 })

@@ -1,6 +1,6 @@
 const axios = require('axios').default;
 
-const address = 'http:// ip-172-31-80-127.ec2.internal:3000/';
+const address = 'http://localhost:3000/';
 
 async function addUserToDB(username, mail, password) {
     let return_value = 0;
