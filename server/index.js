@@ -1,14 +1,25 @@
 import express from 'express'
+import path from 'path'
+import { fileURLToPath } from 'url';
+import cors from 'cors'
 import { LowSync, JSONFileSync } from 'lowdb'
 // import winston from 'winston'
 // import expressWinston from 'express-winston'
 
 // const { combine, timestamp, label, printf,  } = winston.format;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const app = express();
+app.use(cors());
+app.use(express.json());
+var DIST_DIR = path.join(__dirname, "build");
+app.use(express.static(DIST_DIR));
+const adapter = new JSONFileSync('./db.json');
+const db = new LowSync(adapter);
 
-const app = express()
-app.use(express.json())
-const adapter = new JSONFileSync('./db.json')
-const db = new LowSync(adapter)
+app.get("*", function (req, res) {
+  res.sendFile(path.join(DIST_DIR, "index.html"));
+});
 
 // const myFormat = printf(({ level, message,  timestamp }) => {
 //   return `${timestamp} ${level}: ${message}`;
@@ -24,12 +35,7 @@ const db = new LowSync(adapter)
 //   ]
 // }));
 
-app.get('/hello', function (req, res) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.send('Hello World');
-})
-
-app.post('/userDB', async (req, res) => {
+app.post('/api/userDB', async (req, res) => {
   try {
     await db.read()
     db.data ||= { users: [] }
@@ -76,7 +82,7 @@ app.post('/userDB', async (req, res) => {
   }
 })
 
-app.post('/projectDB', async (req, res) => {
+app.post('/api/projectDB', async (req, res) => {
   try {
     await db.read()
     db.data ||= { projects: [] }
@@ -156,7 +162,7 @@ app.post('/projectDB', async (req, res) => {
   }
 })
 
-app.post('/milestoneDB', async (req, res) => {
+app.post('/api/milestoneDB', async (req, res) => {
   try {
     await db.read()
     db.data ||= { projects: [] }
@@ -206,7 +212,7 @@ app.post('/milestoneDB', async (req, res) => {
   }
 })
 
-app.post('/taskDB', async (req, res) => {
+app.post('/api/taskDB', async (req, res) => {
   try {
     await db.read()
     if(req.body.userId != undefined) {

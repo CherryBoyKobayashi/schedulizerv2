@@ -6,7 +6,12 @@ module.exports = {
     entry: "./src/index.js",
     devServer: {
       port: 8080,
-      historyApiFallback: true,
+      historyApiFallback: true
+    },
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      publicPath: '',
+      filename: 'bundle.js'
     },
     module: {
         rules: [
