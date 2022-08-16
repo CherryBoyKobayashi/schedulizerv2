@@ -1,16 +1,7 @@
 {
   "users": [
-    {
-      "username": "a",
-      "mail": "a@a",
-      "password": "a"
-    }
   ],
   "user_projects": [
-    {
-      "username": "a",
-      "projects": []
-    }
   ],
   "projects": [],
   "tasks": []
