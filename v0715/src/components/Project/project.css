@@ -35,6 +35,9 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
     transition: 0.5s;
 }
+.spanDate {
+    margin: auto;
+}
 .project:hover{
     border: 1px solid var(--green);
     box-shadow: 0 0 35px var(--green);

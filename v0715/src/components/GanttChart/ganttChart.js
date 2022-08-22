@@ -20,7 +20,6 @@ const GanttChart = () => {
     const [isChecked, setIsChecked] = useState(true)
     const userData = useContext(userDataContext)
     const {projectId} = useParams()
-    console.log(userData)
     const project = userData.projects[projectId].projectData
     const [modalIsOpen, setIsOpen] = useState(false)
     const allMembers = JSON.parse(localStorage.getItem("members"))
@@ -178,24 +177,28 @@ const GanttChart = () => {
         return [start, end]
     }
     async function handleTaskChange(task) {
-        let newTasks = tasks.map(t => (t.id === task.id ? task : t))
-        if (task.project) {
-            const [start, end] = getStartEndDateForProject(newTasks, task.project)
-            const project = newTasks[newTasks.findIndex(t => t.id === task.project)]
-            if (project.start.getTime() !== start.getTime() || project.end.getTime() !== end.getTime()) {
-                const changedProject = { ...project, start, end }
-                newTasks = newTasks.map(t => t.id === task.project ? changedProject : t)
+        if (userData.userId == userData.projects[projectId].projectCreator) {
+            let newTasks = tasks.map(t => (t.id === task.id ? task : t))
+            if (task.project) {
+                const [start, end] = getStartEndDateForProject(newTasks, task.project)
+                const project = newTasks[newTasks.findIndex(t => t.id === task.project)]
+                if (project.start.getTime() !== start.getTime() || project.end.getTime() !== end.getTime()) {
+                    const changedProject = { ...project, start, end }
+                    newTasks = newTasks.map(t => t.id === task.project ? changedProject : t)
+                }
             }
+            await updateMilestoneAndTasks(task)
         }
-        await updateMilestoneAndTasks(task)
     }
     async function handleTaskDelete(task) {//Deleteボタン押下
-        const conf = window.confirm("本当に消すでな " + task.name + "を?")
-        if (conf) {
-            await deleteMilestoneAndTasks(task.index)
-            setTasks(tasks.filter(t => !t.id.includes(task.id)))
+        if (userData.userId == userData.projects[projectId].projectCreator) {
+            const conf = window.confirm("本当に消すでな " + task.name + "を?")
+            if (conf) {
+                await deleteMilestoneAndTasks(task.index)
+                setTasks(tasks.filter(t => !t.id.includes(task.id)))
+            }
+            setTasks(initTasks())
         }
-        setTasks(initTasks())
     }
     const handleProgressChange = async (task) => {
         let newTasks = tasks.map(t => (t.id === task.id ? task : t))
@@ -210,7 +213,6 @@ const GanttChart = () => {
         sessionStorage.setItem("updateTaskId", splitList[1])
         setIsOpen(true)
     }
-
     const handleSelect = (task, isSelected) => {
         console.log(task.name + " が " + (isSelected ? "選択された" : "選択解除"))
         console.log(isSelected)

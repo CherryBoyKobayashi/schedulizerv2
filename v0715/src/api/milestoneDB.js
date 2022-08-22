@@ -1,7 +1,8 @@
 const axios = require('axios').default;
 
 // const address = 'http://44.204.175.25:3000/';
-const address = '/api/';
+// const address = '/api/';
+const address = 'http://localhost:3000/api/';
 
 async function addMilestoneToDB (projectId, milestoneId, milestoneName, newColor, tasks) {
     let postData = {

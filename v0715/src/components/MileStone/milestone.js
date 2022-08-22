@@ -23,6 +23,9 @@ Modal.setAppElement("#root");
 const Milestone = () => {
     const userData = useContext(userDataContext)
     const {projectId} = useParams()
+    if (userData.projects[projectId] == undefined) {
+        window.location.replace('/')
+    }
     const milestoneObj = userData.projects[projectId].projectData
     const [modalIsOpen, setIsOpen] = useState(false)
     const [flag, setFlag] = useState()
@@ -179,87 +182,165 @@ const Milestone = () => {
                 )
             }
         if (flag === 4) {
-            return (
-                <>
-                    <div className='milestoneNameDiv'>
-                        <span>{milestoneObj[milestoneId].milestoneName}</span>
-                        <input type="checkbox" id="followState" defaultChecked={checked} onChange={(e) => isSetChecked(e.target.checked)}/>
-                        <label htmlFor='followState'>{checked ? <AiFillStar/> : <AiOutlineStar/>}</label>
-                    </div>
-                    <h4 className='textAlignLeft'>タスク名</h4>
-                    <div><input defaultValue={updateTask.taskData["task-name"]} type='text' id="taskName" /></div>
-                    <h4 className='textAlignLeft'>タスク説明</h4>
-                    <div><input type="text" id="taskDescription" defaultValue={updateTask.taskData["description"]}></input></div>
-                    <div>
-                        <h4 className='textAlignLeft'><BsCalendarDate className='transformClass2'/>期間設定</h4>
-                        <DatePicker selectsRange={true} startDate={startDate} endDate={endDate} onChange={(update) => {setDateRange(update);}} isClearable={true} />
-                        <h4 className='textAlignLeft'><MdOutlineSupervisorAccount className='transformClass2'/>担当者</h4>
-                        <Select value={members} isMulti options={allMembers} onChange={setMembers} defaultValue={members} />
-                        <h4 className='textAlignLeft'><BiLabel className='transformClass2'/>ラベル</h4>
-                        <Select options={labels} onChange={setLabels}  defaultValue={labels.find((l) => l.value === updateTask.taskData["priority"])}></Select>
-                        <h4 className='textAlignLeft' style={{display: 'none'}}><BsBookmarkCheck className='transformClass2'/>チェックポイント</h4><input style={{display: 'none'}} defaultValue={updateTask.taskData["checkpoints"]} type='text' id="checkpointName" />
-                    </div>
-                    <button className='minWidth' onClick={()=> {sessionStorage.setItem("startDate", startDate); sessionStorage.setItem("endDate", endDate); sessionStorage.setItem("newMembers", JSON.stringify(members)); updateTaskHere(milestoneId, taskIndex, checkpoints, updateTask.taskData["comments"], label.value); setIsOpen(false);}}>更新</button>
-                </>
-                )
+            if(userData.userId == userData.projects[projectId].projectCreator) {
+                return (
+                    <>
+                        <div className='milestoneNameDiv'>
+                            <span>{milestoneObj[milestoneId].milestoneName}</span>
+                            <input type="checkbox" id="followState" defaultChecked={checked} onChange={(e) => isSetChecked(e.target.checked)}/>
+                            <label htmlFor='followState'>{checked ? <AiFillStar/> : <AiOutlineStar/>}</label>
+                        </div>
+                        <h4 className='textAlignLeft'>タスク名</h4>
+                        <div><input defaultValue={updateTask.taskData["task-name"]} type='text' id="taskName" /></div>
+                        <h4 className='textAlignLeft'>タスク説明</h4>
+                        <div><input type="text" id="taskDescription" defaultValue={updateTask.taskData["description"]}></input></div>
+                        <div>
+                            <h4 className='textAlignLeft'><BsCalendarDate className='transformClass2'/>期間設定</h4>
+                            <DatePicker selectsRange={true} startDate={startDate} endDate={endDate} onChange={(update) => {setDateRange(update);}} isClearable={true} />
+                            <h4 className='textAlignLeft'><MdOutlineSupervisorAccount className='transformClass2'/>担当者</h4>
+                            <Select value={members} isMulti options={allMembers} onChange={setMembers} defaultValue={members} />
+                            <h4 className='textAlignLeft'><BiLabel className='transformClass2'/>ラベル</h4>
+                            <Select options={labels} onChange={setLabels}  defaultValue={labels.find((l) => l.value === updateTask.taskData["priority"])}></Select>
+                            <h4 className='textAlignLeft' style={{display: 'none'}}><BsBookmarkCheck className='transformClass2'/>チェックポイント</h4><input style={{display: 'none'}} defaultValue={updateTask.taskData["checkpoints"]} type='text' id="checkpointName" />
+                        </div>
+                        <button className='minWidth' onClick={()=> {sessionStorage.setItem("startDate", startDate); sessionStorage.setItem("endDate", endDate); sessionStorage.setItem("newMembers", JSON.stringify(members)); updateTaskHere(milestoneId, taskIndex, checkpoints, updateTask.taskData["comments"], label.value); setIsOpen(false);}}>更新</button>
+                    </>
+                    )
+            } else {
+                return (
+                    <>
+                        <div className='milestoneNameDiv'>
+                            <span>{milestoneObj[milestoneId].milestoneName}</span>
+                            <input type="checkbox" id="followState" defaultChecked={checked} onChange={(e) => isSetChecked(e.target.checked)}/>
+                            <label htmlFor='followState'>{checked ? <AiFillStar/> : <AiOutlineStar/>}</label>
+                        </div>
+                        <h4 className='textAlignLeft'>タスク名</h4>
+                        <div><input defaultValue={updateTask.taskData["task-name"]} type='text' id="taskName" /></div>
+                        <h4 className='textAlignLeft'>タスク説明</h4>
+                        <div><input type="text" id="taskDescription" defaultValue={updateTask.taskData["description"]}></input></div>
+                        <div>
+                            <h4 className='textAlignLeft'><BsCalendarDate className='transformClass2'/>期間設定</h4>
+                            <DatePicker selectsRange={true} startDate={startDate} endDate={endDate} onChange={(update) => {setDateRange(update);}} isClearable={true} />
+                            <h4 className='textAlignLeft'><MdOutlineSupervisorAccount className='transformClass2'/>担当者</h4>
+                            <Select value={members} isMulti options={allMembers} onChange={setMembers} defaultValue={members} />
+                            <h4 className='textAlignLeft'><BiLabel className='transformClass2'/>ラベル</h4>
+                            <Select options={labels} onChange={setLabels}  defaultValue={labels.find((l) => l.value === updateTask.taskData["priority"])}></Select>
+                            <h4 className='textAlignLeft' style={{display: 'none'}}><BsBookmarkCheck className='transformClass2'/>チェックポイント</h4><input style={{display: 'none'}} defaultValue={updateTask.taskData["checkpoints"]} type='text' id="checkpointName" />
+                        </div>
+                    </>
+                    )
             }
+        }
+
     }
     const MilestoneChild = ({color, tasks, milestoneId}) => {
-        return (
-            <>
-                <Droppable droppableId={milestoneId}>
-                    {(provided) => (
-                        <div className='milestone'>
-                            <div className='colorDiv' style={{backgroundColor: color}}></div>
-                            <div className='infoDiv'>
-                                <span className='milestoneName'>{milestoneObj[milestoneId].milestoneName}</span>
-                                <div className='editDiv'>
-                                    <button className='borderNone' onClick={() => {deleteMilestoneHere(milestoneId)}}><span ><MdDeleteForever className='transformClass'/></span></button>
-                                    <button className='borderNone' onClick={() => {sessionStorage.setItem("updateMilestone", JSON.stringify([milestoneId, color, Object.values(tasks)])); OverShow(2)}}><span ><MdEditNote className='transformClass'/></span></button>
+        if(userData.userId == userData.projects[projectId].projectCreator) {
+            return (
+                <>
+                    <Droppable droppableId={milestoneId}>
+                        {(provided) => (
+                            <div className='milestone'>
+                                <div className='colorDiv' style={{backgroundColor: color}}></div>
+                                <div className='infoDiv'>
+                                    <span className='milestoneName'>{milestoneObj[milestoneId].milestoneName}</span>
+                                    <div className='editDiv'>
+                                        <button className='borderNone' onClick={() => {deleteMilestoneHere(milestoneId)}}><span ><MdDeleteForever className='transformClass'/></span></button>
+                                        <button className='borderNone' onClick={() => {sessionStorage.setItem("updateMilestone", JSON.stringify([milestoneId, color, Object.values(tasks)])); OverShow(2)}}><span ><MdEditNote className='transformClass'/></span></button>
+                                    </div>
                                 </div>
+                                <div className='taskAddDiv'>
+                                    <button onClick={() => {OverShow(3); sessionStorage.setItem("updateMilestoneId", milestoneId)}}>新規タスク追加</button>
+                                </div>
+                                <div className='tasksDiv'  {...provided.droppableProps} ref={provided.innerRef}>
+                                {Object.values(tasks).map((e, i) => <TaskChild key={e.taskId} {...e} milestoneId={milestoneId} index={i}/>)}
+                                </div>
+                                {provided.placeholder}
                             </div>
-                            <div className='taskAddDiv'>
-                                <button onClick={() => {OverShow(3); sessionStorage.setItem("updateMilestoneId", milestoneId)}}>新規タスク追加</button>
+                        )}
+                    </Droppable>
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <Droppable droppableId={milestoneId}>
+                        {(provided) => (
+                            <div className='milestone'>
+                                <div className='colorDiv' style={{backgroundColor: color}}></div>
+                                <div className='infoDiv'>
+                                    <span className='milestoneName'>{milestoneObj[milestoneId].milestoneName}</span>    
+                                </div>
+                                <div className='taskAddDiv'>
+                                </div>
+                                <div className='tasksDiv'  {...provided.droppableProps} ref={provided.innerRef}>
+                                {Object.values(tasks).map((e, i) => <TaskChild key={e.taskId} {...e} milestoneId={milestoneId} index={i}/>)}
+                                </div>
+                                {provided.placeholder}
                             </div>
-                            <div className='tasksDiv'  {...provided.droppableProps} ref={provided.innerRef}>
-                            {Object.values(tasks).map((e, i) => <TaskChild key={e.taskId} {...e} milestoneId={milestoneId} index={i}/>)}
-                            </div>
-                            {provided.placeholder}
-                        </div>
-                    )}
-                </Droppable>
-            </>
-        )
+                        )}
+                    </Droppable>
+                </>
+            )
+        }
     }
     // タスクDivよね～ん
     const TaskChild = (props) => {
-        if (dispTasks.includes(props.taskId)) {
-            return (
-                <Draggable draggableId={props.taskId} index={props.index} >
-                {(provided, snapshot) =>(
-                    <div className='task' onClick={() => {sessionStorage.setItem("updateTask", JSON.stringify(props)); sessionStorage.setItem("updateMilestoneId", props.milestoneId); sessionStorage.setItem("updateTaskIndex", props.index);OverShow(4)}} ref={provided.innerRef} snapshot={snapshot} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        <span>{props.taskData['task-name']}</span>
-                        <div className='editDiv'>
-                            <button className='borderNone' onClick={(e) => {e.stopPropagation(); deleteTaskHere(props.milestoneId, props.taskId);}}><MdDeleteForever className='transformClass'/></button>
-                        </div>
-                    </div>
-                )}
-                </Draggable>
-            )
-        }
-        else {
-            return (
-                <Draggable draggableId={props.taskId} index={props.index} >
+        if(userData.userId == userData.projects[projectId].projectCreator) {
+            if (dispTasks.includes(props.taskId)) {
+                return (
+                    <Draggable draggableId={props.taskId} index={props.index} >
                     {(provided, snapshot) =>(
-                        <div className='task'  onClick={() => {sessionStorage.setItem("updateTask", JSON.stringify(props)); sessionStorage.setItem("updateMilestoneId", props.milestoneId); sessionStorage.setItem("updateTaskIndex", props.index);OverShow(4)}} ref={provided.innerRef} snapshot={snapshot} {...provided.draggableProps} {...provided.dragHandleProps}>
-                            <span style={{color: "#E8E8E8"}}>{props.taskData['task-name']}</span>
+                        <div className='task' onClick={() => {sessionStorage.setItem("updateTask", JSON.stringify(props)); sessionStorage.setItem("updateMilestoneId", props.milestoneId); sessionStorage.setItem("updateTaskIndex", props.index);OverShow(4)}} ref={provided.innerRef} snapshot={snapshot} {...provided.draggableProps} {...provided.dragHandleProps}>
+                            <span>{props.taskData['task-name']}</span>
                             <div className='editDiv'>
-                                <button className='borderNone'  style={{color: "#E8E8E8"}} onClick={(e) => {e.stopPropagation(); deleteTaskHere(props.milestoneId, props.taskId);}}><MdDeleteForever className='transformClass'/></button>
+                                <button className='borderNone' onClick={(e) => {e.stopPropagation(); deleteTaskHere(props.milestoneId, props.taskId);}}><MdDeleteForever className='transformClass'/></button>
                             </div>
                         </div>
                     )}
-                </Draggable>
-            )
+                    </Draggable>
+                )
+            }
+            else {
+                return (
+                    <Draggable draggableId={props.taskId} index={props.index} >
+                        {(provided, snapshot) =>(
+                            <div className='task'  onClick={() => {sessionStorage.setItem("updateTask", JSON.stringify(props)); sessionStorage.setItem("updateMilestoneId", props.milestoneId); sessionStorage.setItem("updateTaskIndex", props.index);OverShow(4)}} ref={provided.innerRef} snapshot={snapshot} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                <span style={{color: "#E8E8E8"}}>{props.taskData['task-name']}</span>
+                                <div className='editDiv'>
+                                    <button className='borderNone'  style={{color: "#E8E8E8"}} onClick={(e) => {e.stopPropagation(); deleteTaskHere(props.milestoneId, props.taskId);}}><MdDeleteForever className='transformClass'/></button>
+                                </div>
+                            </div>
+                        )}
+                    </Draggable>
+                )
+            }
+        } else {
+            if (dispTasks.includes(props.taskId)) {
+                return (
+                    <Draggable draggableId={props.taskId} index={props.index} >
+                    {(provided, snapshot) =>(
+                        <div className='task' onClick={() => {sessionStorage.setItem("updateTask", JSON.stringify(props)); sessionStorage.setItem("updateMilestoneId", props.milestoneId); sessionStorage.setItem("updateTaskIndex", props.index);OverShow(4)}} ref={provided.innerRef} snapshot={snapshot} {...provided.dragHandleProps}>
+                            <span>{props.taskData['task-name']}</span>
+                            <div className='editDiv'>
+                            </div>
+                        </div>
+                    )}
+                    </Draggable>
+                )
+            }
+            else {
+                return (
+                    <Draggable draggableId={props.taskId} index={props.index} >
+                        {(provided, snapshot) =>(
+                            <div className='task'  onClick={() => {sessionStorage.setItem("updateTask", JSON.stringify(props)); sessionStorage.setItem("updateMilestoneId", props.milestoneId); sessionStorage.setItem("updateTaskIndex", props.index);OverShow(4)}} ref={provided.innerRef} snapshot={snapshot} {...provided.dragHandleProps}>
+                                <span style={{color: "#E8E8E8"}}>{props.taskData['task-name']}</span>
+                                <div className='editDiv'>
+                                </div>
+                            </div>
+                        )}
+                    </Draggable>
+                )
+            }
         }
     }
     // Modalを表示する時に使ってるよね～ん
@@ -276,37 +357,70 @@ const Milestone = () => {
         milestoneObj[result.destination.droppableId].tasks.splice(result.destination.index, 0, removed);
         saveMilestoneHere();
     }
-    return (
-        <>
-            <div className='mainDiv'>
-                <Topbar/>
-                <Modal isOpen={modalIsOpen} overlayClassName={{base: "overlay-base", afterOpen: "overlay-after", beforeClose: "overlay-before"}} className={{base: "content-base", afterOpen: "content-after", beforeClose: "content-before"}} onRequestClose={() => setIsOpen(false)} closeTimeoutMS={500}>
-                    { flag === 1 && <MilestoneInner1/>}
-                    { flag === 2 && <MilestoneInner1/>}
-                    { flag === 3 && <MilestoneInner2/>}
-                    { flag === 4 && <MilestoneInner2/>}
-                </Modal>
-                <div className='milestoneDiv'>
-                    <div className='topDiv'>
-                        <div>
-                            <TextField
-                            id="outlined-basic"
-                            onChange={inputHandler}
-                            variant="outlined"
-                            label="Search"
-                            />
+    if(userData.userId == userData.projects[projectId].projectCreator) {
+        return (
+            <>
+                <div className='mainDiv'>
+                    <Topbar/>
+                    <Modal isOpen={modalIsOpen} overlayClassName={{base: "overlay-base", afterOpen: "overlay-after", beforeClose: "overlay-before"}} className={{base: "content-base", afterOpen: "content-after", beforeClose: "content-before"}} onRequestClose={() => setIsOpen(false)} closeTimeoutMS={500}>
+                        { flag === 1 && <MilestoneInner1/>}
+                        { flag === 2 && <MilestoneInner1/>}
+                        { flag === 3 && <MilestoneInner2/>}
+                        { flag === 4 && <MilestoneInner2/>}
+                    </Modal>
+                    <div className='milestoneDiv'>
+                        <div className='topDiv'>
+                            <div>
+                                <TextField
+                                id="outlined-basic"
+                                onChange={inputHandler}
+                                variant="outlined"
+                                label="Search"
+                                />
+                            </div>
+                            <button onClick={() => {OverShow(1)}}>新規マイルストーン</button>
                         </div>
-                        <button onClick={() => {OverShow(1)}}>新規マイルストーン</button>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <div className='bottomDiv'>
+                                {Object.entries(milestoneObj).filter(milestone => results.includes(milestone[0])).map((e, i) => <MilestoneChild key={e[0]} {...e[1]} milestoneId={e[0]}/>)}
+                            </div>
+                        </DragDropContext>
                     </div>
-                    <DragDropContext onDragEnd={onDragEnd}>
-                        <div className='bottomDiv'>
-                            {Object.entries(milestoneObj).filter(milestone => results.includes(milestone[0])).map((e, i) => <MilestoneChild key={e[0]} {...e[1]} milestoneId={e[0]}/>)}
-                        </div>
-                    </DragDropContext>
                 </div>
-            </div>
-        </>
-    )
+            </>
+        )
+    } else {
+        return (
+            <>
+                <div className='mainDiv'>
+                    <Topbar/>
+                    <Modal isOpen={modalIsOpen} overlayClassName={{base: "overlay-base", afterOpen: "overlay-after", beforeClose: "overlay-before"}} className={{base: "content-base", afterOpen: "content-after", beforeClose: "content-before"}} onRequestClose={() => setIsOpen(false)} closeTimeoutMS={500}>
+                        { flag === 1 && <MilestoneInner1/>}
+                        { flag === 2 && <MilestoneInner1/>}
+                        { flag === 3 && <MilestoneInner2/>}
+                        { flag === 4 && <MilestoneInner2/>}
+                    </Modal>
+                    <div className='milestoneDiv'>
+                        <div className='topDiv'>
+                            <div>
+                                <TextField
+                                id="outlined-basic"
+                                onChange={inputHandler}
+                                variant="outlined"
+                                label="Search"
+                                />
+                            </div>
+                        </div>
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <div className='bottomDiv'>
+                                {Object.entries(milestoneObj).filter(milestone => results.includes(milestone[0])).map((e, i) => <MilestoneChild key={e[0]} {...e[1]} milestoneId={e[0]}/>)}
+                            </div>
+                        </DragDropContext>
+                    </div>
+                </div>
+            </>
+        )
+    }
 }
 
 export default Milestone

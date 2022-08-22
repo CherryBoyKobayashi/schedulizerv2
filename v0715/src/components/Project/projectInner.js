@@ -1,5 +1,5 @@
 import './project.css'
-import React, { memo, useContext } from "react"
+import React, { memo, useContext, useState } from "react"
 import {addProject, updateProject} from '../../pages/methods/project-methods'
 import { userDataContext } from '../..'
 
@@ -7,6 +7,8 @@ const ProjectInner = memo((props) => {
     const userData = useContext(userDataContext)
     const bool = Object.keys(props).length === 1
     const setIsOpen = props.setIsOpen
+    const [, updateState] = useState()
+    const forceUpdate = React.useCallback(() => updateState({}), [])
 
     const addProjectDiv = async (e) => {
         const projectName = e.target.querySelector("#projectName").value
@@ -14,6 +16,7 @@ const ProjectInner = memo((props) => {
         e.preventDefault()
         await addProject(userData, projectName, projectDescription)
         setIsOpen(false)
+        window.location.reload();
     }
     const updateProjectHere = async (e, projectId) => {
         const projectName = e.target.querySelector("#projectName").value

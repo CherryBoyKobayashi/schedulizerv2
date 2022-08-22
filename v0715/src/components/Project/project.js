@@ -12,6 +12,7 @@ import ProjectInner from './projectInner'
 
 const Project = () => {
     const userData = useContext(userDataContext)
+    console.log(userData.userId)
     const [modalIsOpen, setIsOpen] = useState(false)
     const projectProps = useRef()
     const [results, setResults] = useState(Object.values(userData.projects).map((e => e.projectId)))
@@ -36,20 +37,34 @@ const Project = () => {
 
     const ProjectChild = (props) => {
         const navigate = useNavigate()
-        return (
-            <div className='project' id={props.projectId} onClick={() => {navigate('/milestone/' + props.projectId)}}>
-                <h4>{props.projectName}</h4>
-                <div className='description'>{props.projectDescription}</div>
-                <div className='other'>
-                    <span>{props.projectDate}</span>
-                    <button className='borderNone' onClick={(e) => {e.stopPropagation(); deleteProjectHere(props.projectId);}}>
-                        <MdDeleteForever className='transformClass'/>
-                    </button>
-                    <button className='borderNone' onClick={(e) => {OverShow(e, props)}}>
-                        <MdEditNote className='transformClass'/></button>
+        if (props.projectCreator == userData.userId) {
+            return (
+                <div className='project' id={props.projectId} onClick={() => {navigate('/milestone/' + props.projectId)}}>
+                    <h4>{props.projectName}</h4>
+                    <div className='description'>{props.projectDescription}</div>
+                    <div className='other'>
+                        <span>{props.projectDate}</span>
+                        <button className='borderNone' onClick={(e) => {e.stopPropagation(); deleteProjectHere(props.projectId);}}>
+                            <MdDeleteForever className='transformClass'/>
+                        </button>
+                        <button className='borderNone' onClick={(e) => {OverShow(e, props)}}>
+                            <MdEditNote className='transformClass'/></button>
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        } else {
+            return (
+                <div className='project' id={props.projectId} onClick={() => {navigate('/milestone/' + props.projectId)}}>
+                    <h4>{props.projectName}</h4>
+                    <div className='description'>{props.projectDescription}</div>
+                    <div className='other'>
+                        <div className="spanDate">
+                        <span>{props.projectDate}</span>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
     }
 
     return (
