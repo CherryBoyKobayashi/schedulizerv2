@@ -2,8 +2,11 @@ import { v4 as uuidv4 } from 'uuid';
 import Task from '../task';
 import { addTaskToDB, deleteTask, updateTaskInDB } from '../../api/taskDB';
 
-async function addTask(tasks, taskName, startTime, finishTime, members, priority, userName, checkpoints, description, followState, projectId, milestoneId) {
-    let taskId = uuidv4();
+async function addTask(tasks, taskName, startTime, finishTime, members, priority, userName, checkpoints, description, followState, projectId, milestoneId, taskId) {
+    if (taskId == undefined) {
+        taskId = uuidv4();
+    }
+    console.log(taskId)
     let response = await addTaskToDB(projectId, milestoneId, taskId, taskName, startTime, finishTime, members, priority, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), userName, checkpoints, [""], description, followState, 20);
     if (response == "OK") {
         tasks.push(new Task(taskId, {"task-name": taskName, "start-time":startTime, "finish-time":finishTime, "members": members, "priority": priority, "creation-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "creator":userName,  "checkpoints":checkpoints, "comments": [""], "description":description, "follow-state":followState, "progress": 20}));

@@ -1,7 +1,7 @@
 import {addUserToDB, deleteUserFromDB} from '../../api/userDB';
 
-async function addUser(username, mail, password) {
-    let return_value = await addUserToDB(username, mail, password);
+async function addUser(username, mail, password, group) {
+    let return_value = await addUserToDB(username, mail, password, group);
     return return_value;
 }
 

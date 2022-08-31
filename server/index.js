@@ -75,7 +75,7 @@ app.post('/api/userDB', async (req, res) => {
       }
     }
     else {
-      res.send(users.map(a => a.username))
+      res.send(users)
     }
   } catch {
     res.sendStatus(500);
@@ -222,7 +222,16 @@ app.post('/api/taskDB', async (req, res) => {
         let task = tasks.find((u) => u.taskId == req.body.taskId)
         if(task != undefined && task.creator == req.body.userId) {
           db.data.tasks = db.data.tasks.filter(data => data.taskId != task.taskId)
-          await db.write()
+          for (let project in db.data.projects) {
+            if(db.data.projects[project].projectCreator == req.body.userId) {
+              for (let milestone in db.data.projects[project].projectData) {
+                if (db.data.projects[project].projectData[milestone].tasks.includes(task.taskId)) {
+                  db.data.projects[project].projectData[milestone].tasks = db.data.projects[project].projectData[milestone].tasks.filter(data => data != task.taskId)
+                }
+              }
+            }
+          }
+          await db.write();
           res.sendStatus(200);
         }
         else {
@@ -245,10 +254,12 @@ app.post('/api/taskDB', async (req, res) => {
       const {projects} = db.data
       let project = projects.find((u) => u.projectId == req.body.projectId)
       let milestone = project.projectData.filter(data => data.milestoneId == req.body.milestoneId)[0]
-      let t = milestone.tasks.filter(data => data == req.body.taskId)
+      let t = db.data.tasks.map(e=>e.taskId).filter(data => data == req.body.taskId)
       let {tasks} = db.data
       if (t.length == 0) {
-        milestone.tasks.push(req.body.taskId);
+        if(!milestone.tasks.includes(req.body.taskId)){
+          milestone.tasks.push(req.body.taskId);
+        }
         delete req.body.projectId;
         delete req.body.milestoneId;
         tasks.push(req.body);

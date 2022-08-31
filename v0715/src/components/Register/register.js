@@ -14,7 +14,7 @@ const Register = () => {
             alert("同じパスワードを入力してください")
             return
         }
-        let return_value = await addUser(registerDatas.username, registerDatas.email, registerDatas.password)
+        let return_value = await addUser(registerDatas.username, registerDatas.email, registerDatas.password, registerDatas.group)
         if (return_value === 1) {
             alert("登録しました！")
             navigate('/')
@@ -63,6 +63,12 @@ const Register = () => {
                                 <span>確認用のパスワード</span>
                                 <span>
                                     <input className="form__input" type="password" id="confirmPassword" placeholder="確認用のパスワード" required/>
+                                </span>
+                            </div>
+                            <div className="confirm-password">
+                                <span>所属グループ</span>
+                                <span>
+                                    <input className="form__input" type="text" id="group" placeholder="所属グループ" required/>
                                 </span>
                             </div>
                         </div>

@@ -12,7 +12,7 @@ import ProjectInner from './projectInner'
 
 const Project = () => {
     const userData = useContext(userDataContext)
-    console.log(userData.userId)
+    let keydown = false
     const [modalIsOpen, setIsOpen] = useState(false)
     const projectProps = useRef()
     const [results, setResults] = useState(Object.values(userData.projects).map((e => e.projectId)))
@@ -31,9 +31,32 @@ const Project = () => {
     }
     const OverShow = (e, props) => {
         e.stopPropagation()
-        e.target.id === 'newProjectBtn' ? projectProps.current = null : projectProps.current = props
-        setIsOpen(true)
+        if(keydown) {
+            let copyProps = ''
+            if(props != undefined) {
+                copyProps = JSON.parse(JSON.stringify(props)) 
+            }
+            copyProps.projectId = undefined
+            projectProps.current = copyProps
+            setIsOpen(true)
+        }
+        else {
+            e.target.id === 'newProjectBtn' ? projectProps.current = null : projectProps.current = props
+            setIsOpen(true)
+        }
     }
+
+    document.addEventListener("keydown", function(event) {
+        if (event.key == 'Control') {
+          keydown = true
+        }
+    });
+    document.addEventListener("keyup", function(event) {
+        if (event.key == 'Control') {
+            keydown = false
+        }
+    });
+
 
     const ProjectChild = (props) => {
         const navigate = useNavigate()

@@ -3,7 +3,7 @@ const axios = require('axios').default;
 // const address = '/api/';
 const address = 'http://localhost:3000/api/';
 
-async function addUserToDB(username, mail, password) {
+async function addUserToDB(username, mail, password, group) {
     let return_value = 0;
     const response = await getUserFromDB(username, password)
     if (response == "no value") {
@@ -11,7 +11,8 @@ async function addUserToDB(username, mail, password) {
             let postData = {
                 username: username,
                 mail: mail,
-                password: password
+                password: password,
+                group: group
             };
 
             const new_response = await axios.post(address + 'userDB', postData).catch((err) => {
@@ -83,7 +84,7 @@ async function getUsersFromDB () {
     };
   
     if (postData != null) {
-        const response = await axios.post(address + 'userDB', postData)
+        let response = await axios.post(address + 'userDB', postData)
         .then((res) => {
             if (res.status == 200) {
                 return res.data;
@@ -93,7 +94,7 @@ async function getUsersFromDB () {
             return "error";
         })
 
-        return Array.from(response, (value)=> {return {"value": value, "label": value}});
+        return response;
     }
 }
 

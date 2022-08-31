@@ -153,3 +153,7 @@
 .textAlignLeft{
     text-align: left;
 }
+.groupsAndMembers{
+    position: relative;
+    z-index: 99;
+}

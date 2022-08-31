@@ -32,7 +32,7 @@ async function addTaskToDB (projectId, milestoneId, taskId, taskName, startTime,
         .catch((err) => {
             return "error";
         })
-
+        
         return response;
     }
 }

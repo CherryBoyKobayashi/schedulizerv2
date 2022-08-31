@@ -1,5 +1,6 @@
 import Project from '../project';
 import { deleteTask } from '../../api/taskDB';
+import { addTask } from './task-methods';
 import { v4 as uuidv4 } from 'uuid';
 import {addProjectToDB, deleteProjectFromDB, updateProjectInDB} from '../../api/projectDB'
 
@@ -9,6 +10,41 @@ async function addProject(userData, projectName, projectDescription) {
     let response = await addProjectToDB(userId, projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify([{"milestoneId": "Milestone1", "milestoneName": "マイルストーン1", "color": "red", "tasks": []}]));
     if (response == "OK") {
         userData.projects[projectId] = await projectBuilder(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), [{"milestoneId": "Milestone1", "milestoneName": "マイルストーン1", "color": "red", "tasks": []}]);
+    }
+}
+async function copyProject(userData, projectName, projectDescription, projectData) {
+    let newProjectData = []
+    let userId = userData.userId;
+    let projectId = uuidv4();
+    for(let milestone in projectData) {
+        let newMilestone = JSON.parse(JSON.stringify(projectData[milestone]))
+        newMilestone.milestoneId = uuidv4();
+        for (let task in newMilestone.tasks) {
+            let newTaskId = uuidv4();
+            newMilestone.tasks[task].taskId = newTaskId;
+            newMilestone.tasks[task].taskData.taskId = newTaskId;
+        }
+        newProjectData.push(newMilestone)
+    }
+    let DBData = JSON.parse(JSON.stringify(newProjectData))
+    for (let data in DBData) {
+        DBData[data].tasks = DBData[data].tasks.map(e=>e.taskId)
+    }
+    let response = await addProjectToDB(userId, projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), JSON.stringify(DBData));
+    if (response == "OK") {
+        for (let milestone in newProjectData) {
+            let newMilestone = JSON.parse(JSON.stringify(newProjectData[milestone]))
+            let newTasks = []
+            for (let task in newMilestone.tasks) {
+                await addTask(newTasks, newMilestone.tasks[task].taskData["task-name"], newMilestone.tasks[task].taskData["start-time"], newMilestone.tasks[task].taskData["finish-time"], newMilestone.tasks[task].taskData["members"], newMilestone.tasks[task].taskData["priority"], userId, newMilestone.tasks[task].taskData["checkpoints"], newMilestone.tasks[task].taskData["description"], newMilestone.tasks[task].taskData["follow-state"], projectId, newMilestone.milestoneId, newMilestone.tasks[task].taskId)
+            }
+            newMilestone.tasks = newTasks
+            newProjectData[milestone] = newMilestone
+        }
+        for (let data in newProjectData) {
+            newProjectData[data].tasks = newProjectData[data].tasks.map(e=>e.taskId)
+        }
+        userData.projects[projectId] = await projectBuilder(projectId, projectName, projectDescription, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), newProjectData);
     }
 }
 async function deleteProject(userData, projectId) {
@@ -41,7 +77,9 @@ async function updateProject(userData, projectId, newProjectName, newProjectDesc
         userData.projects[projectId].projectDescription = newProjectDescription;
     }
 }
+
 async function projectBuilder(p1, p2, p3, p4, p5) {
+    console.log(p5)
     let project = new Project();
     project.projectId = p1;
     project.projectName = p2;
@@ -62,4 +100,4 @@ const formatDate = (date, format) => {
     return format
 }
 
-export {addProject, deleteProject, updateProject};
+export {addProject, deleteProject, updateProject, copyProject};

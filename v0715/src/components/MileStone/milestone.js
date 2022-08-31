@@ -1,6 +1,8 @@
 import './milestone.css'
 import "react-datepicker/dist/react-datepicker.css"
 import React, { useContext, useState } from 'react'
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import Modal from 'react-modal/lib/components/Modal'
 import {MdEditNote, MdDeleteForever, MdOutlineSupervisorAccount} from "react-icons/md"
 import {BsBookmarkCheck, BsCalendarDate} from "react-icons/bs"
@@ -20,6 +22,18 @@ import { searchMilestone } from '../../pages/methods/search-methods';
 
 Modal.setAppElement("#root");
 
+let keydown = false
+document.addEventListener("keydown", function(event) {
+    if (event.key == 'Control') {
+      keydown = true
+    }
+});
+document.addEventListener("keyup", function(event) {
+    if (event.key == 'Control') {
+        keydown = false
+    }
+});
+
 const Milestone = () => {
     const userData = useContext(userDataContext)
     const {projectId} = useParams()
@@ -31,9 +45,12 @@ const Milestone = () => {
     const [flag, setFlag] = useState()
     const [, updateState] = useState()
     const forceUpdate = React.useCallback(() => updateState({}), [])
-    const allMembers = JSON.parse(sessionStorage.getItem("members"))
+    const allMembersData = JSON.parse(sessionStorage.getItem("members"))
+    const allMembers = Array.from(allMembersData.map(a => a.username), (value)=> {return {"value": value, "label": value}});
+    const allGroups = Array.from(new Set(allMembersData.map(a => a.group)), (value)=> {return {"value": value, "label": value}});
     const [results, setResults] = useState(Object.keys(milestoneObj))
     const [dispTasks, setDispTasks] = useState((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
+    
 
 
     let inputHandler = (e) => {
@@ -43,11 +60,6 @@ const Milestone = () => {
         setDispTasks(newTasks)
         forceUpdate();
     };
-
-    function logOut() {
-        sessionStorage.removeItem("loggedUserNameForJootoPakuriApp");
-        window.location.replace("/");
-    }
 
     //Milestone methods
     async function addMilestoneHere() {
@@ -134,21 +146,27 @@ const Milestone = () => {
         let taskIndex = sessionStorage.getItem("updateTaskIndex");
         let checkpoints = [];
         let [startTime, finishTime, defaultMembers] = [null, null, []];
+        let defaultGroups = [];
         try {
             let updateTask = JSON.parse(sessionStorage.getItem("updateTask"));
             startTime = new Date(updateTask.taskData["start-time"]);
             finishTime = new Date(updateTask.taskData["finish-time"]);
             for(var i = 0; i < updateTask.taskData["members"].length; i++) {
-                defaultMembers.push({value: updateTask.taskData["members"][i], label: updateTask.taskData["members"][i]})
-            }
+                defaultMembers.push({value: updateTask.taskData["members"][i], label: updateTask.taskData["members"][i]});
+                if(defaultGroups.indexOf(allMembersData.find(element => element.username == updateTask.taskData["members"][i]).group) === -1) {
+                    defaultGroups.push(allMembersData.find(element => element.username == updateTask.taskData["members"][i]).group);
+                }
+            }         
         } catch {
             startTime = new Date();
             finishTime = new Date();
             defaultMembers = allMembers.filter((e) => e.label==userData.userId);
+            defaultGroups.push(allMembersData.filter((e) => e.username==userData.userId)[0].group)
         }
         const [dateRange, setDateRange] = useState([new Date(startTime), new Date(finishTime)]);
         const [startDate, endDate] = dateRange;
         const [members, setMembers] = useState(defaultMembers)
+        const [groups, setGroups] = useState(Array.from(defaultGroups, (value)=> {return {"value": value, "label": value}}))
         const labels = [{value: 'high', label: 'High'},{value: 'medium', label: 'Medium'},{value: 'low', label: 'Low'}]
         const defaultLabel = {value: 'medium', label: 'Medium'}
         const [label, setLabels] = useState(defaultLabel)
@@ -168,44 +186,80 @@ const Milestone = () => {
                     <h4 className='textAlignLeft'>タスク説明</h4>
                     <div><input type="text" id="taskDescription" defaultValue="Task description"></input></div>
                     <div className='nazoDiv'>
-                        <h4 className='textAlignLeft'><BsCalendarDate className='transformClass2'/>期間設定</h4>
-                        <DatePicker selectsRange={true} startDate={startDate} endDate={endDate} onChange={(update) => {setDateRange(update);}} isClearable={true}/>
-                        <h4 className='textAlignLeft'><MdOutlineSupervisorAccount className='transformClass2'/>担当者</h4>
-                        <Select value={members} isMulti options={allMembers} onChange={setMembers} defaultValue={members} />
-                        <h4 className='textAlignLeft'><BiLabel className='transformClass2'/>ラベル</h4>
-                        <Select options={labels} onChange={setLabels}  defaultValue={defaultLabel}></Select>
-                        <h4 className='textAlignLeft' style={{display: 'none'}}><BsBookmarkCheck className='transformClass2'/>チェックポイント</h4>
-                        <input defaultValue="Checkpoint 1" style={{display: 'none'}} type='text' id="checkpointName" />
-                    </div>
-                    <button className='minWidth' onClick={()=> {sessionStorage.setItem("startDate", startDate); sessionStorage.setItem("endDate", endDate); sessionStorage.setItem("newMembers", JSON.stringify(members)); addTaskHere(milestoneId, checkpoints, label.value); setIsOpen(false);}}>追加</button>
-                </>
-                )
-            }
+                    <h4 className='textAlignLeft'><BsCalendarDate className='transformClass2'/>期間設定</h4>
+                    <DatePicker selectsRange={true} startDate={startDate} endDate={endDate} onChange={(update) => {setDateRange(update);}} isClearable={true}/>
+                    <h4 className='textAlignLeft'><MdOutlineSupervisorAccount className='transformClass2'/>担当者</h4>
+                    <h6 className='textAlignLeft'>グループ名</h6>
+                    <Select value={groups} isMulti options={allGroups} onChange={setGroups} defaultValue={groups} />
+                    <h6 className='textAlignLeft'>メンバー</h6>
+                    <Select value={members} isMulti options={Array.from(allMembersData.filter((m) => groups.map(e => e.value).includes(m.group)).map(a => a.username), (value)=> {return {"value": value, "label": value}})} onChange={setMembers} defaultValue={members} />
+                    <h4 className='textAlignLeft'><BiLabel className='transformClass2'/>ラベル</h4>
+                    <Select options={labels} onChange={setLabels}  defaultValue={defaultLabel}></Select>
+                    <h4 className='textAlignLeft' style={{display: 'none'}}><BsBookmarkCheck className='transformClass2'/>チェックポイント</h4>
+                    <input defaultValue="Checkpoint 1" style={{display: 'none'}} type='text' id="checkpointName" />
+                </div>
+                <button className='minWidth' onClick={()=> {sessionStorage.setItem("startDate", startDate); sessionStorage.setItem("endDate", endDate); sessionStorage.setItem("newMembers", JSON.stringify(members)); addTaskHere(milestoneId, checkpoints, label.value); setIsOpen(false);}}>追加</button>
+            </>
+            )
+        }
         if (flag === 4) {
             if(userData.userId == userData.projects[projectId].projectCreator) {
-                return (
-                    <>
-                        <div className='milestoneNameDiv'>
-                            <span>{milestoneObj[milestoneId].milestoneName}</span>
-                            <input type="checkbox" id="followState" defaultChecked={checked} onChange={(e) => isSetChecked(e.target.checked)}/>
-                            <label htmlFor='followState'>{checked ? <AiFillStar/> : <AiOutlineStar/>}</label>
-                        </div>
-                        <h4 className='textAlignLeft'>タスク名</h4>
-                        <div><input defaultValue={updateTask.taskData["task-name"]} type='text' id="taskName" /></div>
-                        <h4 className='textAlignLeft'>タスク説明</h4>
-                        <div><input type="text" id="taskDescription" defaultValue={updateTask.taskData["description"]}></input></div>
-                        <div>
-                            <h4 className='textAlignLeft'><BsCalendarDate className='transformClass2'/>期間設定</h4>
-                            <DatePicker selectsRange={true} startDate={startDate} endDate={endDate} onChange={(update) => {setDateRange(update);}} isClearable={true} />
-                            <h4 className='textAlignLeft'><MdOutlineSupervisorAccount className='transformClass2'/>担当者</h4>
-                            <Select value={members} isMulti options={allMembers} onChange={setMembers} defaultValue={members} />
-                            <h4 className='textAlignLeft'><BiLabel className='transformClass2'/>ラベル</h4>
-                            <Select options={labels} onChange={setLabels}  defaultValue={labels.find((l) => l.value === updateTask.taskData["priority"])}></Select>
-                            <h4 className='textAlignLeft' style={{display: 'none'}}><BsBookmarkCheck className='transformClass2'/>チェックポイント</h4><input style={{display: 'none'}} defaultValue={updateTask.taskData["checkpoints"]} type='text' id="checkpointName" />
-                        </div>
-                        <button className='minWidth' onClick={()=> {sessionStorage.setItem("startDate", startDate); sessionStorage.setItem("endDate", endDate); sessionStorage.setItem("newMembers", JSON.stringify(members)); updateTaskHere(milestoneId, taskIndex, checkpoints, updateTask.taskData["comments"], label.value); setIsOpen(false);}}>更新</button>
-                    </>
+                console.log(keydown)
+                if (keydown) {
+                    return (
+                        <>
+                            <div className='milestoneNameDiv'>
+                                <span>{milestoneObj[milestoneId].milestoneName}</span>
+                                <input type="checkbox" id="followState" defaultChecked={checked} onChange={(e) => isSetChecked(e.target.checked)}/>
+                                <label htmlFor='followState'>{checked ? <AiFillStar/> : <AiOutlineStar/>}</label>
+                            </div>
+                            <h4 className='textAlignLeft'>タスク名</h4>
+                            <div><input defaultValue={updateTask.taskData["task-name"]} type='text' id="taskName" /></div>
+                            <h4 className='textAlignLeft'>タスク説明</h4>
+                            <div><input type="text" id="taskDescription" defaultValue={updateTask.taskData["description"]}></input></div>
+                            <div>
+                                <h4 className='textAlignLeft'><BsCalendarDate className='transformClass2'/>期間設定</h4>
+                                <DatePicker selectsRange={true} startDate={startDate} endDate={endDate} onChange={(update) => {setDateRange(update);}} isClearable={true} />
+                                <h4 className='textAlignLeft'><MdOutlineSupervisorAccount className='transformClass2'/>担当者</h4>
+                                <h6 className='textAlignLeft'>グループ名</h6>
+                                <Select value={groups} isMulti options={allGroups} onChange={setGroups} defaultValue={groups} />
+                                <h6 className='textAlignLeft'>メンバー</h6>
+                                <Select value={members} isMulti options={Array.from(allMembersData.filter((m) => groups.map(e => e.value).includes(m.group)).map(a => a.username), (value)=> {return {"value": value, "label": value}})} onChange={setMembers} defaultValue={members} />
+                                <h4 className='textAlignLeft'><BiLabel className='transformClass2'/>ラベル</h4>
+                                <Select options={labels} onChange={setLabels}  defaultValue={labels.find((l) => l.value === updateTask.taskData["priority"])}></Select>
+                                <h4 className='textAlignLeft' style={{display: 'none'}}><BsBookmarkCheck className='transformClass2'/>チェックポイント</h4><input style={{display: 'none'}} defaultValue={updateTask.taskData["checkpoints"]} type='text' id="checkpointName" />
+                            </div>
+                            <button className='minWidth' onClick={()=> {sessionStorage.setItem("startDate", startDate); sessionStorage.setItem("endDate", endDate); sessionStorage.setItem("newMembers", JSON.stringify(members)); addTaskHere(milestoneId, checkpoints, label.value); setIsOpen(false);}}>追加</button>
+                        </>
                     )
+                } else {
+                    return (
+                        <>
+                            <div className='milestoneNameDiv'>
+                                <span>{milestoneObj[milestoneId].milestoneName}</span>
+                                <input type="checkbox" id="followState" defaultChecked={checked} onChange={(e) => isSetChecked(e.target.checked)}/>
+                                <label htmlFor='followState'>{checked ? <AiFillStar/> : <AiOutlineStar/>}</label>
+                            </div>
+                            <h4 className='textAlignLeft'>タスク名</h4>
+                            <div><input defaultValue={updateTask.taskData["task-name"]} type='text' id="taskName" /></div>
+                            <h4 className='textAlignLeft'>タスク説明</h4>
+                            <div><input type="text" id="taskDescription" defaultValue={updateTask.taskData["description"]}></input></div>
+                            <div>
+                                <h4 className='textAlignLeft'><BsCalendarDate className='transformClass2'/>期間設定</h4>
+                                <DatePicker selectsRange={true} startDate={startDate} endDate={endDate} onChange={(update) => {setDateRange(update);}} isClearable={true} />
+                                <h4 className='textAlignLeft'><MdOutlineSupervisorAccount className='transformClass2'/>担当者</h4>
+                                <h6 className='textAlignLeft'>グループ名</h6>
+                                <Select value={groups} isMulti options={allGroups} onChange={setGroups} defaultValue={groups} />
+                                <h6 className='textAlignLeft'>メンバー</h6>
+                                <Select value={members} isMulti options={Array.from(allMembersData.filter((m) => groups.map(e => e.value).includes(m.group)).map(a => a.username), (value)=> {return {"value": value, "label": value}})} onChange={setMembers} defaultValue={members} />
+                                <h4 className='textAlignLeft'><BiLabel className='transformClass2'/>ラベル</h4>
+                                <Select options={labels} onChange={setLabels}  defaultValue={labels.find((l) => l.value === updateTask.taskData["priority"])}></Select>
+                                <h4 className='textAlignLeft' style={{display: 'none'}}><BsBookmarkCheck className='transformClass2'/>チェックポイント</h4><input style={{display: 'none'}} defaultValue={updateTask.taskData["checkpoints"]} type='text' id="checkpointName" />
+                            </div>
+                            <button className='minWidth' onClick={()=> {sessionStorage.setItem("startDate", startDate); sessionStorage.setItem("endDate", endDate); sessionStorage.setItem("newMembers", JSON.stringify(members)); updateTaskHere(milestoneId, taskIndex, checkpoints, updateTask.taskData["comments"], label.value); setIsOpen(false);}}>更新</button>
+                        </>
+                    )
+                }
             } else {
                 return (
                     <>
@@ -222,7 +276,10 @@ const Milestone = () => {
                             <h4 className='textAlignLeft'><BsCalendarDate className='transformClass2'/>期間設定</h4>
                             <DatePicker selectsRange={true} startDate={startDate} endDate={endDate} onChange={(update) => {setDateRange(update);}} isClearable={true} />
                             <h4 className='textAlignLeft'><MdOutlineSupervisorAccount className='transformClass2'/>担当者</h4>
-                            <Select value={members} isMulti options={allMembers} onChange={setMembers} defaultValue={members} />
+                            <h6 className='textAlignLeft'>グループ名</h6>
+                            <Select value={groups} isMulti options={allGroups} onChange={setGroups} defaultValue={groups} />
+                            <h6 className='textAlignLeft'>メンバー</h6>
+                            <Select value={members} isMulti options={Array.from(allMembersData.filter((m) => groups.map(e => e.value).includes(m.group)).map(a => a.username), (value)=> {return {"value": value, "label": value}})} onChange={setMembers} defaultValue={members} />
                             <h4 className='textAlignLeft'><BiLabel className='transformClass2'/>ラベル</h4>
                             <Select options={labels} onChange={setLabels}  defaultValue={labels.find((l) => l.value === updateTask.taskData["priority"])}></Select>
                             <h4 className='textAlignLeft' style={{display: 'none'}}><BsBookmarkCheck className='transformClass2'/>チェックポイント</h4><input style={{display: 'none'}} defaultValue={updateTask.taskData["checkpoints"]} type='text' id="checkpointName" />
