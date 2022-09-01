@@ -50,7 +50,6 @@ const Milestone = () => {
     const allGroups = Array.from(new Set(allMembersData.map(a => a.group)), (value)=> {return {"value": value, "label": value}});
     const [results, setResults] = useState(Object.keys(milestoneObj))
     const [dispTasks, setDispTasks] = useState((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
-    
 
 
     let inputHandler = (e) => {
