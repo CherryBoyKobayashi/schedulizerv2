@@ -46,6 +46,35 @@ const GanttChart = () => {
     window.addEventListener('resize', () => {
         setBottomDivH(document.querySelector('.bottomDiv').clientHeight)
     });
+    project.sort(function(a,b) {
+        if (a.superMilestoneName<b.superMilestoneName){
+            return -1;
+        } 
+        if (a.superMilestoneName>b.superMilestoneName){
+            return 1;
+        } 
+        else {
+            return 0;
+        }
+    })    
+    project.sort(function(a,b) {
+        if (a.superMilestoneName==b.superMilestoneName) {
+            if (a.milestoneName<b.milestoneName){
+                return -1;
+            } 
+            if (a.milestoneName>b.milestoneName){
+                return 1;
+            } 
+            else {
+                return 0;
+            }
+        }
+    })
+    let superMilestones = []
+    for (let m in project) {
+        if(superMilestones.indexOf(project[m].superMilestoneName) === -1)
+        superMilestones.push(project[m].superMilestoneName)
+    }
 
     function dateHelper(date) {
         let myDate = new Date(date)
@@ -95,9 +124,16 @@ const GanttChart = () => {
         const tasks = []
         let counter = 0;
         let finishedTasks = []
-        for(let milestoneId in project){
-            if (project[milestoneId].tasks.length != 0) {
-                counter++;
+        for(let superMilestone in superMilestones) {
+            let unfinishedMilestones = []
+            let superStartDate = new Date(3022,3,2)
+            let superFinishDate = new Date(2020,3,2)
+            let superMilestoneProgress = 0
+            let superCounter = 0
+            for(let milestoneId in project){
+                if (project[milestoneId].tasks.length != 0) {
+                    if(project[milestoneId].superMilestoneName == superMilestones[superMilestone]){
+                        counter++;
                 let milestone = project[milestoneId].tasks
                 let startDate = new Date(3022,3,2)
                 let finishDate = new Date(2020,3,2)
@@ -114,7 +150,7 @@ const GanttChart = () => {
                             id: milestoneId + "&" + taskId,
                             progress: task['progress'],
                             type: 'task',
-                            project: milestoneId,
+                            project: "完了タスク",
                             styles: { progressColor: "#E8E8E8", progressSelectedColor: '#0900FF' }
                         })
                     } else {
@@ -139,10 +175,18 @@ const GanttChart = () => {
                         if (finishDate < (new Date(milestone[taskId].taskData['finish-time']))) {
                             finishDate = (new Date(milestone[taskId].taskData['finish-time']))
                         }
+                        if (superStartDate > (new Date(milestone[taskId].taskData['start-time']))) {
+                            superStartDate = (new Date(milestone[taskId].taskData['start-time']))
+                        }
+                        if (superFinishDate < (new Date(milestone[taskId].taskData['finish-time']))) {
+                            superFinishDate = (new Date(milestone[taskId].taskData['finish-time']))
+                        }
                         milestoneProgress+=parseInt(milestone[taskId].taskData['progress'])
                     }
                     milestoneProgress = milestoneProgress/milestone.length
-                    tasks.push({
+                    superMilestoneProgress += milestoneProgress
+                    superCounter++
+                    unfinishedMilestones.push({
                         start: startDate,
                         end: finishDate,
                         name: project[milestoneId].milestoneName,
@@ -150,11 +194,30 @@ const GanttChart = () => {
                         progress: milestoneProgress,
                         type: 'project',
                         hideChildren: false,
+                        styles: {  backgroundColor: '#d658fc', progressColor: '#612873' }
                     })
 
                     for (let task in unFinishedTasks) {
-                        tasks.push(unFinishedTasks[task])
+                        unfinishedMilestones.push(unFinishedTasks[task])
                     }
+                }
+                    }
+                }
+            }
+
+            if(unfinishedMilestones.length != 0) {
+                tasks.push({
+                    start: superStartDate,
+                    end: superFinishDate,
+                    name: superMilestones[superMilestone],
+                    id: superMilestones[superMilestone],
+                    progress: superMilestoneProgress/superCounter,
+                    type: 'project',
+                    styles: {  backgroundColor: '#fc2803', progressColor: '#731c0d' }
+                })
+
+                for (let i in unfinishedMilestones) {
+                    tasks.push(unfinishedMilestones[i])
                 }
             }
         }
@@ -178,7 +241,8 @@ const GanttChart = () => {
                 id: "完了タスク",
                 progress: 100,
                 type: 'project',
-                hideChildren: false,
+                hideChildren: true,
+                styles: {  backgroundColor: '#731c0d', progressColor: '#731c0d' }
             })
             for (let i in finishedTasks) {
                 tasks.push(finishedTasks[i])
@@ -320,7 +384,7 @@ const GanttChart = () => {
                         </div>
                     </div>
                     <div className='bottomDiv'>
-                        <Gantt tasks={tasks} viewMode={view} onDateChange={handleTaskChange} onDelete={handleTaskDelete} onProgressChange={handleProgressChange} onDoubleClick={handleDblClick} onExpanderClick={handleExpanderClick} listCellWidth={isChecked ? "155px" : ""} columnWidth={columnWidth} locale={new Intl.Locale('ja-Ja')}ganttHeight={bottomDivH - 100} />
+                        <Gantt tasks={tasks} viewMode={view} onDateChange={handleTaskChange} onDelete={handleTaskDelete} onProgressChange={handleProgressChange} onDoubleClick={handleDblClick} onExpanderClick={handleExpanderClick} listCellWidth={isChecked ? "155px" : ""} columnWidth={columnWidth} locale={new Intl.Locale('ja-Ja')} ganttHeight={bottomDivH - 100} todayColor="#e8f2ae" />
                     </div>
                 </div>
             </div>

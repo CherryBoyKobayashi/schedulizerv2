@@ -2,12 +2,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { addMilestoneToDB, deleteMilestoneFromDB, updateMilestoneInDB, saveMilestoneToDB } from '../../api/milestoneDB';
 import {deleteTask} from '../../api/taskDB';
 
-    async function addMilestone(project, milestoneName, newColor, projectId) {
+    async function addMilestone(project, superMilestoneName, milestoneName, newColor, projectId) {
         let milestoneId = uuidv4();
         let tasks = []
-        let response = await addMilestoneToDB(projectId, milestoneId, milestoneName, newColor, tasks);
+        let response = await addMilestoneToDB(projectId, milestoneId, superMilestoneName, milestoneName, newColor, tasks);
         if (response == "OK") {
-            project[project.length] = {"milestoneId": milestoneId, "milestoneName": milestoneName, "color":newColor, "tasks":tasks}
+            project[project.length] = {"milestoneId": milestoneId, "superMilestoneName": superMilestoneName, "milestoneName": milestoneName, "color":newColor, "tasks":tasks}
         }
     }
 
@@ -23,10 +23,10 @@ import {deleteTask} from '../../api/taskDB';
         }
     }
 
-    async function updateMilestone(project, milestoneId, milestoneName, newColor, tasks, projectId) {
-        let response = await updateMilestoneInDB(projectId, project[milestoneId].milestoneId, milestoneName, newColor, tasks.map((u) => u.taskId));
+    async function updateMilestone(project, milestoneId, superMilestoneName, milestoneName, newColor, tasks, projectId) {
+        let response = await updateMilestoneInDB(projectId, project[milestoneId].milestoneId, superMilestoneName, milestoneName, newColor, tasks.map((u) => u.taskId));
         if (response == "OK") {
-            project[milestoneId]= {"milestoneId": project[milestoneId].milestoneId, "milestoneName": milestoneName, "color":newColor,"tasks":tasks};
+            project[milestoneId]= {"milestoneId": project[milestoneId].milestoneId, "superMilestoneName": superMilestoneName, "milestoneName": milestoneName, "color":newColor,"tasks":tasks};
         }
     }
 

@@ -10,7 +10,8 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { useParams } from 'react-router-dom'
 import {BiLabel} from "react-icons/bi"
 import DatePicker from "react-datepicker";
-import Select from 'react-select';
+import Select, {ActionMeta, OnChangeValue }from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import TextField from "@mui/material/TextField";
 import ColorPicker from './colorPicker'
@@ -50,7 +51,36 @@ const Milestone = () => {
     const allGroups = Array.from(new Set(allMembersData.map(a => a.group)), (value)=> {return {"value": value, "label": value}});
     const [results, setResults] = useState(Object.keys(milestoneObj))
     const [dispTasks, setDispTasks] = useState((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
-
+    let superMilestones = []
+    for (let m in milestoneObj) {
+        if(superMilestones.indexOf(milestoneObj[m].superMilestoneName) === -1)
+        superMilestones.push(milestoneObj[m].superMilestoneName)
+    }
+    superMilestones = Array.from(superMilestones.sort().filter((e) => e !=""), (value)=> {return {"value": value, "label": value}})
+    milestoneObj.sort(function(a,b) {
+        if (a.superMilestoneName<b.superMilestoneName){
+            return -1;
+        } 
+        if (a.superMilestoneName>b.superMilestoneName){
+            return 1;
+        } 
+        else {
+            return 0;
+        }
+    })    
+    milestoneObj.sort(function(a,b) {
+        if (a.superMilestoneName==b.superMilestoneName) {
+            if (a.milestoneName<b.milestoneName){
+                return -1;
+            } 
+            if (a.milestoneName>b.milestoneName){
+                return 1;
+            } 
+            else {
+                return 0;
+            }
+        }
+    })
 
     let inputHandler = (e) => {
         var lowerCase = e.target.value.toLowerCase();
@@ -61,8 +91,8 @@ const Milestone = () => {
     };
 
     //Milestone methods
-    async function addMilestoneHere() {
-        await addMilestone(milestoneObj, document.getElementById("milestoneName").value, sessionStorage.getItem("milestoneColor"), projectId);
+    async function addMilestoneHere(superMilestoneName) {
+        await addMilestone(milestoneObj, superMilestoneName, document.getElementById("milestoneName").value, sessionStorage.getItem("milestoneColor"), projectId);
         setResults(Object.keys(milestoneObj))
         setDispTasks((Object.values(milestoneObj).map(e => e.tasks)).flat().map(e=>e.taskId))
         forceUpdate();
@@ -71,8 +101,8 @@ const Milestone = () => {
         await deleteMilestone(milestoneObj, milestoneId, projectId, userData.userId);
         forceUpdate();
     }
-    async function updateMilestoneHere(milestoneId, tasks) {
-        await updateMilestone(milestoneObj, milestoneId,  document.getElementById("milestoneName").value, sessionStorage.getItem("milestoneColor"), tasks, projectId)
+    async function updateMilestoneHere(milestoneId, tasks, superMilestoneName) {
+        await updateMilestone(milestoneObj, milestoneId, superMilestoneName, document.getElementById("milestoneName").value, sessionStorage.getItem("milestoneColor"), tasks, projectId)
         forceUpdate();
     }
     async function saveMilestoneHere() {
@@ -111,16 +141,25 @@ const Milestone = () => {
     }
 
     const MilestoneInner1 = () => {
+        let superMilestoneName;
+        function handleChange (newValue) {
+            superMilestoneName = newValue.value;
+        };
+        function handleCreate (value) {
+            superMilestones.push({"value": value, "label": value})
+        };
         if(flag === 1) {
             return (
                 <>
+                    <h4>所属大工程名</h4>
+                    <CreatableSelect isClearable onChange={handleChange} onCreateOption={handleCreate} options={superMilestones} />
                     <h4>マイルストーン名</h4>
                     <input type='text' id="milestoneName"/>
                     <h4>マイルストーン色</h4>
                     <div className='colorPickDiv'>
                         <ColorPicker />
                     </div>
-                    <button className='minWidth' onClick={()=>{addMilestoneHere(); setIsOpen(false);}}>追加</button>
+                    <button className='minWidth' onClick={()=>{addMilestoneHere(superMilestoneName); setIsOpen(false);}}>追加</button>
                 </>
             )
         } else if (flag === 2) {
@@ -129,13 +168,15 @@ const Milestone = () => {
             let tasks = JSON.parse(sessionStorage.getItem("updateMilestone"))[2];
             return (
                 <>
+                    <h4>所属大工程名</h4>
+                    <CreatableSelect isClearable onChange={handleChange} onCreateOption={handleCreate} options={superMilestones} defaultValue={superMilestones.find(element => element.value == milestoneObj[milestoneId].superMilestoneName)}/>
                     <h4>マイルストーン名</h4>
                     <input type='text' id="milestoneName" defaultValue={milestoneObj[milestoneId].milestoneName}/>
                     <h4>マイルストーン色</h4>
                     <div className='colorPickDiv'>
                         <ColorPicker color={newColor} />
                     </div>
-                    <button className='minWidth' onClick={()=>{updateMilestoneHere(milestoneId, tasks); setIsOpen(false);}}>変更</button>
+                    <button className='minWidth' onClick={()=>{updateMilestoneHere(milestoneId, tasks, superMilestoneName); setIsOpen(false);}}>変更</button>
                 </>
             )
         }
@@ -203,7 +244,6 @@ const Milestone = () => {
         }
         if (flag === 4) {
             if(userData.userId == userData.projects[projectId].projectCreator) {
-                console.log(keydown)
                 if (keydown) {
                     return (
                         <>

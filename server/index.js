@@ -179,6 +179,7 @@ app.post('/api/milestoneDB', async (req, res) => {
             if (req.body.milestoneName != undefined){
               delete req.body.projectId;
               let milestone = project.projectData.filter(data => data.milestoneId == req.body.milestoneId)[0]
+              milestone.superMilestoneName = req.body.superMilestoneName;
               milestone.milestoneName = req.body.milestoneName;
               milestone.color = req.body.color;
               milestone.tasks = req.body.tasks;

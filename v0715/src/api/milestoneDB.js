@@ -3,10 +3,14 @@ const axios = require('axios').default;
 // const address = '/api/';
 const address = 'http://localhost:3000/api/';
 
-async function addMilestoneToDB (projectId, milestoneId, milestoneName, newColor, tasks) {
+async function addMilestoneToDB (projectId, milestoneId, superMilestoneName, milestoneName, newColor, tasks) {
+    if(superMilestoneName == undefined){
+        superMilestoneName = ""
+    }
     let postData = {
         projectId: projectId,
         milestoneId: milestoneId,
+        superMilestoneName: superMilestoneName,
         milestoneName: milestoneName,
         color: newColor,
         tasks: tasks
@@ -47,10 +51,14 @@ async function deleteMilestoneFromDB (projectId, milestoneId, userId) {
     }
 }
 
-async function updateMilestoneInDB (projectId, milestoneId, milestoneName, newColor, tasks) {
+async function updateMilestoneInDB (projectId, milestoneId, superMilestoneName, milestoneName, newColor, tasks) {
+    if(superMilestoneName == undefined){
+        superMilestoneName = ""
+    }
     let postData = {
         projectId: projectId,
         milestoneId: milestoneId,
+        superMilestoneName: superMilestoneName,
         milestoneName: milestoneName,
         color: newColor,
         tasks: tasks
