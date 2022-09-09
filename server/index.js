@@ -21,20 +21,6 @@ app.get("*", function (req, res) {
   res.sendFile(path.join(DIST_DIR, "index.html"));
 });
 
-// const myFormat = printf(({ level, message,  timestamp }) => {
-//   return `${timestamp} ${level}: ${message}`;
-// });
-
-// app.use(expressWinston.logger({
-//   format: combine(
-//     timestamp(),
-//     myFormat
-//   ),
-//   transports: [
-//     new winston.transports.File({ filename: 'error.log' }),
-//   ]
-// }));
-
 app.post('/api/userDB', async (req, res) => {
   try {
     await db.read()

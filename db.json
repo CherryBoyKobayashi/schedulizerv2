@@ -54,40 +54,31 @@
       "projectDate": "2022-09-02",
       "projectData": [
         {
-          "superMilestoneName": "Amile",
-          "milestoneId": "e4b367f0-d2b8-4909-b884-c17c1fcd3956",
-          "milestoneName": "A",
-          "color": "undefined",
+          "milestoneId": "ffcba98f-46d9-4f9c-8dcf-159ba8637f6a",
+          "superMilestoneName": "階層A",
+          "milestoneName": "マイルストーンA",
+          "color": "#3816e9",
           "tasks": [
-            "07308e7d-53ea-4c58-8ed1-18777d0c4e95",
-            "334d3191-295b-42dd-994c-363f11a21df9"
+            "236a8946-7414-4f39-84a0-4e75357bbe88",
+            "2b337e60-d415-46c1-8a02-34521a475cb6"
           ]
         },
         {
-          "superMilestoneName": "Bmile",
-          "milestoneId": "96497773-a589-460d-81a9-d27f9eddf6b0",
-          "milestoneName": "B",
-          "color": "undefined",
+          "milestoneId": "63bda5d3-b47a-480e-a3f5-f3e454a3ef6d",
+          "superMilestoneName": "階層B",
+          "milestoneName": "マイルストーンB",
+          "color": "#7ed321",
           "tasks": [
-            "7b3de0b3-16ae-4304-96a0-42cffd0353e7"
+            "3cc42741-780d-4f0b-a57f-0f2015c3f260"
           ]
         },
         {
-          "milestoneId": "157c000a-e72d-4e4f-bd82-aca2ab93b815",
-          "superMilestoneName": "Dmile",
-          "milestoneName": "D",
-          "color": "undefined",
+          "milestoneId": "fbb11884-a6d2-451a-b1ad-797db12bb57b",
+          "superMilestoneName": "階層A",
+          "milestoneName": "マイルストーンC",
+          "color": "#d0021b",
           "tasks": [
-            "c1ec2507-ae45-4368-8d92-ea75cf44c188"
-          ]
-        },
-        {
-          "milestoneId": "caaad192-9bb8-46f8-b511-e1e0b028aae9",
-          "superMilestoneName": "Amile",
-          "milestoneName": "C",
-          "color": "undefined",
-          "tasks": [
-            "351572e4-d64c-44bb-830d-26e0db9c0abb"
+            "b1074b09-173e-4e46-8956-018f76374b2e"
           ]
         }
       ]
@@ -95,15 +86,17 @@
   ],
   "tasks": [
     {
-      "taskId": "07308e7d-53ea-4c58-8ed1-18777d0c4e95",
-      "task-name": "A",
-      "start-time": "2022-09-01",
-      "finish-time": "2022-09-04",
+      "taskId": "236a8946-7414-4f39-84a0-4e75357bbe88",
+      "task-name": "タスクA",
+      "start-time": "2022-09-09",
+      "real-start-time": "2022-09-14",
+      "finish-time": "2022-09-18",
+      "real-finish-time": "2022-09-23",
       "members": [
         "a"
       ],
       "priority": "medium",
-      "creation-time": 1662354102743,
+      "creation-time": "2022-09-07",
       "creator": "a",
       "checkpoints": [],
       "comments": [
@@ -111,18 +104,20 @@
       ],
       "description": "Task description",
       "follow-state": false,
-      "progress": 15
+      "progress": 46
     },
     {
-      "taskId": "7b3de0b3-16ae-4304-96a0-42cffd0353e7",
-      "task-name": "B",
-      "start-time": "2022-09-02",
-      "finish-time": "2022-09-23",
+      "taskId": "2b337e60-d415-46c1-8a02-34521a475cb6",
+      "task-name": "タスクB",
+      "start-time": "2022-09-18",
+      "real-start-time": "2022-09-13",
+      "finish-time": "2022-09-21",
+      "real-finish-time": "2022-09-16",
       "members": [
         "a"
       ],
       "priority": "medium",
-      "creation-time": 1662354106527,
+      "creation-time": "2022-09-07",
       "creator": "a",
       "checkpoints": [],
       "comments": [
@@ -130,18 +125,20 @@
       ],
       "description": "Task description",
       "follow-state": false,
-      "progress": 20
+      "progress": 41
     },
     {
-      "taskId": "c1ec2507-ae45-4368-8d92-ea75cf44c188",
-      "task-name": "D",
-      "start-time": "2022-09-04",
-      "finish-time": "2022-09-30",
+      "taskId": "b1074b09-173e-4e46-8956-018f76374b2e",
+      "task-name": "タスクC",
+      "start-time": "2022-09-14",
+      "real-start-time": "2022-09-09",
+      "finish-time": "2022-09-22",
+      "real-finish-time": "2022-09-17",
       "members": [
         "a"
       ],
       "priority": "medium",
-      "creation-time": 1662354116741,
+      "creation-time": "2022-09-07",
       "creator": "a",
       "checkpoints": [],
       "comments": [
@@ -149,18 +146,20 @@
       ],
       "description": "Task description",
       "follow-state": false,
-      "progress": 35
+      "progress": 100
     },
     {
-      "taskId": "351572e4-d64c-44bb-830d-26e0db9c0abb",
-      "task-name": "C",
-      "start-time": "2022-09-02",
-      "finish-time": "2022-09-23",
+      "taskId": "3cc42741-780d-4f0b-a57f-0f2015c3f260",
+      "task-name": "タスクD",
+      "start-time": "2022-09-08",
+      "real-start-time": "2022-09-10",
+      "finish-time": "2022-09-21",
+      "real-finish-time": "2022-09-23",
       "members": [
         "a"
       ],
       "priority": "medium",
-      "creation-time": 1662354111222,
+      "creation-time": "2022-09-07",
       "creator": "a",
       "checkpoints": [],
       "comments": [
@@ -168,26 +167,7 @@
       ],
       "description": "Task description",
       "follow-state": false,
-      "progress": 8
-    },
-    {
-      "taskId": "334d3191-295b-42dd-994c-363f11a21df9",
-      "task-name": "adsaf",
-      "start-time": "2022-09-02",
-      "finish-time": "2022-09-07",
-      "members": [
-        "a"
-      ],
-      "priority": "medium",
-      "creation-time": "2022-09-05",
-      "creator": "a",
-      "checkpoints": [],
-      "comments": [
-        ""
-      ],
-      "description": "Task description",
-      "follow-state": false,
-      "progress": 20
+      "progress": 100
     }
   ]
 }

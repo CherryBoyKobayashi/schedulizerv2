@@ -10,7 +10,9 @@ async function addTaskToDB (projectId, milestoneId, taskId, taskName, startTime,
         taskId: taskId,
         "task-name": taskName,
         "start-time": startTime,
+        "real-start-time": startTime,
         "finish-time": finishTime,
+        "real-finish-time": finishTime,
         members: members,
         priority: priority,
         "creation-time": creationTime,
@@ -83,14 +85,16 @@ async function deleteTask(taskId,userId) {
     }
 }
 
-async function updateTaskInDB(projectId, milestoneId, taskId, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress) {
+async function updateTaskInDB(projectId, milestoneId, taskId, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress, realStart, realEnd) {
     let postData = {
         projectId: projectId,
         milestoneId: milestoneId,
         taskId: taskId,
         "task-name": taskName,
         "start-time": startTime,
+        "real-start-time": realStart,
         "finish-time": finishTime,
+        "real-finish-time": realEnd,
         members: members,
         priority: priority,
         "creation-time": creationTime,

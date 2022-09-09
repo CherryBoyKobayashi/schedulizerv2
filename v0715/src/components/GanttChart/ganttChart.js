@@ -14,19 +14,8 @@ import { userDataContext } from '../..'
 import Topbar from '../Topbar/topbar'
 import {deleteMilestone, saveMilestone} from '../../pages/methods/milestone-methods';
 import {updateTask, deleteTaskP} from '../../pages/methods/task-methods';
-import { FormControlUnstyled } from '@mui/base'
 
 let keydown = false
-document.addEventListener("keydown", function(event) {
-    if (event.key == 'Control') {
-      keydown = true
-    }
-});
-document.addEventListener("keyup", function(event) {
-    if (event.key == 'Control') {
-        keydown = false
-    }
-});
 
 const GanttChart = () => {
     const [view, setView] = useState(ViewMode.Day)
@@ -90,11 +79,17 @@ const GanttChart = () => {
         setTasks(initTasks())
       }
     async function updateMilestoneAndTasks(task) {
-        project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["start-time"] = dateHelper(task["start"])
-        project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["finish-time"] = dateHelper(task["end"])
+        console.log(keydown)
+        if(keydown) {
+            project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["start-time"] = dateHelper(task["start"])
+            project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["finish-time"] = dateHelper(task["end"])    
+            keydown = false
+        }
+        project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["real-start-time"] = dateHelper(task["start"])
+        project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["real-finish-time"] = dateHelper(task["end"])
         project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)].taskData["progress"] = task.progress
         let taskX = project[task.id.substr(0, task.id.indexOf('&'))].tasks[task.id.substr(task.id.indexOf('&')+1)]
-        await updateTask(projectId, userData.projects[projectId].projectData[task.id.substr(0, task.id.indexOf('&'))].milestoneId, taskX, taskX.taskData["task-name"], taskX.taskData["start-time"], taskX.taskData["finish-time"], taskX.taskData["members"], taskX.taskData["priority"], taskX.taskData["creation-time"], taskX.taskData["creator"], taskX.taskData["checkpoints"], taskX.taskData["comments"], taskX.taskData["description"], taskX.taskData["follow-state"], taskX.taskData["progress"])
+        await updateTask(projectId, userData.projects[projectId].projectData[task.id.substr(0, task.id.indexOf('&'))].milestoneId, taskX, taskX.taskData["task-name"], taskX.taskData["start-time"], taskX.taskData["finish-time"], taskX.taskData["members"], taskX.taskData["priority"], taskX.taskData["creation-time"], taskX.taskData["creator"], taskX.taskData["checkpoints"], taskX.taskData["comments"], taskX.taskData["description"], taskX.taskData["follow-state"], taskX.taskData["progress"], taskX.taskData["real-start-time"], taskX.taskData["real-finish-time"])
         setTasks(initTasks())
       }
 
@@ -154,15 +149,34 @@ const GanttChart = () => {
                             styles: { progressColor: "#E8E8E8", progressSelectedColor: '#0900FF' }
                         })
                     } else {
+                        let tid
+                        if (taskId==0){
+                            tid = milestoneId
+                        } else {
+                            tid = "y" + milestoneId + "&" + (taskId-1)
+                        }
                         unFinishedTasks.push({
+                            id: "y" + milestoneId + "&" + taskId,
                             start: new Date(task['start-time']),
                             end: new Date(task['finish-time']),
-                            name: task["task-name"],
+                            name: task["task-name"] + "(予定)",
+                            progress: 0,
+                            type: 'task',
+                            project: milestoneId,
+                            dependencies: [tid],
+                            styles: { progressColor: '#1a184a', progressSelectedColor: '#1a184a' },
+                            isDisabled: true,
+                        })
+                        unFinishedTasks.push({
+                            start: new Date(task['real-start-time']),
+                            end: new Date(task['real-finish-time']),
+                            name: task["task-name"] + "(実績)",
                             id: milestoneId + "&" + taskId,
                             progress: task['progress'],
                             type: 'task',
+                            dependencies: ["y" + milestoneId + "&" + taskId],
                             project: milestoneId,
-                            styles: { progressColor: '#3F3ABA', progressSelectedColor: '#0900FF' }
+                            styles: { progressColor: '#3F3ABA', progressSelectedColor: '#0900FF' },
                         })
                     }
                 }
@@ -273,6 +287,7 @@ const GanttChart = () => {
         const checkpoints = taskObj.taskData['checkpoints']
         let task = JSON.parse(sessionStorage.getItem("updateTask"))
         if (keydown) {
+            keydown = false
             return (
                 <>
                         <h4 className='textAlignLeft'>プログレス</h4>
@@ -361,6 +376,11 @@ const GanttChart = () => {
     const handleExpanderClick = (task) => {
         setTasks(tasks.map(t => (t.id === task.id ? task : t)));
     }
+    document.addEventListener("keyup", function(event) {
+        if (event.key == 'Shift') {
+          keydown = true
+        }
+    });
     return (
         <>
             <div className='mainDiv'>
@@ -370,8 +390,8 @@ const GanttChart = () => {
                 </Modal>
                 <div className='ganttChartDiv'>
                     <div className='topDiv'>
-                        {/* <button onClick={() => setView(ViewMode.QuarterDay)}>Quarter of Day</button>
-                        <button onClick={() => setView(ViewMode.HalfDay)}>Half of Day</button> */}
+                        <button onClick={() => setView(ViewMode.QuarterDay)}>Quarter of Day</button>
+                        <button onClick={() => setView(ViewMode.HalfDay)}>Half of Day</button>
                         <button onClick={() => setView(ViewMode.Day)}>Day</button>
                         <button onClick={() => setView(ViewMode.Week)}>Week</button>
                         <button onClick={() => setView(ViewMode.Month)}>Month</button>
@@ -379,7 +399,7 @@ const GanttChart = () => {
                         <div className="Switch">
                             <label className="Switch_Toggle">
                                 <input type="checkbox" defaultChecked={isChecked} onClick={() => setIsChecked(!isChecked)}/>
-                                Show Task List
+                                タスクリストの表示
                             </label>
                         </div>
                     </div>

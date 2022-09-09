@@ -6,10 +6,9 @@ async function addTask(tasks, taskName, startTime, finishTime, members, priority
     if (taskId == undefined) {
         taskId = uuidv4();
     }
-    console.log(taskId)
     let response = await addTaskToDB(projectId, milestoneId, taskId, taskName, startTime, finishTime, members, priority, formatDate(new Date(Date.now()), 'yyyy-MM-dd'), userName, checkpoints, [""], description, followState, 20);
     if (response == "OK") {
-        tasks.push(new Task(taskId, {"task-name": taskName, "start-time":startTime, "finish-time":finishTime, "members": members, "priority": priority, "creation-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "creator":userName,  "checkpoints":checkpoints, "comments": [""], "description":description, "follow-state":followState, "progress": 20}));
+        tasks.push(new Task(taskId, {"task-name": taskName, "start-time":startTime, "real-start-time":startTime, "finish-time":finishTime, "real-finish-time": finishTime,"members": members, "priority": priority, "creation-time":formatDate(new Date(Date.now()), 'yyyy-MM-dd'), "creator":userName,  "checkpoints":checkpoints, "comments": [""], "description":description, "follow-state":followState, "progress": 20}));
     }
 }
 
@@ -24,10 +23,14 @@ async function deleteTaskP(tasks, taskId, userId) {
     }
 }
 
-async function updateTask(projectId, milestoneId, task, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress) {
-    let response = await updateTaskInDB(projectId, milestoneId, task.taskId, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress);
+async function updateTask(projectId, milestoneId, task, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress, realStart, realEnd) {
+    if (realStart==undefined||realEnd==undefined) {
+        realStart = startTime
+        realEnd = finishTime
+    }
+    let response = await updateTaskInDB(projectId, milestoneId, task.taskId, taskName, startTime, finishTime, members, priority, creationTime, userName, checkpoints, comments, description, followState, progress, realStart, realEnd);
     if (response == "OK") {
-        task.taskData = {"task-name": taskName, "start-time":startTime, "finish-time":finishTime, "members": members, "priority": priority, "creation-time":creationTime, "creator":userName,  "checkpoints":checkpoints, "comments": comments, "description":description, "follow-state":followState, "progress": progress};
+        task.taskData = {"task-name": taskName, "start-time":startTime, "real-start-time":realStart, "finish-time":finishTime, "real-finish-time": realEnd, "members": members, "priority": priority, "creation-time":creationTime, "creator":userName,  "checkpoints":checkpoints, "comments": comments, "description":description, "follow-state":followState, "progress": progress};
     }
 }
 
